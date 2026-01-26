@@ -1,0 +1,2 @@
+# This directory stores cached stock data
+# Run `npm run update-stocks` to populate this directory

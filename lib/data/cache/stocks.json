@@ -1,0 +1,252 @@
+[
+  {
+    "symbol": "7203",
+    "name": "トヨタ自動車",
+    "sector": "自動車"
+  },
+  {
+    "symbol": "9984",
+    "name": "ソフトバンクグループ",
+    "sector": "IT・通信"
+  },
+  {
+    "symbol": "6758",
+    "name": "ソニーグループ",
+    "sector": "電機"
+  },
+  {
+    "symbol": "9983",
+    "name": "ファーストリテイリング",
+    "sector": "小売"
+  },
+  {
+    "symbol": "7974",
+    "name": "任天堂",
+    "sector": "ゲーム"
+  },
+  {
+    "symbol": "6861",
+    "name": "キーエンス",
+    "sector": "電機"
+  },
+  {
+    "symbol": "4063",
+    "name": "信越化学工業",
+    "sector": "化学"
+  },
+  {
+    "symbol": "6098",
+    "name": "リクルートホールディングス",
+    "sector": "サービス"
+  },
+  {
+    "symbol": "9434",
+    "name": "ソフトバンク",
+    "sector": "IT・通信"
+  },
+  {
+    "symbol": "4502",
+    "name": "武田薬品工業",
+    "sector": "医薬品"
+  },
+  {
+    "symbol": "8306",
+    "name": "三菱UFJフィナンシャル・グループ",
+    "sector": "金融"
+  },
+  {
+    "symbol": "8316",
+    "name": "三井住友フィナンシャルグループ",
+    "sector": "金融"
+  },
+  {
+    "symbol": "8411",
+    "name": "みずほフィナンシャルグループ",
+    "sector": "金融"
+  },
+  {
+    "symbol": "8601",
+    "name": "大和証券グループ本社",
+    "sector": "金融"
+  },
+  {
+    "symbol": "8604",
+    "name": "野村ホールディングス",
+    "sector": "金融"
+  },
+  {
+    "symbol": "8766",
+    "name": "東京海上ホールディングス",
+    "sector": "金融"
+  },
+  {
+    "symbol": "8725",
+    "name": "MS&ADインシュアランスグループHD",
+    "sector": "金融"
+  },
+  {
+    "symbol": "7267",
+    "name": "ホンダ",
+    "sector": "自動車"
+  },
+  {
+    "symbol": "7201",
+    "name": "日産自動車",
+    "sector": "自動車"
+  },
+  {
+    "symbol": "7261",
+    "name": "マツダ",
+    "sector": "自動車"
+  },
+  {
+    "symbol": "7269",
+    "name": "スズキ",
+    "sector": "自動車"
+  },
+  {
+    "symbol": "6902",
+    "name": "デンソー",
+    "sector": "自動車部品"
+  },
+  {
+    "symbol": "5108",
+    "name": "ブリヂストン",
+    "sector": "自動車部品"
+  },
+  {
+    "symbol": "6752",
+    "name": "パナソニックホールディングス",
+    "sector": "電機"
+  },
+  {
+    "symbol": "6501",
+    "name": "日立製作所",
+    "sector": "電機"
+  },
+  {
+    "symbol": "6503",
+    "name": "三菱電機",
+    "sector": "電機"
+  },
+  {
+    "symbol": "6702",
+    "name": "富士通",
+    "sector": "電機"
+  },
+  {
+    "symbol": "6971",
+    "name": "京セラ",
+    "sector": "電機"
+  },
+  {
+    "symbol": "6954",
+    "name": "ファナック",
+    "sector": "電機"
+  },
+  {
+    "symbol": "6981",
+    "name": "村田製作所",
+    "sector": "電機"
+  },
+  {
+    "symbol": "6762",
+    "name": "TDK",
+    "sector": "電機"
+  },
+  {
+    "symbol": "9432",
+    "name": "日本電信電話",
+    "sector": "IT・通信"
+  },
+  {
+    "symbol": "9433",
+    "name": "KDDI",
+    "sector": "IT・通信"
+  },
+  {
+    "symbol": "3382",
+    "name": "セブン&アイ・ホールディングス",
+    "sector": "小売"
+  },
+  {
+    "symbol": "8267",
+    "name": "イオン",
+    "sector": "小売"
+  },
+  {
+    "symbol": "4755",
+    "name": "楽天グループ",
+    "sector": "IT・通信"
+  },
+  {
+    "symbol": "2502",
+    "name": "アサヒグループホールディングス",
+    "sector": "食品"
+  },
+  {
+    "symbol": "2503",
+    "name": "キリンホールディングス",
+    "sector": "食品"
+  },
+  {
+    "symbol": "2802",
+    "name": "味の素",
+    "sector": "食品"
+  },
+  {
+    "symbol": "4568",
+    "name": "第一三共",
+    "sector": "医薬品"
+  },
+  {
+    "symbol": "4523",
+    "name": "エーザイ",
+    "sector": "医薬品"
+  },
+  {
+    "symbol": "4503",
+    "name": "アステラス製薬",
+    "sector": "医薬品"
+  },
+  {
+    "symbol": "4188",
+    "name": "三菱ケミカルグループ",
+    "sector": "化学"
+  },
+  {
+    "symbol": "4452",
+    "name": "花王",
+    "sector": "化学"
+  },
+  {
+    "symbol": "8058",
+    "name": "三菱商事",
+    "sector": "商社"
+  },
+  {
+    "symbol": "8031",
+    "name": "三井物産",
+    "sector": "商社"
+  },
+  {
+    "symbol": "8001",
+    "name": "伊藤忠商事",
+    "sector": "商社"
+  },
+  {
+    "symbol": "8053",
+    "name": "住友商事",
+    "sector": "商社"
+  },
+  {
+    "symbol": "8002",
+    "name": "丸紅",
+    "sector": "商社"
+  },
+  {
+    "symbol": "8801",
+    "name": "三井不動産",
+    "sector": "不動産"
+  }
+]
