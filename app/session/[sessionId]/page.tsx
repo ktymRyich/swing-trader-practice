@@ -6,10 +6,10 @@ import { db, generateTradeId, generatePositionId, generateViolationId } from '@/
 import { useSessionStore } from '@/lib/store/sessionStore';
 import { useLiveQuery } from 'dexie-react-hooks';
 import TradingChart from '@/components/chart/TradingChart';
-import OrderForm from '@/components/trading/OrderForm';
+import OrderFormModal from '@/components/trading/OrderFormModal';
 import PositionList from '@/components/trading/PositionList';
 import PlaybackControls from '@/components/trading/PlaybackControls';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { calculateBuyOrder, calculateSellOrder } from '@/lib/trading/calculator';
 import { checkAllRules } from '@/lib/trading/rules';
@@ -40,6 +40,39 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
   } = useSessionStore();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+
+  // 決済済みポジションをリアルタイムで取得して統計計算
+  const closedPositions = useLiveQuery(
+    () => db.positions
+      .where('sessionId')
+      .equals(sessionId)
+      .and(p => p.status === 'closed')
+      .toArray(),
+    [sessionId]
+  );
+
+  // 平均増益額と平均損額を計算
+  const profitStats = closedPositions ? (() => {
+    const profits = closedPositions.filter(p => (p.profit || 0) > 0);
+    const losses = closedPositions.filter(p => (p.profit || 0) < 0);
+    
+    return {
+      avgProfit: profits.length > 0 
+        ? profits.reduce((sum, p) => sum + (p.profit || 0), 0) / profits.length
+        : 0,
+      avgLoss: losses.length > 0
+        ? losses.reduce((sum, p) => sum + (p.profit || 0), 0) / losses.length
+        : 0,
+    };
+  })() : { avgProfit: 0, avgLoss: 0 };
+
+  // モーダル開閉時に自動再生を一時停止
+  useEffect(() => {
+    if (isOrderModalOpen && isPlaying) {
+      pause();
+    }
+  }, [isOrderModalOpen]);
 
   // セッションとデータを読み込み
   useEffect(() => {
@@ -470,7 +503,11 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Link href="/" className="p-2 hover:bg-gray-100 rounded-lg">
+              <Link 
+                href="/" 
+                onClick={handleSaveAndExit}
+                className="p-2 hover:bg-gray-100 rounded-lg"
+              >
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               <div>
@@ -482,13 +519,6 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
                 </p>
               </div>
             </div>
-            <button
-              onClick={handleSaveAndExit}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition"
-            >
-              <Save className="w-4 h-4" />
-              保存して終了
-            </button>
           </div>
         </div>
       </header>
@@ -501,7 +531,6 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
             <TradingChart
               stockPrices={visiblePrices}
               maSettings={currentSession.maSettings}
-              height={400}
             />
             
             <PlaybackControls
@@ -520,6 +549,15 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
               }}
             />
 
+            {/* 注文ボタン（スマホ用） */}
+            <button
+              onClick={() => setIsOrderModalOpen(true)}
+              className="lg:hidden w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold flex items-center justify-center gap-2 transition"
+            >
+              <Plus className="w-5 h-5" />
+              注文
+            </button>
+
             <PositionList
               positions={openPositions}
               currentPrice={currentPrice}
@@ -527,15 +565,15 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
             />
           </div>
 
-          {/* 右カラム - 注文フォームと統計 */}
+          {/* 右カラム - 統計 */}
           <div className="space-y-6">
-            <OrderForm
-              currentPrice={currentPrice}
-              availableCapital={currentSession.currentCapital}
-              openPositionCount={openPositions.length}
-              totalPositionValue={totalPositionValue}
-              onSubmit={handleOrder}
-            />
+            <button
+              onClick={() => setIsOrderModalOpen(true)}
+              className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold flex items-center justify-center gap-2"
+            >
+              <Plus className="w-5 h-5" />
+              注文
+            </button>
 
             {/* 統計 */}
             <div className="bg-white rounded-lg border p-4">
@@ -548,6 +586,18 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
                 <div className="flex justify-between">
                   <span className="text-gray-600">勝率</span>
                   <span className="font-medium">{currentSession.winRate.toFixed(1)}%</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">平均増益額</span>
+                  <span className="font-medium text-green-600">
+                    +¥{profitStats.avgProfit.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">平均損失額</span>
+                  <span className="font-medium text-red-600">
+                    ¥{profitStats.avgLoss.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">資金増減</span>
@@ -571,6 +621,17 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
           </div>
         </div>
       </main>
+
+      {/* 注文モーダル */}
+      <OrderFormModal
+        isOpen={isOrderModalOpen}
+        onClose={() => setIsOrderModalOpen(false)}
+        currentPrice={currentPrice}
+        availableCapital={currentSession.currentCapital}
+        openPositionCount={openPositions.length}
+        totalPositionValue={totalPositionValue}
+        onSubmit={handleOrder}
+      />
     </div>
   );
 }

@@ -180,13 +180,13 @@ export async function generateSampleData(
 }
 
 /**
- * ランダムな期間を選択（過去データ180日分も含む）
+ * ランダムな期間を選択（過去データ60日分も含む）
  */
 export function selectRandomPeriod(
   allPrices: StockPrice[],
   symbol: string,
   periodDays: number,
-  historicalDays: number = 180
+  historicalDays: number = 60
 ): { prices: StockPrice[]; startDate: string; endDate: string; practiceStartIndex: number } {
   const stockPrices = allPrices.filter(p => p.symbol === symbol);
   

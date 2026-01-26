@@ -16,6 +16,26 @@ export default function HomePage() {
     db.sessions.orderBy('startDate').reverse().toArray()
   );
 
+  // 全セッションの決済済みポジションを取得
+  const allClosedPositions = useLiveQuery(() => 
+    db.positions.where('status').equals('closed').toArray()
+  );
+
+  // 平均増益額と平均損失額を計算
+  const profitStats = allClosedPositions ? (() => {
+    const profits = allClosedPositions.filter(p => (p.profit || 0) > 0);
+    const losses = allClosedPositions.filter(p => (p.profit || 0) < 0);
+    
+    return {
+      avgProfit: profits.length > 0 
+        ? profits.reduce((sum, p) => sum + (p.profit || 0), 0) / profits.length
+        : 0,
+      avgLoss: losses.length > 0
+        ? losses.reduce((sum, p) => sum + (p.profit || 0), 0) / losses.length
+        : 0,
+    };
+  })() : { avgProfit: 0, avgLoss: 0 };
+
   // 統計情報を計算
   const stats = sessions ? {
     totalSessions: sessions.length,
@@ -70,26 +90,9 @@ export default function HomePage() {
 
       {/* メインコンテンツ */}
       <main className="max-w-6xl mx-auto px-4 py-8">
-        {/* 実データバナー */}
-        <div className="mb-8 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-              <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div className="flex-1">
-              <div className="font-bold text-green-900 mb-1">実際の株価データで練習可能</div>
-              <div className="text-sm text-green-700">
-                Yahoo Finance提供の50銘柄・6年分（2020-2026年）の実データを使用。金融、自動車、IT、商社など主要セクターをカバー
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* 統計カード */}
         {stats && stats.totalSessions > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
             <div className="bg-white rounded-xl shadow-sm p-6 border">
               <div className="text-sm text-gray-500 mb-1">総セッション数</div>
               <div className="text-3xl font-bold text-gray-900">{stats.totalSessions}</div>
@@ -108,6 +111,18 @@ export default function HomePage() {
               <div className="text-sm text-gray-500 mb-1">最高勝率</div>
               <div className="text-3xl font-bold text-green-600">
                 {stats.bestWinRate.toFixed(1)}%
+              </div>
+            </div>
+            <div className="bg-white rounded-xl shadow-sm p-6 border">
+              <div className="text-sm text-gray-500 mb-1">平均増益額</div>
+              <div className="text-2xl font-bold text-green-600">
+                +¥{profitStats.avgProfit.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+              </div>
+            </div>
+            <div className="bg-white rounded-xl shadow-sm p-6 border">
+              <div className="text-sm text-gray-500 mb-1">平均損失額</div>
+              <div className="text-2xl font-bold text-red-600">
+                ¥{profitStats.avgLoss.toLocaleString(undefined, { maximumFractionDigits: 0 })}
               </div>
             </div>
           </div>
