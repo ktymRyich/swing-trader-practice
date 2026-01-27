@@ -2,252 +2,359 @@
   {
     "symbol": "7203",
     "name": "トヨタ自動車",
-    "sector": "自動車"
+    "sector": "自動車",
+    "description": "世界最大級の自動車メーカー。ハイブリッド車で先駆的。トヨタ生産方式で製造業に大きな影響",
+    "marketCapEstimate": "約45兆円"
   },
   {
     "symbol": "9984",
     "name": "ソフトバンクグループ",
-    "sector": "IT・通信"
+    "sector": "IT・通信",
+    "description": "ビジョンファンドによる世界的な投資活動。アリババ、ARM等に投資",
+    "marketCapEstimate": "約12兆円"
   },
   {
     "symbol": "6758",
     "name": "ソニーグループ",
-    "sector": "電機"
+    "sector": "電機",
+    "description": "エレクトロニクス、ゲーム(PlayStation)、映画・音楽事業を展開する総合エンターテイメント企業",
+    "marketCapEstimate": "約18兆円"
   },
   {
     "symbol": "9983",
     "name": "ファーストリテイリング",
-    "sector": "小売"
+    "sector": "小売",
+    "description": "ユニクロを中核とする世界的なアパレル小売企業。機能性カジュアル衣料で独自ポジション",
+    "marketCapEstimate": "約12兆円"
   },
   {
     "symbol": "7974",
     "name": "任天堂",
-    "sector": "ゲーム"
+    "sector": "ゲーム",
+    "description": "マリオ、ゼルダ等の人気IPを持つゲーム会社。Nintendo Switchで大成功",
+    "marketCapEstimate": "約10兆円"
   },
   {
     "symbol": "6861",
     "name": "キーエンス",
-    "sector": "電機"
+    "sector": "電機",
+    "description": "FAセンサー・測定器のトップメーカー。高収益率で社員の平均年収が日本一と言われる",
+    "marketCapEstimate": "約22兆円"
   },
   {
     "symbol": "4063",
     "name": "信越化学工業",
-    "sector": "化学"
+    "sector": "化学",
+    "description": "塩化ビニル樹脂・半導体シリコンで世界トップシェア。高収益・高配当が特徴",
+    "marketCapEstimate": "約10兆円"
   },
   {
     "symbol": "6098",
     "name": "リクルートホールディングス",
-    "sector": "サービス"
+    "sector": "サービス",
+    "description": "人材派遣・求人サイト大手。Indeed等のグローバルHRテック事業を展開",
+    "marketCapEstimate": "約13兆円"
   },
   {
     "symbol": "9434",
     "name": "ソフトバンク",
-    "sector": "IT・通信"
+    "sector": "IT・通信",
+    "description": "国内通信事業の中核企業。5G・IoT・AI領域に注力",
+    "marketCapEstimate": "約7兆円"
   },
   {
     "symbol": "4502",
     "name": "武田薬品工業",
-    "sector": "医薬品"
+    "sector": "医薬品",
+    "description": "日本最大の製薬会社。シャイアー買収で世界トップ10入り",
+    "marketCapEstimate": "約7兆円"
   },
   {
     "symbol": "8306",
     "name": "三菱UFJフィナンシャル・グループ",
-    "sector": "金融"
+    "sector": "金融",
+    "description": "国内最大の金融グループ。銀行・証券・信託を展開",
+    "marketCapEstimate": "約17兆円"
   },
   {
     "symbol": "8316",
     "name": "三井住友フィナンシャルグループ",
-    "sector": "金融"
+    "sector": "金融",
+    "description": "三井住友銀行を中核とする総合金融グループ",
+    "marketCapEstimate": "約10兆円"
   },
   {
     "symbol": "8411",
     "name": "みずほフィナンシャルグループ",
-    "sector": "金融"
+    "sector": "金融",
+    "description": "みずほ銀行を中核とするメガバンクグループ",
+    "marketCapEstimate": "約6兆円"
   },
   {
     "symbol": "8601",
     "name": "大和証券グループ本社",
-    "sector": "金融"
+    "sector": "金融",
+    "description": "国内証券最大手。個人・法人向け金融サービス",
+    "marketCapEstimate": "約1.5兆円"
   },
   {
     "symbol": "8604",
     "name": "野村ホールディングス",
-    "sector": "金融"
+    "sector": "金融",
+    "description": "証券大手。海外展開にも積極的",
+    "marketCapEstimate": "約2兆円"
   },
   {
     "symbol": "8766",
     "name": "東京海上ホールディングス",
-    "sector": "金融"
+    "sector": "金融",
+    "description": "国内損保最大手。海外保険事業も拡大",
+    "marketCapEstimate": "約8兆円"
   },
   {
     "symbol": "8725",
     "name": "MS&ADインシュアランスグループHD",
-    "sector": "金融"
+    "sector": "金融",
+    "description": "三井住友海上・あいおいニッセイ同和を傘下に持つ損保グループ",
+    "marketCapEstimate": "約5兆円"
   },
   {
     "symbol": "7267",
     "name": "ホンダ",
-    "sector": "自動車"
+    "sector": "自動車",
+    "description": "二輪車で世界トップシェア。四輪車・航空機事業も展開",
+    "marketCapEstimate": "約8兆円"
   },
   {
     "symbol": "7201",
     "name": "日産自動車",
-    "sector": "自動車"
+    "sector": "自動車",
+    "description": "国内3位の自動車メーカー。電気自動車(EV)に注力",
+    "marketCapEstimate": "約2兆円"
   },
   {
     "symbol": "7261",
     "name": "マツダ",
-    "sector": "自動車"
+    "sector": "自動車",
+    "description": "ロータリーエンジン・クリーンディーゼルで独自技術",
+    "marketCapEstimate": "約1兆円"
   },
   {
     "symbol": "7269",
     "name": "スズキ",
-    "sector": "自動車"
+    "sector": "自動車",
+    "description": "軽自動車・小型車に強み。インド市場でトップシェア",
+    "marketCapEstimate": "約4兆円"
   },
   {
     "symbol": "6902",
     "name": "デンソー",
-    "sector": "自動車部品"
+    "sector": "自動車部品",
+    "description": "トヨタ系自動車部品メーカー世界大手。電動化技術に注力",
+    "marketCapEstimate": "約6兆円"
   },
   {
     "symbol": "5108",
     "name": "ブリヂストン",
-    "sector": "自動車部品"
+    "sector": "自動車部品",
+    "description": "タイヤ世界最大手。高機能タイヤで差別化",
+    "marketCapEstimate": "約4兆円"
   },
   {
     "symbol": "6752",
     "name": "パナソニックホールディングス",
-    "sector": "電機"
+    "sector": "電機",
+    "description": "総合電機大手。家電・車載電池・住宅設備を展開",
+    "marketCapEstimate": "約3兆円"
   },
   {
     "symbol": "6501",
     "name": "日立製作所",
-    "sector": "電機"
+    "sector": "電機",
+    "description": "総合電機最大手。社会インフラ・ITに注力",
+    "marketCapEstimate": "約8兆円"
   },
   {
     "symbol": "6503",
     "name": "三菱電機",
-    "sector": "電機"
+    "sector": "電機",
+    "description": "総合電機。重電・FAシステム・人工衛星まで幅広い",
+    "marketCapEstimate": "約4兆円"
   },
   {
     "symbol": "6702",
     "name": "富士通",
-    "sector": "電機"
+    "sector": "電機",
+    "description": "国内IT最大手。DXソリューション・クラウドサービス",
+    "marketCapEstimate": "約3兆円"
   },
   {
     "symbol": "6971",
     "name": "京セラ",
-    "sector": "電機"
+    "sector": "電機",
+    "description": "セラミック技術を基盤に電子部品・通信機器を展開",
+    "marketCapEstimate": "約3兆円"
   },
   {
     "symbol": "6954",
     "name": "ファナック",
-    "sector": "電機"
+    "sector": "電機",
+    "description": "工作機械用CNC・産業ロボットで世界トップシェア",
+    "marketCapEstimate": "約7兆円"
   },
   {
     "symbol": "6981",
     "name": "村田製作所",
-    "sector": "電機"
+    "sector": "電機",
+    "description": "積層セラミックコンデンサで世界トップシェア",
+    "marketCapEstimate": "約6兆円"
   },
   {
     "symbol": "6762",
     "name": "TDK",
-    "sector": "電機"
+    "sector": "電機",
+    "description": "磁性材料・電子部品大手。HDD用磁気ヘッドで高シェア",
+    "marketCapEstimate": "約2兆円"
   },
   {
     "symbol": "9432",
     "name": "日本電信電話",
-    "sector": "IT・通信"
+    "sector": "IT・通信",
+    "description": "NTTグループの持株会社。通信インフラ・データセンター",
+    "marketCapEstimate": "約20兆円"
   },
   {
     "symbol": "9433",
     "name": "KDDI",
-    "sector": "IT・通信"
+    "sector": "IT・通信",
+    "description": "au通信事業を展開。金融・エネルギー事業も",
+    "marketCapEstimate": "約10兆円"
   },
   {
     "symbol": "3382",
     "name": "セブン&アイ・ホールディングス",
-    "sector": "小売"
+    "sector": "小売",
+    "description": "セブンイレブン・イトーヨーカ堂を展開する小売最大手",
+    "marketCapEstimate": "約4兆円"
   },
   {
     "symbol": "8267",
     "name": "イオン",
-    "sector": "小売"
+    "sector": "小売",
+    "description": "国内最大の総合小売グループ。ショッピングモール展開",
+    "marketCapEstimate": "約3兆円"
   },
   {
     "symbol": "4755",
     "name": "楽天グループ",
-    "sector": "IT・通信"
+    "sector": "IT・通信",
+    "description": "EC・金融・通信など多角的事業。楽天市場が中核",
+    "marketCapEstimate": "約1兆円"
   },
   {
     "symbol": "2502",
     "name": "アサヒグループホールディングス",
-    "sector": "食品"
+    "sector": "食品",
+    "description": "ビール・飲料大手。スーパードライで有名",
+    "marketCapEstimate": "約2兆円"
   },
   {
     "symbol": "2503",
     "name": "キリンホールディングス",
-    "sector": "食品"
+    "sector": "食品",
+    "description": "ビール・飲料・医薬品を展開する総合食品メーカー",
+    "marketCapEstimate": "約2兆円"
   },
   {
     "symbol": "2802",
     "name": "味の素",
-    "sector": "食品"
+    "sector": "食品",
+    "description": "アミノ酸技術を基盤に調味料・加工食品を展開",
+    "marketCapEstimate": "約2.5兆円"
   },
   {
     "symbol": "4568",
     "name": "第一三共",
-    "sector": "医薬品"
+    "sector": "医薬品",
+    "description": "抗がん剤ADC技術で世界的に注目される製薬大手",
+    "marketCapEstimate": "約12兆円"
   },
   {
     "symbol": "4523",
     "name": "エーザイ",
-    "sector": "医薬品"
+    "sector": "医薬品",
+    "description": "アルツハイマー型認知症治療薬で世界をリード",
+    "marketCapEstimate": "約6兆円"
   },
   {
     "symbol": "4503",
     "name": "アステラス製薬",
-    "sector": "医薬品"
+    "sector": "医薬品",
+    "description": "泌尿器・移植・がん領域に強みを持つ製薬企業",
+    "marketCapEstimate": "約4兆円"
   },
   {
     "symbol": "4188",
     "name": "三菱ケミカルグループ",
-    "sector": "化学"
+    "sector": "化学",
+    "description": "総合化学メーカー。炭素繊維・機能性化学品に強み",
+    "marketCapEstimate": "約1.5兆円"
   },
   {
     "symbol": "4452",
     "name": "花王",
-    "sector": "化学"
+    "sector": "化学",
+    "description": "洗剤・化粧品・ヘルスケア製品の大手メーカー。高収益が特徴",
+    "marketCapEstimate": "約3兆円"
+  },
+  {
+    "symbol": "4901",
+    "name": "富士フイルムホールディングス",
+    "sector": "化学",
+    "description": "写真フィルムで培った技術を活用し、医療機器、化粧品、印刷機器など幅広い事業を展開。ヘルスケア・メディカル分野に注力",
+    "marketCapEstimate": "約3.5兆円"
   },
   {
     "symbol": "8058",
     "name": "三菱商事",
-    "sector": "商社"
+    "sector": "商社",
+    "description": "総合商社最大手。資源・エネルギー・食品など幅広い事業",
+    "marketCapEstimate": "約12兆円"
   },
   {
     "symbol": "8031",
     "name": "三井物産",
-    "sector": "商社"
+    "sector": "商社",
+    "description": "総合商社大手。金属・エネルギー・化学品が主力",
+    "marketCapEstimate": "約9兆円"
   },
   {
     "symbol": "8001",
     "name": "伊藤忠商事",
-    "sector": "商社"
+    "sector": "商社",
+    "description": "非資源に強い総合商社。繊維・食料が伝統的に強い",
+    "marketCapEstimate": "約10兆円"
   },
   {
     "symbol": "8053",
     "name": "住友商事",
-    "sector": "商社"
+    "sector": "商社",
+    "description": "総合商社大手。メディア・インフラ事業に注力",
+    "marketCapEstimate": "約5兆円"
   },
   {
     "symbol": "8002",
     "name": "丸紅",
-    "sector": "商社"
+    "sector": "商社",
+    "description": "総合商社大手。穀物・電力・不動産が主力",
+    "marketCapEstimate": "約4兆円"
   },
   {
     "symbol": "8801",
     "name": "三井不動産",
-    "sector": "不動産"
+    "sector": "不動産",
+    "description": "オフィスビル・商業施設開発大手。日本橋再開発を推進",
+    "marketCapEstimate": "約7兆円"
   },
   {
     "symbol": "5401",
@@ -522,27 +629,37 @@
   {
     "symbol": "7733",
     "name": "オリンパス",
-    "sector": "精密機器"
+    "sector": "精密機器",
+    "description": "内視鏡で世界トップシェア。医療事業に特化した精密機器メーカー",
+    "marketCapEstimate": "約5兆円"
   },
   {
     "symbol": "7741",
     "name": "HOYA",
-    "sector": "精密機器"
+    "sector": "精密機器",
+    "description": "半導体マスクブランクス・医療用レンズで世界トップシェア。高収益企業として知られる",
+    "marketCapEstimate": "約6兆円"
   },
   {
     "symbol": "7731",
     "name": "ニコン",
-    "sector": "精密機器"
+    "sector": "精密機器",
+    "description": "カメラ・半導体露光装置を展開。光学技術に強み",
+    "marketCapEstimate": "約6000億円"
   },
   {
     "symbol": "7751",
     "name": "キヤノン",
-    "sector": "精密機器"
+    "sector": "精密機器",
+    "description": "カメラ・プリンター・半導体露光装置の総合精密機器メーカー",
+    "marketCapEstimate": "約5兆円"
   },
   {
     "symbol": "7752",
     "name": "リコー",
-    "sector": "精密機器"
+    "sector": "精密機器",
+    "description": "複合機・プリンターの大手。オフィスソリューション事業を展開",
+    "marketCapEstimate": "約8000億円"
   },
   {
     "symbol": "6503",

@@ -2,9 +2,8 @@
 
 import { useEffect, useState, use } from 'react';
 import { useRouter } from 'next/navigation';
-import { db, generateTradeId, generatePositionId, generateViolationId } from '@/lib/db/schema';
+import { generateTradeId, generatePositionId, generateViolationId } from '@/lib/db/schema';
 import { useSessionStore } from '@/lib/store/sessionStore';
-import { useLiveQuery } from 'dexie-react-hooks';
 import TradingChart from '@/components/chart/TradingChart';
 import OrderFormModal from '@/components/trading/OrderFormModal';
 import PositionList from '@/components/trading/PositionList';
@@ -40,30 +39,20 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
     setCurrentPriceIndex,
   } = useSessionStore();
 
+  const [nickname, setNickname] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
   const [isCompanyInfoOpen, setIsCompanyInfoOpen] = useState(false);
   const [highlightedTradeId, setHighlightedTradeId] = useState<string | null>(null);
-  const [stockInfo, setStockInfo] = useState<{ name: string; symbol: string; description?: string; sector?: string } | null>(null);
-
-  // 決済済みポジションをリアルタイムで取得して統計計算
-  const closedPositions = useLiveQuery(
-    () => db.positions
-      .where('sessionId')
-      .equals(sessionId)
-      .and(p => p.status === 'closed')
-      .toArray(),
-    [sessionId]
-  );
-
-  // 取引履歴をリアルタイムで取得
-  const trades = useLiveQuery(
-    () => db.trades
-      .where('sessionId')
-      .equals(sessionId)
-      .toArray(),
-    [sessionId]
-  );
+  const [stockInfo, setStockInfo] = useState<{ 
+    name: string; 
+    symbol: string; 
+    description?: string; 
+    sector?: string;
+    marketCapEstimate?: string;
+  } | null>(null);
+  const [closedPositions, setLocalClosedPositions] = useState<any[]>([]);
+  const [trades, setLocalTrades] = useState<any[]>([]);
 
   // 平均増益額と平均損額を計算
   const profitStats = closedPositions ? (() => {
@@ -89,9 +78,16 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
 
   // セッションとデータを読み込み
   useEffect(() => {
+    const savedNickname = localStorage.getItem('userNickname');
+    if (!savedNickname) {
+      router.push('/login');
+      return;
+    }
+    setNickname(savedNickname);
+    
     // まずストアをリセット
     reset();
-    loadSession();
+    loadSession(savedNickname);
   }, [sessionId]);
 
   // 自動再生タイマー
@@ -115,7 +111,7 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
 
   // ルール違反チェック（1日ごと）
   useEffect(() => {
-    if (openPositions.length === 0 || !currentSession) return;
+    if (openPositions.length === 0 || !currentSession || !nickname) return;
     if (visiblePrices.length === 0) return;
 
     const currentPrice = visiblePrices[visiblePrices.length - 1].close;
@@ -139,81 +135,107 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
     });
 
     // 新しい違反があれば記録
-    violations.forEach(async (v) => {
-      const violation = {
-        id: generateViolationId(),
-        sessionId: currentSession.id!,
-        timestamp: new Date().toISOString(),
-        type: v.type,
-        description: v.description,
-        severity: v.severity,
-      };
-      
-      await db.ruleViolations.add(violation);
-      
-      // セッションの違反カウントを更新
-      const currentViolations = currentSession.ruleViolations || 0;
-      updateSession({ ruleViolations: currentViolations + 1 });
-      await db.sessions.update(currentSession.id!, { 
-        ruleViolations: currentViolations + 1 
+    if (violations.length > 0) {
+      violations.forEach((v) => {
+        const violation = {
+          id: generateViolationId(),
+          sessionId: currentSession.id!,
+          timestamp: new Date().toISOString(),
+          type: v.type,
+          description: v.description,
+          severity: v.severity,
+        };
+        
+        // セッションに違反を追加
+        const updatedViolations = [...(currentSession.violations || []), violation];
+        const currentViolations = currentSession.ruleViolations || 0;
+        
+        updateSession({ 
+          ruleViolations: currentViolations + 1,
+          violations: updatedViolations
+        });
+        
+        // サーバーに保存
+        saveSession({
+          ...currentSession,
+          ruleViolations: currentViolations + 1,
+          violations: updatedViolations
+        });
       });
-    });
+    }
   }, [currentPriceIndex]);
 
-  const loadSession = async () => {
+  const saveSession = async (session: any) => {
+    if (!nickname) return;
+    
     try {
-      const session = await db.sessions.get(sessionId);
-      if (!session) {
+      await fetch(`/api/sessions/${sessionId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nickname, session })
+      });
+    } catch (error) {
+      console.error('セッション保存エラー:', error);
+    }
+  };
+
+  const loadSession = async (userNickname: string) => {
+    try {
+      const response = await fetch(`/api/sessions/${sessionId}?nickname=${userNickname}`);
+      const data = await response.json();
+
+      if (!data.success) {
         alert('セッションが見つかりません');
         router.push('/');
         return;
       }
 
-      // 株式情報を取得
-      const stock = await db.stocks.where('symbol').equals(session.symbol).first();
-      if (stock) {
-        setStockInfo({
-          name: stock.name,
-          symbol: stock.symbol,
-          description: stock.description,
-          sector: stock.sector,
-        });
+      const session = data.session;
+
+      // 株式情報を設定（セッションデータになければstocks.jsonから取得）
+      let stockDescription = session.stockDescription;
+      let stockMarketCapEstimate = session.stockMarketCapEstimate;
+      
+      if (!stockDescription || !stockMarketCapEstimate) {
+        try {
+          const stocksResponse = await fetch('/api/stocks/cached');
+          const stocksData = await stocksResponse.json();
+          if (stocksData.success) {
+            const stock = stocksData.stocks.find((s: any) => s.symbol === session.symbol);
+            if (stock) {
+              stockDescription = stock.description || stockDescription;
+              stockMarketCapEstimate = stock.marketCapEstimate || stockMarketCapEstimate;
+            }
+          }
+        } catch (error) {
+          console.error('株式情報の取得エラー:', error);
+        }
       }
 
-      // 株価データを読み込み
-      const prices = await db.stockPrices
-        .where('symbol')
-        .equals(session.symbol)
-        .and(p => p.date >= session.startDateOfData && p.date <= session.endDateOfData)
-        .sortBy('date');
-
-      // ポジションを読み込み
-      const positions = await db.positions
-        .where('sessionId')
-        .equals(sessionId)
-        .toArray();
-      
-      const openPos = positions.filter(p => p.status === 'open');
-      const closedPos = positions.filter(p => p.status === 'closed');
-
-      // 取引履歴を読み込み
-      const trades = await db.trades
-        .where('sessionId')
-        .equals(sessionId)
-        .toArray();
+      setStockInfo({
+        name: session.stockName,
+        symbol: session.symbol,
+        sector: session.stockSector,
+        description: stockDescription,
+        marketCapEstimate: stockMarketCapEstimate,
+      });
 
       // ストアに状態をセット（正しい順序で）
       setSession(session);
       // まず価格データをセット
-      setStockPrices(prices);
+      setStockPrices(session.prices || []);
       // その後に過去データ分を考慮してインデックスを設定（これでvisiblePricesが正しく計算される）
       const practiceStartIndex = session.practiceStartIndex || 0;
       const actualIndex = practiceStartIndex + (session.currentDay || 0);
       setCurrentPriceIndex(actualIndex);
       // ポジションと取引履歴をセット
+      const openPos = (session.positions || []).filter((p: any) => p.status === 'open');
+      const closedPos = (session.positions || []).filter((p: any) => p.status === 'closed');
       setOpenPositions(openPos);
       setClosedPositions(closedPos);
-      setTrades(trades);
+      setLocalClosedPositions(closedPos);
+      setTrades(session.trades || []);
+      setLocalTrades(session.trades || []);
 
       setIsLoading(false);
     } catch (error) {
@@ -230,7 +252,7 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
     price: number;
     memo: string;
   }) => {
-    if (!currentSession) return;
+    if (!currentSession || !nickname) return;
 
     try {
       // 再生を一時停止
@@ -259,15 +281,13 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
         capitalAfterTrade: currentSession.currentCapital - (type === 'buy' ? calculation.totalCost : -calculation.totalCost),
       };
 
-      await db.trades.add(trade);
-
       // 資金を更新
       const newCapital = type === 'buy'
         ? currentSession.currentCapital - calculation.totalCost
         : currentSession.currentCapital + calculation.totalCost;
 
-      updateSession({ currentCapital: newCapital });
-      await db.sessions.update(currentSession.id!, { currentCapital: newCapital });
+      let updatedPositions = [...(currentSession.positions || [])];
+      let updatedOpenPositions = [...openPositions];
 
       // ポジションを更新
       if (type === 'buy') {
@@ -284,8 +304,9 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
           status: 'open' as const,
         };
 
-        await db.positions.add(position);
-        setOpenPositions([...openPositions, position]);
+        updatedPositions.push(position);
+        updatedOpenPositions.push(position);
+        setOpenPositions(updatedOpenPositions);
       } else if (type === 'sell') {
         if (tradingType === 'margin') {
           // 信用売り → ショートポジション作成
@@ -301,8 +322,9 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
             status: 'open' as const,
           };
 
-          await db.positions.add(position);
-          setOpenPositions([...openPositions, position]);
+          updatedPositions.push(position);
+          updatedOpenPositions.push(position);
+          setOpenPositions(updatedOpenPositions);
         } else {
           // 現物売り → エラー（現物売りはポジション決済のみ）
           alert('現物売りはできません。保有ポジションの決済ボタンから売却してください。');
@@ -311,29 +333,27 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
       }
 
       // 取引履歴を更新
-      const allTrades = await db.trades.where('sessionId').equals(sessionId).toArray();
-      setTrades(allTrades);
+      const updatedTrades = [...(currentSession.trades || []), trade];
+      setTrades(updatedTrades);
+      setLocalTrades(updatedTrades);
 
       // 統計を更新（決済済みポジションのみカウント）
-      const allClosedPositions = await db.positions
-        .where('sessionId')
-        .equals(sessionId)
-        .and(p => p.status === 'closed')
-        .toArray();
-
+      const allClosedPositions = updatedPositions.filter(p => p.status === 'closed');
       const winCount = allClosedPositions.filter(p => (p.profit || 0) > 0).length;
       const winRate = allClosedPositions.length > 0 ? (winCount / allClosedPositions.length) * 100 : 0;
 
-      updateSession({
+      const updatedSession = {
+        ...currentSession,
+        currentCapital: newCapital,
+        positions: updatedPositions,
+        trades: updatedTrades,
         tradeCount: allClosedPositions.length,
         winCount,
         winRate,
-      });
-      await db.sessions.update(currentSession.id!, {
-        tradeCount: allClosedPositions.length,
-        winCount,
-        winRate,
-      });
+      };
+
+      updateSession(updatedSession);
+      await saveSession(updatedSession);
 
       alert('注文が完了しました');
     } catch (error) {
@@ -350,8 +370,8 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
     console.log('openPositions:', openPositions);
     console.log('visiblePrices length:', visiblePrices.length);
     
-    if (!currentSession) {
-      console.error('No current session');
+    if (!currentSession || !nickname) {
+      console.error('No current session or nickname');
       alert('セッション情報が見つかりません');
       return;
     }
@@ -411,21 +431,16 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
         capitalAfterTrade: currentSession.currentCapital + capitalChange,
       };
 
-      await db.trades.add(trade);
-
       // 資金を更新
       const newCapital = currentSession.currentCapital + capitalChange;
-      updateSession({ currentCapital: newCapital });
-      await db.sessions.update(currentSession.id!, { currentCapital: newCapital });
 
-      // ポジションを決済済みに
+      // 利益を計算
       let profit: number;
       if (position.type === 'long') {
         // ロング：売却額 - 購入額
         profit = calculation.totalCost - (position.entryPrice * position.shares);
       } else {
         // ショート：売却額（エントリー時） - 買戻額（現在）
-        // エントリー時の受取額を再計算
         const entryCalculation = calculateSellOrder(
           position.entryPrice,
           position.shares,
@@ -435,50 +450,52 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
       }
       const profitRate = (profit / (position.entryPrice * position.shares)) * 100;
 
-      await db.positions.update(positionId, {
-        status: 'closed',
-        closeTradeId: trade.id,
-        exitPrice: currentPrice,
-        exitDate: trade.tradeDate,
-        profit,
-        profitRate,
-      });
+      // ポジションを更新
+      let updatedPositions = [...(currentSession.positions || [])];
+      const posIndex = updatedPositions.findIndex(p => p.id === positionId);
+      if (posIndex >= 0) {
+        updatedPositions[posIndex] = {
+          ...updatedPositions[posIndex],
+          status: 'closed',
+          closeTradeId: trade.id,
+          exitPrice: currentPrice,
+          exitDate: trade.tradeDate,
+          profit,
+          profitRate,
+        };
+      }
 
       // 統計を更新
-      const allPositions = await db.positions
-        .where('sessionId')
-        .equals(sessionId)
-        .and(p => p.status === 'closed')
-        .toArray();
+      const allClosedPositions = updatedPositions.filter(p => p.status === 'closed');
+      const winCount = allClosedPositions.filter(p => (p.profit || 0) > 0).length;
+      const winRate = allClosedPositions.length > 0 ? (winCount / allClosedPositions.length) * 100 : 0;
 
-      const winCount = allPositions.filter(p => (p.profit || 0) > 0).length;
-      const winRate = (winCount / allPositions.length) * 100;
+      // 取引履歴を更新
+      const updatedTrades = [...(currentSession.trades || []), trade];
 
-      updateSession({
-        tradeCount: allPositions.length,
+      const updatedSession = {
+        ...currentSession,
+        currentCapital: newCapital,
+        positions: updatedPositions,
+        trades: updatedTrades,
+        tradeCount: allClosedPositions.length,
         winCount,
         winRate,
-      });
-      await db.sessions.update(currentSession.id!, {
-        tradeCount: allPositions.length,
-        winCount,
-        winRate,
-      });
+      };
+
+      updateSession(updatedSession);
+      await saveSession(updatedSession);
 
       // 状態を更新
       const updatedOpenPositions = openPositions.filter(p => p.id !== positionId);
       setOpenPositions(updatedOpenPositions);
-
-      // 決済済みポジションリストも更新
-      const allClosedPositions = await db.positions
-        .where('sessionId')
-        .equals(sessionId)
-        .and(p => p.status === 'closed')
-        .toArray();
-      setClosedPositions(allClosedPositions);
-
-      const allTrades = await db.trades.where('sessionId').equals(sessionId).toArray();
-      setTrades(allTrades);
+      
+      const closedPos = updatedPositions.filter(p => p.status === 'closed');
+      setClosedPositions(closedPos);
+      setLocalClosedPositions(closedPos);
+      
+      setTrades(updatedTrades);
+      setLocalTrades(updatedTrades);
 
       console.log('=== handleClosePosition SUCCESS ===');
       alert('ポジションを決済しました');
@@ -508,14 +525,17 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
   };
 
   const completeSession = async () => {
-    if (!currentSession) return;
+    if (!currentSession || !nickname) return;
 
     try {
-      updateSession({ status: 'completed', endDate: new Date().toISOString() });
-      await db.sessions.update(currentSession.id!, {
+      const updatedSession = {
+        ...currentSession,
         status: 'completed',
         endDate: new Date().toISOString(),
-      });
+      };
+      
+      updateSession(updatedSession);
+      await saveSession(updatedSession);
 
       alert('セッションが完了しました！');
       router.push('/history');
@@ -525,12 +545,18 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
   };
 
   const handleSaveAndExit = async () => {
-    if (!currentSession) return;
+    if (!currentSession || !nickname) return;
 
     if (confirm('セッションを保存して終了しますか？')) {
       try {
-        updateSession({ status: 'paused' });
-        await db.sessions.update(currentSession.id!, { status: 'paused' });
+        const updatedSession = {
+          ...currentSession,
+          status: 'paused',
+          currentDay: currentPriceIndex - (currentSession.practiceStartIndex || 0),
+        };
+        
+        updateSession(updatedSession);
+        await saveSession(updatedSession);
         router.push('/');
       } catch (error) {
         console.error('保存エラー:', error);
@@ -595,27 +621,43 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
       {isCompanyInfoOpen && stockInfo && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setIsCompanyInfoOpen(false)}>
           <div 
-            className="bg-card rounded-xl border max-w-md w-full max-h-[80vh] overflow-y-auto"
+            className="bg-card rounded-xl border max-w-2xl w-full max-h-[80vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="sticky top-0 bg-card border-b px-6 py-4">
               <h2 className="text-xl font-bold">{stockInfo.symbol}</h2>
               <p className="text-lg text-muted-foreground">{stockInfo.name}</p>
             </div>
-            <div className="p-6 space-y-4">
-              {stockInfo.sector && (
-                <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">セクター</h3>
-                  <p className="text-base">{stockInfo.sector}</p>
-                </div>
-              )}
+            <div className="p-6 space-y-6">
+              {/* 基本情報 */}
+              <div className="grid grid-cols-2 gap-4">
+                {stockInfo.sector && (
+                  <div>
+                    <h3 className="text-sm font-medium text-muted-foreground mb-1">セクター</h3>
+                    <p className="text-base">{stockInfo.sector}</p>
+                  </div>
+                )}
+                {stockInfo.marketCapEstimate && (
+                  <div>
+                    <h3 className="text-sm font-medium text-muted-foreground mb-1">時価総額</h3>
+                    <p className="text-base font-semibold">
+                      {stockInfo.marketCapEstimate}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* 企業概要 */}
               {stockInfo.description && (
                 <div>
-                  <h3 className="text-sm font-medium text-muted-foreground mb-1">企業概要</h3>
-                  <p className="text-base leading-relaxed">{stockInfo.description}</p>
+                  <h3 className="text-sm font-medium text-muted-foreground mb-2">企業概要</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground whitespace-pre-wrap">
+                    {stockInfo.description}
+                  </p>
                 </div>
               )}
-              {!stockInfo.description && !stockInfo.sector && (
+
+              {!stockInfo.description && !stockInfo.sector && !stockInfo.marketCapEstimate && (
                 <p className="text-muted-foreground text-center py-8">企業情報がありません</p>
               )}
             </div>

@@ -1,36 +1,79 @@
 'use client';
 
-import { useLiveQuery } from 'dexie-react-hooks';
-import { db } from '@/lib/db/schema';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, TrendingUp, TrendingDown, Trash2 } from 'lucide-react';
-import { useState } from 'react';
 
 export default function HistoryPage() {
+  const router = useRouter();
+  const [nickname, setNickname] = useState<string | null>(null);
+  const [sessions, setSessions] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [sortBy, setSortBy] = useState<'date' | 'winRate' | 'profit'>('date');
 
-  const sessions = useLiveQuery(() =>
-    db.sessions.filter(s => s.status === 'completed').toArray()
-  );
+  useEffect(() => {
+    const savedNickname = localStorage.getItem('userNickname');
+    if (!savedNickname) {
+      router.push('/login');
+      return;
+    }
+    setNickname(savedNickname);
+    loadSessions(savedNickname);
+  }, [router]);
+
+  const loadSessions = async (userNickname: string) => {
+    try {
+      const response = await fetch(`/api/sessions?nickname=${userNickname}`);
+      const data = await response.json();
+      
+      if (data.success) {
+        const completedSessions = (data.sessions || []).filter((s: any) => s.status === 'completed');
+        setSessions(completedSessions);
+      }
+    } catch (error) {
+      console.error('セッション読み込みエラー:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleDelete = async (sessionId: string, sessionName: string, e: React.MouseEvent) => {
-    e.preventDefault(); // Linkのナビゲーションを防ぐ
+    e.preventDefault();
     e.stopPropagation();
+
+    if (!nickname) return;
 
     if (!confirm(`「${sessionName}」のセッションを削除しますか？\nこの操作は元に戻せません。`)) {
       return;
     }
 
     try {
-      // 関連データを全て削除
-      await db.transaction('rw', [db.sessions, db.positions, db.trades, db.ruleViolations], async () => {
-        await db.positions.where('sessionId').equals(sessionId).delete();
-        await db.trades.where('sessionId').equals(sessionId).delete();
-        await db.ruleViolations.where('sessionId').equals(sessionId).delete();
-        await db.sessions.delete(sessionId);
-      });
+      // セッション一覧を取得して該当セッションを除外
+      const response = await fetch(`/api/sessions?nickname=${nickname}`);
+      const data = await response.json();
+      
+      if (data.success) {
+        const updatedSessions = (data.sessions || []).filter((s: any) => s.id !== sessionId);
+        
+        // 更新後のセッション一覧を保存
+        const saveResponse = await fetch('/api/sessions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nickname,
+            sessions: updatedSessions
+          })
+        });
 
-      alert('セッションを削除しました');
+        const saveData = await saveResponse.json();
+        if (saveData.success) {
+          alert('セッションを削除しました');
+          loadSessions(nickname);
+        } else {
+          throw new Error('削除に失敗しました');
+        }
+      }
     } catch (error) {
       console.error('削除エラー:', error);
       alert('削除に失敗しました');
@@ -53,13 +96,11 @@ export default function HistoryPage() {
   });
 
   // 統計計算
-  const stats = sessions
+  const stats = sessions.length > 0
     ? {
         total: sessions.length,
         avgWinRate:
-          sessions.length > 0
-            ? sessions.reduce((sum, s) => sum + s.winRate, 0) / sessions.length
-            : 0,
+          sessions.reduce((sum, s) => sum + s.winRate, 0) / sessions.length,
         profitableSessions: sessions.filter(
           s => s.currentCapital > s.initialCapital
         ).length,
@@ -70,6 +111,17 @@ export default function HistoryPage() {
         ),
       }
     : null;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground">履歴を読み込み中...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">

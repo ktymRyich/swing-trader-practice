@@ -2,46 +2,54 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { db } from '@/lib/db/schema';
-import { useLiveQuery } from 'dexie-react-hooks';
-import { Play, History, Settings, TrendingUp, HelpCircle, X, Info } from 'lucide-react';
+import { Play, History, Settings, TrendingUp, HelpCircle, X, Info, LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { COLOR_DESCRIPTIONS } from '@/lib/constants/colors';
 
 export default function HomePage() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [isStatsInfoOpen, setIsStatsInfoOpen] = useState(false);
+  const [nickname, setNickname] = useState<string | null>(null);
+  const [sessions, setSessions] = useState<any[]>([]);
 
-  // 全セッションを取得
-  const sessions = useLiveQuery(() => 
-    db.sessions.orderBy('startDate').reverse().toArray()
-  );
+  // ログインチェック
+  useEffect(() => {
+    const savedNickname = localStorage.getItem('userNickname');
+    if (!savedNickname) {
+      router.push('/login');
+    } else {
+      setNickname(savedNickname);
+      loadSessions(savedNickname);
+    }
+  }, [router]);
 
-  // 全セッションの決済済みポジションを取得
-  const allClosedPositions = useLiveQuery(() => 
-    db.positions.where('status').equals('closed').toArray()
-  );
+  const loadSessions = async (nickname: string) => {
+    try {
+      const response = await fetch(`/api/sessions?nickname=${nickname}`);
+      const data = await response.json();
+      
+      if (data.success) {
+        setSessions(data.sessions || []);
+      }
+    } catch (error) {
+      console.error('セッション読み込みエラー:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  // 平均増益額と平均損失額を計算
-  const profitStats = allClosedPositions ? (() => {
-    const profits = allClosedPositions.filter(p => (p.profit || 0) > 0);
-    const losses = allClosedPositions.filter(p => (p.profit || 0) < 0);
-    
-    return {
-      avgProfit: profits.length > 0 
-        ? profits.reduce((sum, p) => sum + (p.profit || 0), 0) / profits.length
-        : 0,
-      avgLoss: losses.length > 0
-        ? losses.reduce((sum, p) => sum + (p.profit || 0), 0) / losses.length
-        : 0,
-    };
-  })() : { avgProfit: 0, avgLoss: 0 };
+  const handleLogout = () => {
+    if (confirm('ログアウトしますか？')) {
+      localStorage.removeItem('userNickname');
+      router.push('/login');
+    }
+  };
 
   // 統計情報を計算
-  const stats = sessions ? (() => {
-    const completed = sessions.filter(s => s.status === 'completed').sort((a, b) => 
+  const stats = sessions.length > 0 ? (() => {
+    const completed = sessions.filter((s: any) => s.status === 'completed').sort((a: any, b: any) => 
       new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
     );
     
@@ -50,26 +58,26 @@ export default function HomePage() {
     }
 
     // 各セッションの損益率を計算
-    const profitRates = completed.map(s => 
+    const profitRates = completed.map((s: any) => 
       ((s.currentCapital - s.initialCapital) / s.initialCapital) * 100
     );
     
     // 累積損益率
     let cumulativeProfit = 0;
-    const cumulativeProfits = completed.map(s => {
+    const cumulativeProfits = completed.map((s: any) => {
       const profit = ((s.currentCapital - s.initialCapital) / s.initialCapital) * 100;
       cumulativeProfit += profit;
       return cumulativeProfit;
     });
 
     // 収益性の計算
-    const profitableSessions = completed.filter(s => s.currentCapital > s.initialCapital);
-    const lossSessions = completed.filter(s => s.currentCapital < s.initialCapital);
+    const profitableSessions = completed.filter((s: any) => s.currentCapital > s.initialCapital);
+    const lossSessions = completed.filter((s: any) => s.currentCapital < s.initialCapital);
     
-    const totalProfit = profitableSessions.reduce((sum, s) => 
+    const totalProfit = profitableSessions.reduce((sum: number, s: any) => 
       sum + (s.currentCapital - s.initialCapital), 0
     );
-    const totalLoss = Math.abs(lossSessions.reduce((sum, s) => 
+    const totalLoss = Math.abs(lossSessions.reduce((sum: number, s: any) => 
       sum + (s.currentCapital - s.initialCapital), 0
     ));
     
@@ -152,11 +160,9 @@ export default function HomePage() {
     router.push('/session/new');
   };
 
-  const handleContinueSession = async () => {
+  const handleContinueSession = () => {
     // 進行中のセッションを探す
-    const ongoingSession = await db.sessions
-      .filter(s => s.status === 'playing' || s.status === 'paused')
-      .first();
+    const ongoingSession = sessions.find((s: any) => s.status === 'playing' || s.status === 'paused');
     
     if (ongoingSession) {
       router.push(`/session/${ongoingSession.id}`);
@@ -164,6 +170,17 @@ export default function HomePage() {
       alert('進行中のセッションがありません');
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground">読み込み中...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -178,6 +195,7 @@ export default function HomePage() {
               </h1>
             </div>
             <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground mr-2">{nickname}</span>
               <button
                 onClick={() => setIsHelpOpen(true)}
                 className="p-2 hover:bg-accent rounded-lg transition"
@@ -185,11 +203,18 @@ export default function HomePage() {
               >
                 <HelpCircle className="w-6 h-6" />
               </button>
+              <button
+                onClick={handleLogout}
+                className="p-2 hover:bg-accent rounded-lg transition"
+                title="ログアウト"
+              >
+                <LogOut className="w-6 h-6" />
+              </button>
               <Link
-                href="/settings"
+                href="/history"
                 className="p-2 hover:bg-accent rounded-lg transition"
               >
-                <Settings className="w-6 h-6" />
+                <History className="w-6 h-6" />
               </Link>
             </div>
           </div>

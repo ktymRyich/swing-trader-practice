@@ -2,129 +2,105 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { db, generateSessionId } from '@/lib/db/schema';
-import { selectRandomPeriod } from '@/lib/data/stockData';
-import { loadCachedStockData } from '@/lib/data/realStockData';
+import { generateSessionId } from '@/lib/db/schema';
 import { ArrowLeft, Play } from 'lucide-react';
 import Link from 'next/link';
 
 export default function NewSessionPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [dataReady, setDataReady] = useState(false);
-  const [cacheInfo, setCacheInfo] = useState<{ 
-    lastUpdated?: string; 
-    stockCount?: number;
-    priceCount?: number;
-  } | null>(null);
+  const [nickname, setNickname] = useState<string | null>(null);
   
   // 設定
   const [periodDays, setPeriodDays] = useState(40);
   const [playbackSpeed, setPlaybackSpeed] = useState(5);
   const [maSettings, setMaSettings] = useState([5, 10, 20, 50, 100]);
 
-  // データ初期化
+  // ログインチェック
   useEffect(() => {
-    checkAndInitializeData();
-  }, []);
-
-  const checkAndInitializeData = async () => {
-    try {
-      // 既にデータがあるかチェック
-      const stockCount = await db.stocks.count();
-      
-      if (stockCount === 0) {
-        // 初回は実データを自動読み込み
-        console.log('実際の株価データを読み込み中...');
-        const { stocks, prices, meta } = await loadCachedStockData();
-        
-        if (stocks.length === 0 || prices.length === 0) {
-          throw new Error('キャッシュデータが空です。管理者にデータ更新を依頼してください。');
-        }
-        
-        // データベースに保存
-        await db.stocks.bulkAdd(stocks);
-        await db.stockPrices.bulkAdd(prices);
-        
-        setCacheInfo(meta || null);
-        console.log(`${stocks.length}銘柄、${prices.length}件の価格データを読み込みました`);
-      } else {
-        // 既存データがある場合、キャッシュ情報を取得
-        try {
-          const { meta } = await loadCachedStockData();
-          setCacheInfo(meta || null);
-        } catch (error) {
-          console.log('キャッシュメタ情報の取得をスキップ');
-        }
-      }
-      
-      setDataReady(true);
-    } catch (error) {
-      console.error('データ初期化エラー:', error);
-      alert(`データの初期化に失敗しました。\n${error instanceof Error ? error.message : '不明なエラー'}`);
+    const savedNickname = localStorage.getItem('userNickname');
+    if (!savedNickname) {
+      router.push('/login');
+    } else {
+      setNickname(savedNickname);
     }
-  };
-
-
+  }, [router]);
 
   const handleStartSession = async () => {
-    if (!dataReady) {
-      alert('データの準備ができていません');
+    if (!nickname) {
+      alert('ログインが必要です');
       return;
     }
 
     setIsLoading(true);
 
     try {
-      // ランダムに銘柄を選択
-      const stocks = await db.stocks.toArray();
-      const randomStock = stocks[Math.floor(Math.random() * stocks.length)];
+      // サーバーからランダムな銘柄と期間のデータを取得
+      const response = await fetch('/api/session/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          periodDays,
+          historicalDays: 120 // 100日線表示用に120日分の過去データ
+        })
+      });
 
-      // 全ての価格データを取得
-      const allPrices = await db.stockPrices
-        .where('symbol')
-        .equals(randomStock.symbol)
-        .toArray();
+      const data = await response.json();
 
-      // ランダムな期間を選択（過去120日分も含む）
-      const { prices, startDate, endDate, practiceStartIndex } = selectRandomPeriod(
-        allPrices,
-        randomStock.symbol,
-        periodDays,
-        120 // 過去120日分を含む（100日線表示用）
-      );
+      if (!data.success) {
+        throw new Error(data.error || 'セッションの開始に失敗しました');
+      }
 
       // セッションを作成
       const sessionId = generateSessionId();
       const session = {
         id: sessionId,
+        nickname,
         startDate: new Date().toISOString(),
-        symbol: randomStock.symbol,
-        stockName: randomStock.name,
+        symbol: data.stock.symbol,
+        stockName: data.stock.name,
+        stockSector: data.stock.sector,
+        stockDescription: data.stock.description,
+        stockMarketCapEstimate: data.stock.marketCapEstimate,
         periodDays,
         initialCapital: 1000000,
         currentCapital: 1000000,
         playbackSpeed,
         status: 'paused' as const,
-        currentDay: 0, // 練習期間の進捗は0から
-        practiceStartIndex, // 過去データの日数を記録
-        startDateOfData: startDate,
-        endDateOfData: endDate,
+        currentDay: 0,
+        practiceStartIndex: data.practiceStartIndex,
+        startDateOfData: data.startDate,
+        endDateOfData: data.endDate,
         tradeCount: 0,
         winCount: 0,
         winRate: 0,
         maxDrawdown: 0,
         ruleViolations: 0,
-        maSettings
+        maSettings,
+        positions: [],
+        trades: [],
+        violations: [],
+        prices: data.prices // サーバーから取得した価格データ
       };
 
-      await db.sessions.add(session);
+      // サーバーに保存
+      const saveResponse = await fetch('/api/sessions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(session)
+      });
+
+      const saveData = await saveResponse.json();
+
+      if (!saveData.success) {
+        throw new Error('セッションの保存に失敗しました');
+      }
 
       // セッションページに移動
       router.push(`/session/${sessionId}`);
     } catch (error) {
       console.error('セッション作成エラー:', error);
-      alert('セッションの作成に失敗しました');
+      alert(error instanceof Error ? error.message : 'セッションの作成に失敗しました');
       setIsLoading(false);
     }
   };
@@ -151,19 +127,7 @@ export default function NewSessionPage() {
         <div className="bg-card rounded-xl border p-4">
           {/* 設定フォーム */}
           <div className="space-y-4">
-            {/* データソース情報（簡潔版） */}
-            {cacheInfo && (
-              <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-3 text-xs text-green-500">
-                ✓ {cacheInfo.stockCount || 50}銘柄・実データ使用中
-              </div>
-            )}
             
-            {!cacheInfo && (
-              <div className="bg-muted border rounded-lg p-3 text-xs text-muted-foreground">
-                データ読み込み中...
-              </div>
-            )}
-
             {/* 期間設定 */}
             <div>
               <label className="block text-sm font-medium mb-2">
@@ -247,7 +211,7 @@ export default function NewSessionPage() {
           {/* 開始ボタン */}
           <button
             onClick={handleStartSession}
-            disabled={isLoading || !dataReady}
+            disabled={isLoading || !nickname}
             className="w-full mt-8 bg-primary hover:bg-primary/90 disabled:bg-muted text-primary-foreground font-bold py-4 px-6 rounded-lg flex items-center justify-center gap-3 transition disabled:opacity-50"
           >
             {isLoading ? (
@@ -255,8 +219,6 @@ export default function NewSessionPage() {
                 <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
                 セッション作成中...
               </>
-            ) : !dataReady ? (
-              <>データ準備中...</>
             ) : (
               <>
                 <Play className="w-6 h-6" />
