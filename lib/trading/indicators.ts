@@ -228,3 +228,113 @@ export function calculateRSI(prices: number[], period: number = 14): (number | n
   
   return result;
 }
+
+// ===== 時間軸変換 =====
+
+/**
+ * 日足データを週足に変換
+ */
+export function convertToWeeklyData(dailyPrices: StockPrice[]): StockPrice[] {
+  if (dailyPrices.length === 0) return [];
+
+  const weeklyData: StockPrice[] = [];
+  let currentWeek: StockPrice[] = [];
+  
+  dailyPrices.forEach((price, index) => {
+    currentWeek.push(price);
+    
+    // 週の最後（金曜日または週の最終営業日）かどうかをチェック
+    const currentDate = new Date(price.date);
+    const nextDate = index < dailyPrices.length - 1 ? new Date(dailyPrices[index + 1].date) : null;
+    
+    // 金曜日（5）または次のデータが来週の場合
+    const isEndOfWeek = currentDate.getDay() === 5 || 
+                        (nextDate && getWeekNumber(currentDate) !== getWeekNumber(nextDate));
+    
+    if (isEndOfWeek) {
+      // 週足データを作成
+      const weekOpen = currentWeek[0].open;
+      const weekClose = currentWeek[currentWeek.length - 1].close;
+      const weekHigh = Math.max(...currentWeek.map(d => d.high));
+      const weekLow = Math.min(...currentWeek.map(d => d.low));
+      const weekVolume = currentWeek.reduce((sum, d) => sum + d.volume, 0);
+      
+      weeklyData.push({
+        symbol: price.symbol,
+        date: price.date, // 週の最終日
+        open: weekOpen,
+        high: weekHigh,
+        low: weekLow,
+        close: weekClose,
+        volume: weekVolume,
+      });
+      
+      currentWeek = [];
+    }
+  });
+  
+  // 最後に残った不完全な週は含めない
+  // currentWeekに残っているデータは週の途中なので除外
+  
+  return weeklyData;
+}
+
+/**
+ * 週番号を取得（年と週で一意）
+ */
+function getWeekNumber(date: Date): number {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  const dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1) / 7);
+}
+
+/**
+ * 日足データを月足に変換
+ */
+export function convertToMonthlyData(dailyPrices: StockPrice[]): StockPrice[] {
+  if (dailyPrices.length === 0) return [];
+
+  const monthlyData: StockPrice[] = [];
+  let currentMonth: StockPrice[] = [];
+  
+  dailyPrices.forEach((price, index) => {
+    currentMonth.push(price);
+    
+    // 月の最後かどうかをチェック
+    const currentDate = new Date(price.date);
+    const nextDate = index < dailyPrices.length - 1 ? new Date(dailyPrices[index + 1].date) : null;
+    
+    // 次のデータが翌月の場合のみ月の終わりとみなす（最後のデータは除外）
+    const isEndOfMonth = nextDate && 
+                         (currentDate.getMonth() !== nextDate.getMonth() ||
+                          currentDate.getFullYear() !== nextDate.getFullYear());
+    
+    if (isEndOfMonth) {
+      // 月足データを作成
+      const monthOpen = currentMonth[0].open;
+      const monthClose = currentMonth[currentMonth.length - 1].close;
+      const monthHigh = Math.max(...currentMonth.map(d => d.high));
+      const monthLow = Math.min(...currentMonth.map(d => d.low));
+      const monthVolume = currentMonth.reduce((sum, d) => sum + d.volume, 0);
+      
+      monthlyData.push({
+        symbol: price.symbol,
+        date: price.date, // 月の最終日
+        open: monthOpen,
+        high: monthHigh,
+        low: monthLow,
+        close: monthClose,
+        volume: monthVolume,
+      });
+      
+      currentMonth = [];
+    }
+  });
+  
+  // 最後に残った不完全な月は含めない
+  // currentMonthに残っているデータは月の途中なので除外
+  
+  return monthlyData;
+}

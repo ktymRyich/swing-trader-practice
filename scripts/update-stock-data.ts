@@ -328,7 +328,7 @@ async function fetchCompanyInfo(symbol: string): Promise<Partial<Stock>> {
 async function updateAllStockData() {
   console.log('📊 株価データ更新を開始...');
   
-  const startDate = '2020-01-01';
+  const startDate = '2015-01-01';
   const endDate = new Date().toISOString().split('T')[0];
   
   const allStocks: Stock[] = [];

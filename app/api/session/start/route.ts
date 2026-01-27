@@ -43,18 +43,21 @@ export async function POST(request: Request) {
       );
     }
 
-    // ランダムな開始位置を選択
-    const maxStartIndex = stockPrices.length - totalDaysNeeded;
-    const startIndex = Math.floor(Math.random() * (maxStartIndex + 1));
-    const selectedPrices = stockPrices.slice(startIndex, startIndex + totalDaysNeeded);
+    // ランダムな開始位置を選択（練習期間開始日から遡って全データを含める）
+    const maxStartIndex = stockPrices.length - periodDays;
+    const startIndex = Math.max(0, Math.floor(Math.random() * (maxStartIndex + 1)));
+    const practiceStartDate = stockPrices[startIndex + historicalDays]?.date || stockPrices[startIndex]?.date;
+    
+    // 練習期間開始日までの全ての過去データを含める
+    const selectedPrices = stockPrices.slice(0, startIndex + historicalDays + periodDays);
 
-    console.log(`セッション開始: 銘柄=${randomStock.symbol}, データ総数=${stockPrices.length}, 開始位置=${startIndex}/${maxStartIndex}, 期間=${selectedPrices[0].date}〜${selectedPrices[selectedPrices.length - 1].date}`);
+    console.log(`セッション開始: 銘柄=${randomStock.symbol}, データ総数=${stockPrices.length}, 練習開始位置=${startIndex + historicalDays}, 全データ期間=${selectedPrices[0].date}〜${selectedPrices[selectedPrices.length - 1].date}`);
 
     return NextResponse.json({
       success: true,
       stock: randomStock,
       prices: selectedPrices,
-      practiceStartIndex: historicalDays,
+      practiceStartIndex: startIndex + historicalDays,
       startDate: selectedPrices[0].date,
       endDate: selectedPrices[selectedPrices.length - 1].date,
     });

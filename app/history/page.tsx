@@ -54,7 +54,26 @@ export default function HistoryPage() {
       const data = await response.json();
       
       if (data.success) {
-        const updatedSessions = (data.sessions || []).filter((s: any) => s.id !== sessionId);
+        const allSessions = data.sessions || [];
+        console.log(`削除前のセッション数: ${allSessions.length}`);
+        
+        // 該当セッションが存在するか確認
+        const targetSession = allSessions.find((s: any) => s.id === sessionId);
+        if (!targetSession) {
+          alert('指定されたセッションが見つかりませんでした');
+          return;
+        }
+        
+        const updatedSessions = allSessions.filter((s: any) => s.id !== sessionId);
+        console.log(`削除後のセッション数: ${updatedSessions.length}`);
+        
+        // 削除数の確認（安全チェック）
+        const deletedCount = allSessions.length - updatedSessions.length;
+        if (deletedCount !== 1) {
+          console.error(`異常: ${deletedCount}件のセッションが削除されます`);
+          alert(`エラー: 削除対象は1件ですが、${deletedCount}件が削除されようとしています。削除を中止しました。`);
+          return;
+        }
         
         // 更新後のセッション一覧を保存
         const saveResponse = await fetch('/api/sessions', {

@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createChart, IChartApi, ISeriesApi, CandlestickData, LineData, HistogramData, SeriesMarker, Time } from 'lightweight-charts';
 import { StockPrice, Trade } from '@/lib/db/schema';
-import { convertToChartData, convertMAToLineData, calculateMultipleSMA } from '@/lib/trading/indicators';
+import { convertToChartData, convertMAToLineData, calculateMultipleSMA, convertToWeeklyData, convertToMonthlyData } from '@/lib/trading/indicators';
 import { CHART_COLORS } from '@/lib/constants/colors';
+import { CalendarDays } from 'lucide-react';
 
 interface TradingChartProps {
   stockPrices: StockPrice[];
@@ -23,6 +24,7 @@ export default function TradingChart({
   width,
   height = 500
 }: TradingChartProps) {
+  const [timeframe, setTimeframe] = useState<'daily' | 'weekly' | 'monthly'>('daily');
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const candlestickSeriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null);
@@ -140,29 +142,30 @@ export default function TradingChart({
     if (!stockPrices || stockPrices.length === 0) return;
     if (!candlestickSeriesRef.current || !volumeSeriesRef.current) return;
 
-    // チャートデータに変換
-    const { candlestickData, volumeData } = convertToChartData(stockPrices);
+    // 時間軸に応じてデータを変換
+    const displayPrices = timeframe === 'weekly' 
+      ? convertToWeeklyData(stockPrices)
+      : timeframe === 'monthly'
+      ? convertToMonthlyData(stockPrices)
+      : stockPrices;
 
-    // データ長が変わった場合（新しいデータが追加された場合）
-    const isNewData = stockPrices.length !== lastDataLengthRef.current;
-    lastDataLengthRef.current = stockPrices.length;
+    // チャートデータに変換
+    const { candlestickData, volumeData } = convertToChartData(displayPrices);
+
+    // データ長が変わった場合（新しいデータが追加された場合または時間軸が変更された場合）
+    const isNewData = displayPrices.length !== lastDataLengthRef.current;
+    lastDataLengthRef.current = displayPrices.length;
 
     if (isNewData && candlestickData.length > 0) {
-      // 最新の1件だけを更新（パフォーマンス向上）
-      const latestCandle = candlestickData[candlestickData.length - 1];
-      candlestickSeriesRef.current.update(latestCandle as CandlestickData);
+      // データ全体を再設定
+      candlestickSeriesRef.current.setData(candlestickData as CandlestickData[]);
+      volumeSeriesRef.current.setData(volumeData.map(v => ({
+        time: v.time,
+        value: v.value,
+        color: v.color,
+      }) as HistogramData));
 
-      // 出来高も更新
-      const latestVolume = volumeData[volumeData.length - 1];
-      const volumeHistogramData: HistogramData = {
-        time: latestVolume.time,
-        value: latestVolume.value,
-        color: latestVolume.color,
-      };
-      volumeSeriesRef.current.update(volumeHistogramData);
-
-      // 移動平均線も更新
-      // 重複除去後のデータから終値と日付を抽出
+      // 移動平均線を表示中のデータ（日足、週足、または月足）から計算
       const closePrices = candlestickData.map(d => d.close);
       const dates = candlestickData.map(d => d.time as string);
       const maData = calculateMultipleSMA(closePrices, maSettings);
@@ -170,10 +173,8 @@ export default function TradingChart({
       maSettings.forEach((period, index) => {
         if (maSeriesRefs.current[index]) {
           const lineData = convertMAToLineData(dates, maData[period]);
-          if (lineData.length > 0) {
-            const latestMA = lineData[lineData.length - 1];
-            maSeriesRefs.current[index].update(latestMA as LineData);
-          }
+          // 時間軸が変わった場合はsetDataを使用
+          maSeriesRefs.current[index].setData(lineData as LineData[]);
         }
       });
 
@@ -192,7 +193,7 @@ export default function TradingChart({
       }));
       volumeSeriesRef.current.setData(volumeHistogramData);
 
-      // 重複除去後のデータから終値と日付を抽出
+      // 表示中のデータ（日足または週足）から終値と日付を抽出して移動平均線を計算
       const closePrices = candlestickData.map(d => d.close);
       const dates = candlestickData.map(d => d.time as string);
       const maData = calculateMultipleSMA(closePrices, maSettings);
@@ -273,10 +274,44 @@ export default function TradingChart({
         }
       }
     }
-  }, [stockPrices, maSettings, trades]);
+  }, [stockPrices, maSettings, trades, timeframe]);
 
   return (
     <div className="w-full">
+      {/* 時間軸切り替えボタン */}
+      <div className="flex gap-2 mb-2">
+        <button
+          onClick={() => setTimeframe('daily')}
+          className={`px-3 py-1 rounded text-sm font-medium transition ${
+            timeframe === 'daily'
+              ? 'bg-primary text-primary-foreground'
+              : 'bg-muted hover:bg-muted/80'
+          }`}
+        >
+          日足
+        </button>
+        <button
+          onClick={() => setTimeframe('weekly')}
+          className={`px-3 py-1 rounded text-sm font-medium transition ${
+            timeframe === 'weekly'
+              ? 'bg-primary text-primary-foreground'
+              : 'bg-muted hover:bg-muted/80'
+          }`}
+        >
+          週足
+        </button>
+        <button
+          onClick={() => setTimeframe('monthly')}
+          className={`px-3 py-1 rounded text-sm font-medium transition ${
+            timeframe === 'monthly'
+              ? 'bg-primary text-primary-foreground'
+              : 'bg-muted hover:bg-muted/80'
+          }`}
+        >
+          月足
+        </button>
+      </div>
+      
       {/* チャート */}
       <div ref={chartContainerRef} className="rounded-lg overflow-hidden border" />
     </div>

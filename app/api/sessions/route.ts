@@ -20,7 +20,36 @@ export async function POST(request: Request) {
     // sessionsが直接渡された場合（削除処理用）
     if (body.sessions !== undefined && body.nickname) {
       const userSessionsFile = path.join(SESSIONS_DIR, `${body.nickname}.json`);
+      
+      // 既存データを読み込んでバックアップを作成
+      if (fs.existsSync(userSessionsFile)) {
+        try {
+          const currentContent = fs.readFileSync(userSessionsFile, 'utf-8');
+          const currentSessions = JSON.parse(currentContent);
+          console.log(`[DELETE] 削除前セッション数: ${currentSessions.length}, 削除後: ${body.sessions.length}`);
+          
+          // バックアップを作成（重要！）
+          if (currentSessions.length > 0) {
+            const backupFile = path.join(SESSIONS_DIR, `${body.nickname}.backup.json`);
+            fs.writeFileSync(backupFile, currentContent);
+            console.log(`[DELETE] バックアップ作成: ${backupFile}`);
+          }
+          
+          // 削除数を確認（異常検知）
+          const deletedCount = currentSessions.length - body.sessions.length;
+          if (deletedCount > 1) {
+            console.warn(`[DELETE] 警告: ${deletedCount}件のセッションが削除されます！`);
+          }
+          if (body.sessions.length === 0 && currentSessions.length > 1) {
+            console.error(`[DELETE] 危険: 全${currentSessions.length}件が削除されます！`);
+          }
+        } catch (error) {
+          console.error(`[DELETE] バックアップ作成エラー:`, error);
+        }
+      }
+      
       fs.writeFileSync(userSessionsFile, JSON.stringify(body.sessions, null, 2));
+      console.log(`[DELETE] 削除完了: ${body.nickname}, 残存セッション数: ${body.sessions.length}`);
       return NextResponse.json({ success: true });
     }
     
@@ -40,18 +69,48 @@ export async function POST(request: Request) {
 
     // 既存のセッションを読み込み
     if (fs.existsSync(userSessionsFile)) {
-      sessions = JSON.parse(fs.readFileSync(userSessionsFile, 'utf-8'));
+      try {
+        const fileContent = fs.readFileSync(userSessionsFile, 'utf-8');
+        sessions = JSON.parse(fileContent);
+        console.log(`[POST] 既存セッション読み込み: ${nickname}, 件数: ${sessions.length}`);
+        
+        // バックアップを作成（1件以上ある場合のみ）
+        if (sessions.length > 0) {
+          const backupFile = path.join(SESSIONS_DIR, `${nickname}.backup.json`);
+          fs.writeFileSync(backupFile, fileContent);
+        }
+      } catch (parseError) {
+        console.error(`[POST] JSONパースエラー: ${nickname}`, parseError);
+        // パースエラーの場合、バックアップから復元を試みる
+        const backupFile = path.join(SESSIONS_DIR, `${nickname}.backup.json`);
+        if (fs.existsSync(backupFile)) {
+          try {
+            sessions = JSON.parse(fs.readFileSync(backupFile, 'utf-8'));
+            console.log(`[POST] バックアップから復元: ${sessions.length}件`);
+          } catch (backupError) {
+            console.error(`[POST] バックアップも破損`);
+            sessions = [];
+          }
+        } else {
+          sessions = [];
+        }
+      }
+    } else {
+      console.log(`[POST] 新規ユーザー: ${nickname}`);
     }
 
     // 新しいセッションを追加または更新
     const existingIndex = sessions.findIndex((s: any) => s.id === session.id);
     if (existingIndex >= 0) {
+      console.log(`[POST] セッション更新: ${session.id}, 総数: ${sessions.length}`);
       sessions[existingIndex] = session;
     } else {
+      console.log(`[POST] セッション追加: ${session.id}, 新総数: ${sessions.length + 1}`);
       sessions.push(session);
     }
 
     fs.writeFileSync(userSessionsFile, JSON.stringify(sessions, null, 2));
+    console.log(`[POST] 保存完了: ${nickname}, ファイル内セッション数: ${sessions.length}`);
 
     return NextResponse.json({
       success: true,
