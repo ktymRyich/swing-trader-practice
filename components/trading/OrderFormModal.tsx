@@ -192,9 +192,12 @@ export default function OrderFormModal({
               type="number"
               value={shares}
               onChange={(e) => setShares(Number(e.target.value))}
+              onClick={(e) => e.stopPropagation()}
+              onFocus={(e) => e.stopPropagation()}
               step="100"
               min="100"
-              className="w-full px-3 py-2 border rounded-lg bg-background"
+              className="w-full px-3 py-2 border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+              autoComplete="off"
             />
             <p className="mt-1 text-xs text-muted-foreground">
               最大: {maxShares.toLocaleString()}株
@@ -209,9 +212,12 @@ export default function OrderFormModal({
             <textarea
               value={memo}
               onChange={(e) => setMemo(e.target.value)}
+              onClick={(e) => e.stopPropagation()}
+              onFocus={(e) => e.stopPropagation()}
               rows={2}
-              className="w-full px-3 py-2 border rounded-lg text-sm bg-background"
+              className="w-full px-3 py-2 border rounded-lg text-sm bg-background focus:outline-none focus:ring-2 focus:ring-primary"
               placeholder="なぜこの取引を？"
+              autoComplete="off"
             />
           </div>
 

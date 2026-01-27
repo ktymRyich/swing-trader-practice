@@ -547,6 +547,12 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
   const handleSaveAndExit = async () => {
     if (!currentSession || !nickname) return;
 
+    // 完了済みセッションは確認なしで戻る
+    if (currentSession.status === 'completed') {
+      router.push('/');
+      return;
+    }
+
     if (confirm('セッションを保存して終了しますか？')) {
       try {
         const updatedSession = {
@@ -589,7 +595,7 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
     <div className="min-h-screen bg-background">
       {/* ヘッダー */}
       <header className="bg-card border-b sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 py-2">
+        <div className="max-w-[1600px] mx-auto px-4 py-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 min-w-0 flex-1">
               <Link 
@@ -674,16 +680,19 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
       )}
 
       {/* メインコンテンツ */}
-      <main className="max-w-7xl mx-auto px-4 py-6">
-        <div className="grid lg:grid-cols-3 gap-6">
+      <main className="max-w-[1600px] mx-auto px-4 py-6">
+        <div className="grid lg:grid-cols-4 gap-6">
           {/* 左カラム - チャートと制御 */}
-          <div className="lg:col-span-2 space-y-6">
-            <TradingChart
-              stockPrices={currentSession.status === 'completed' ? stockPrices : visiblePrices}
-              maSettings={currentSession.maSettings}
-              trades={trades}
-              onTradeClick={handleTradeClick}
-            />
+          <div className="lg:col-span-3 space-y-6">
+            <div className="bg-card rounded-lg border p-2">
+              <TradingChart
+                stockPrices={currentSession.status === 'completed' ? stockPrices : visiblePrices}
+                maSettings={currentSession.maSettings}
+                trades={trades}
+                onTradeClick={handleTradeClick}
+                height={600}
+              />
+            </div>
             
             {currentSession.status !== 'completed' && (
               <PlaybackControls
@@ -730,6 +739,17 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
 
           {/* 右カラム - 統計 */}
           <div className="space-y-6">
+            {/* 注文ボタン（PC用、セッション進行中のみ） */}
+            {currentSession.status !== 'completed' && (
+              <button
+                onClick={() => setIsOrderModalOpen(true)}
+                className="hidden lg:flex w-full py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-bold items-center justify-center gap-2 transition"
+              >
+                <Plus className="w-5 h-5" />
+                注文
+              </button>
+            )}
+
             {/* 統計 */}
             <div className="bg-card rounded-lg border p-4">
               <h3 className="font-bold mb-3">セッション統計</h3>

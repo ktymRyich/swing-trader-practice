@@ -62,6 +62,11 @@ export default function HomePage() {
       ((s.currentCapital - s.initialCapital) / s.initialCapital) * 100
     );
     
+    // 全セッションの全ポジションを集計
+    const allClosedPositions = completed.flatMap((s: any) => 
+      (s.positions || []).filter((p: any) => p.status === 'closed')
+    );
+    
     // 累積損益率
     let cumulativeProfit = 0;
     const cumulativeProfits = completed.map((s: any) => {
