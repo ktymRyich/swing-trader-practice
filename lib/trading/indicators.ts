@@ -1,4 +1,5 @@
 import { StockPrice } from '../db/schema';
+import { CHART_COLORS } from '../constants/colors';
 
 // ===== 移動平均線 =====
 
@@ -109,11 +110,11 @@ export function convertToChartData(stockPrices: StockPrice[]): {
     });
     
     // 出来高の色（前日比で決定）
-    let color = '#26a69a'; // デフォルトは緑
+    let color = CHART_COLORS.volume.up; // デフォルトは上昇色
     if (candlestickData.length > 1) {
       const prevClose = stockPrices[candlestickData.length - 2]?.close;
       if (prevClose && price.close < prevClose) {
-        color = '#ef5350'; // 下落は赤
+        color = CHART_COLORS.volume.down; // 下落は下落色
       }
     }
     

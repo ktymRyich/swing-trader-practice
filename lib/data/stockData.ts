@@ -186,7 +186,7 @@ export function selectRandomPeriod(
   allPrices: StockPrice[],
   symbol: string,
   periodDays: number,
-  historicalDays: number = 60
+  historicalDays: number = 120
 ): { prices: StockPrice[]; startDate: string; endDate: string; practiceStartIndex: number } {
   const stockPrices = allPrices.filter(p => p.symbol === symbol);
   
@@ -195,17 +195,17 @@ export function selectRandomPeriod(
     throw new Error('期間が長すぎます');
   }
   
-  // ランダムな開始位置を選択（過去60日分も考慮）
+  // ランダムな開始位置を選択（過去120日分も考慮）
   const maxStartIndex = stockPrices.length - totalDaysNeeded;
   const startIndex = Math.floor(Math.random() * (maxStartIndex + 1));
   
-  // 過去60日 + 練習期間のデータを取得
+  // 過去120日 + 練習期間のデータを取得
   const selectedPrices = stockPrices.slice(startIndex, startIndex + totalDaysNeeded);
   
   return {
     prices: selectedPrices,
     startDate: selectedPrices[0].date,
     endDate: selectedPrices[selectedPrices.length - 1].date,
-    practiceStartIndex: historicalDays // 練習開始位置（過去60日分をスキップ）
+    practiceStartIndex: historicalDays // 練習開始位置（過去120日分をスキップ）
   };
 }

@@ -106,13 +106,13 @@ export default function OrderFormModal({
   return (
     <div className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50" onClick={onClose}>
       <div 
-        className="bg-white rounded-t-2xl sm:rounded-2xl w-full sm:max-w-md max-h-[95vh] overflow-y-auto"
+        className="bg-card rounded-t-2xl sm:rounded-2xl w-full sm:max-w-md max-h-[95vh] overflow-y-auto border"
         onClick={(e) => e.stopPropagation()}
       >
         {/* ヘッダー */}
-        <div className="sticky top-0 bg-white border-b px-4 py-3 flex items-center justify-between">
+        <div className="sticky top-0 bg-card border-b px-4 py-3 flex items-center justify-between">
           <h2 className="text-lg font-bold">注文</h2>
-          <button onClick={onClose} className="p-1 hover:bg-gray-100 rounded">
+          <button onClick={onClose} className="p-1 hover:bg-accent rounded">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -121,7 +121,7 @@ export default function OrderFormModal({
         <form onSubmit={handleSubmit} className="p-4 space-y-4">
           {/* 注文種別 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium mb-2">
               注文種別
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -130,8 +130,8 @@ export default function OrderFormModal({
                 onClick={() => setOrderType('buy')}
                 className={`p-3 rounded-lg border-2 transition flex items-center justify-center gap-2 ${
                   orderType === 'buy'
-                    ? 'border-green-600 bg-green-50 text-green-900'
-                    : 'border-gray-200'
+                    ? 'border-green-500 bg-green-500/10 text-green-500'
+                    : 'border-border'
                 }`}
               >
                 <TrendingUp className="w-4 h-4" />
@@ -142,8 +142,8 @@ export default function OrderFormModal({
                 onClick={() => setOrderType('sell')}
                 className={`p-3 rounded-lg border-2 transition flex items-center justify-center gap-2 ${
                   orderType === 'sell'
-                    ? 'border-red-600 bg-red-50 text-red-900'
-                    : 'border-gray-200'
+                    ? 'border-red-500 bg-red-500/10 text-red-500'
+                    : 'border-border'
                 }`}
               >
                 <TrendingDown className="w-4 h-4" />
@@ -154,7 +154,7 @@ export default function OrderFormModal({
 
           {/* 取引区分 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium mb-2">
               取引区分
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -163,8 +163,8 @@ export default function OrderFormModal({
                 onClick={() => setTradingType('spot')}
                 className={`p-2 rounded-lg border-2 transition ${
                   tradingType === 'spot'
-                    ? 'border-blue-600 bg-blue-50 text-blue-900'
-                    : 'border-gray-200'
+                    ? 'border-primary bg-primary/10'
+                    : 'border-border'
                 }`}
               >
                 <div className="font-medium text-sm">現物</div>
@@ -174,8 +174,8 @@ export default function OrderFormModal({
                 onClick={() => setTradingType('margin')}
                 className={`p-2 rounded-lg border-2 transition ${
                   tradingType === 'margin'
-                    ? 'border-blue-600 bg-blue-50 text-blue-900'
-                    : 'border-gray-200'
+                    ? 'border-primary bg-primary/10'
+                    : 'border-border'
                 }`}
               >
                 <div className="font-medium text-sm">信用</div>
@@ -185,7 +185,7 @@ export default function OrderFormModal({
 
           {/* 株数 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium mb-2">
               株数（100株単位）
             </label>
             <input
@@ -194,35 +194,35 @@ export default function OrderFormModal({
               onChange={(e) => setShares(Number(e.target.value))}
               step="100"
               min="100"
-              className="w-full px-3 py-2 border rounded-lg"
+              className="w-full px-3 py-2 border rounded-lg bg-background"
             />
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs text-muted-foreground">
               最大: {maxShares.toLocaleString()}株
             </p>
           </div>
 
           {/* 取引理由 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium mb-2">
               取引理由
             </label>
             <textarea
               value={memo}
               onChange={(e) => setMemo(e.target.value)}
               rows={2}
-              className="w-full px-3 py-2 border rounded-lg text-sm"
+              className="w-full px-3 py-2 border rounded-lg text-sm bg-background"
               placeholder="なぜこの取引を？"
             />
           </div>
 
           {/* 概算 */}
-          <div className="bg-gray-50 rounded-lg p-3 space-y-1 text-sm">
+          <div className="bg-muted rounded-lg p-3 space-y-1 text-sm">
             <div className="flex justify-between">
-              <span className="text-gray-600">約定代金</span>
+              <span className="text-muted-foreground">約定代金</span>
               <span className="font-medium">¥{(currentPrice * shares).toLocaleString()}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-gray-600">手数料等</span>
+              <span className="text-muted-foreground">手数料等</span>
               <span className="font-medium">¥{(calculation.fee + calculation.slippage).toLocaleString()}</span>
             </div>
             <div className="flex justify-between pt-2 border-t">
@@ -233,9 +233,9 @@ export default function OrderFormModal({
 
           {/* 警告 */}
           {violations.length > 0 && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
               {violations.map((v, i) => (
-                <div key={i} className="text-xs text-red-800">
+                <div key={i} className="text-xs text-red-500">
                   ⚠️ {v.description}
                 </div>
               ))}
@@ -247,8 +247,8 @@ export default function OrderFormModal({
             type="submit"
             className={`w-full py-3 rounded-lg font-bold transition ${
               orderType === 'buy'
-                ? 'bg-green-600 hover:bg-green-700 text-white'
-                : 'bg-red-600 hover:bg-red-700 text-white'
+                ? 'bg-green-500 hover:bg-green-600 text-white'
+                : 'bg-red-500 hover:bg-red-600 text-white'
             }`}
           >
             {orderType === 'buy' ? '買い注文' : '売り注文'}

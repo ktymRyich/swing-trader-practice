@@ -248,5 +248,570 @@
     "symbol": "8801",
     "name": "三井不動産",
     "sector": "不動産"
+  },
+  {
+    "symbol": "5401",
+    "name": "日本製鉄",
+    "sector": "鉄鋼"
+  },
+  {
+    "symbol": "5406",
+    "name": "神戸製鋼所",
+    "sector": "鉄鋼"
+  },
+  {
+    "symbol": "5411",
+    "name": "JFEホールディングス",
+    "sector": "鉄鋼"
+  },
+  {
+    "symbol": "5713",
+    "name": "住友金属鉱山",
+    "sector": "非鉄金属"
+  },
+  {
+    "symbol": "5711",
+    "name": "三菱マテリアル",
+    "sector": "非鉄金属"
+  },
+  {
+    "symbol": "5801",
+    "name": "古河電気工業",
+    "sector": "非鉄金属"
+  },
+  {
+    "symbol": "5802",
+    "name": "住友電気工業",
+    "sector": "非鉄金属"
+  },
+  {
+    "symbol": "3402",
+    "name": "東レ",
+    "sector": "繊維"
+  },
+  {
+    "symbol": "3861",
+    "name": "王子ホールディングス",
+    "sector": "紙パルプ"
+  },
+  {
+    "symbol": "3401",
+    "name": "帝人",
+    "sector": "繊維"
+  },
+  {
+    "symbol": "5020",
+    "name": "ENEOSホールディングス",
+    "sector": "エネルギー"
+  },
+  {
+    "symbol": "5019",
+    "name": "出光興産",
+    "sector": "エネルギー"
+  },
+  {
+    "symbol": "1605",
+    "name": "国際石油開発帝石",
+    "sector": "資源開発"
+  },
+  {
+    "symbol": "1963",
+    "name": "日揮ホールディングス",
+    "sector": "建設"
+  },
+  {
+    "symbol": "9501",
+    "name": "東京電力ホールディングス",
+    "sector": "電力"
+  },
+  {
+    "symbol": "9502",
+    "name": "中部電力",
+    "sector": "電力"
+  },
+  {
+    "symbol": "9503",
+    "name": "関西電力",
+    "sector": "電力"
+  },
+  {
+    "symbol": "9531",
+    "name": "東京ガス",
+    "sector": "ガス"
+  },
+  {
+    "symbol": "9532",
+    "name": "大阪ガス",
+    "sector": "ガス"
+  },
+  {
+    "symbol": "9007",
+    "name": "小田急電鉄",
+    "sector": "鉄道"
+  },
+  {
+    "symbol": "1925",
+    "name": "大和ハウス工業",
+    "sector": "建設"
+  },
+  {
+    "symbol": "1928",
+    "name": "積水ハウス",
+    "sector": "建設"
+  },
+  {
+    "symbol": "1802",
+    "name": "大林組",
+    "sector": "建設"
+  },
+  {
+    "symbol": "1803",
+    "name": "清水建設",
+    "sector": "建設"
+  },
+  {
+    "symbol": "1812",
+    "name": "鹿島建設",
+    "sector": "建設"
+  },
+  {
+    "symbol": "1801",
+    "name": "大成建設",
+    "sector": "建設"
+  },
+  {
+    "symbol": "8802",
+    "name": "三菱地所",
+    "sector": "不動産"
+  },
+  {
+    "symbol": "8830",
+    "name": "住友不動産",
+    "sector": "不動産"
+  },
+  {
+    "symbol": "3289",
+    "name": "東急不動産ホールディングス",
+    "sector": "不動産"
+  },
+  {
+    "symbol": "2269",
+    "name": "明治ホールディングス",
+    "sector": "食品"
+  },
+  {
+    "symbol": "2282",
+    "name": "日本ハム",
+    "sector": "食品"
+  },
+  {
+    "symbol": "2914",
+    "name": "日本たばこ産業",
+    "sector": "食品"
+  },
+  {
+    "symbol": "2871",
+    "name": "ニチレイ",
+    "sector": "食品"
+  },
+  {
+    "symbol": "2501",
+    "name": "サッポロホールディングス",
+    "sector": "食品"
+  },
+  {
+    "symbol": "2801",
+    "name": "キッコーマン",
+    "sector": "食品"
+  },
+  {
+    "symbol": "6920",
+    "name": "レーザーテック",
+    "sector": "半導体製造装置"
+  },
+  {
+    "symbol": "8035",
+    "name": "東京エレクトロン",
+    "sector": "半導体製造装置"
+  },
+  {
+    "symbol": "6857",
+    "name": "アドバンテスト",
+    "sector": "半導体検査装置"
+  },
+  {
+    "symbol": "4704",
+    "name": "トレンドマイクロ",
+    "sector": "ソフトウェア"
+  },
+  {
+    "symbol": "4689",
+    "name": "Zホールディングス",
+    "sector": "IT"
+  },
+  {
+    "symbol": "3659",
+    "name": "ネクソン",
+    "sector": "ゲーム"
+  },
+  {
+    "symbol": "3774",
+    "name": "インターネットイニシアティブ",
+    "sector": "IT"
+  },
+  {
+    "symbol": "4751",
+    "name": "サイバーエージェント",
+    "sector": "IT"
+  },
+  {
+    "symbol": "2413",
+    "name": "エムスリー",
+    "sector": "IT"
+  },
+  {
+    "symbol": "4324",
+    "name": "電通グループ",
+    "sector": "広告"
+  },
+  {
+    "symbol": "4307",
+    "name": "野村総合研究所",
+    "sector": "IT"
+  },
+  {
+    "symbol": "9735",
+    "name": "セコム",
+    "sector": "サービス"
+  },
+  {
+    "symbol": "2181",
+    "name": "パーソルホールディングス",
+    "sector": "サービス"
+  },
+  {
+    "symbol": "9766",
+    "name": "コナミグループ",
+    "sector": "ゲーム"
+  },
+  {
+    "symbol": "7832",
+    "name": "バンダイナムコホールディングス",
+    "sector": "ゲーム"
+  },
+  {
+    "symbol": "4911",
+    "name": "資生堂",
+    "sector": "化粧品"
+  },
+  {
+    "symbol": "7453",
+    "name": "良品計画",
+    "sector": "小売"
+  },
+  {
+    "symbol": "3099",
+    "name": "三越伊勢丹ホールディングス",
+    "sector": "小売"
+  },
+  {
+    "symbol": "8233",
+    "name": "高島屋",
+    "sector": "小売"
+  },
+  {
+    "symbol": "7733",
+    "name": "オリンパス",
+    "sector": "精密機器"
+  },
+  {
+    "symbol": "7741",
+    "name": "HOYA",
+    "sector": "精密機器"
+  },
+  {
+    "symbol": "7731",
+    "name": "ニコン",
+    "sector": "精密機器"
+  },
+  {
+    "symbol": "7751",
+    "name": "キヤノン",
+    "sector": "精密機器"
+  },
+  {
+    "symbol": "7752",
+    "name": "リコー",
+    "sector": "精密機器"
+  },
+  {
+    "symbol": "6503",
+    "name": "セイコーエプソン",
+    "sector": "精密機器"
+  },
+  {
+    "symbol": "4151",
+    "name": "協和キリン",
+    "sector": "医薬品"
+  },
+  {
+    "symbol": "4519",
+    "name": "中外製薬",
+    "sector": "医薬品"
+  },
+  {
+    "symbol": "4901",
+    "name": "富士フイルムホールディングス",
+    "sector": "化学"
+  },
+  {
+    "symbol": "4061",
+    "name": "デンカ",
+    "sector": "化学"
+  },
+  {
+    "symbol": "4005",
+    "name": "住友化学",
+    "sector": "化学"
+  },
+  {
+    "symbol": "4042",
+    "name": "東ソー",
+    "sector": "化学"
+  },
+  {
+    "symbol": "4208",
+    "name": "宇部興産",
+    "sector": "化学"
+  },
+  {
+    "symbol": "4183",
+    "name": "三井化学",
+    "sector": "化学"
+  },
+  {
+    "symbol": "7011",
+    "name": "三菱重工業",
+    "sector": "機械"
+  },
+  {
+    "symbol": "6301",
+    "name": "コマツ",
+    "sector": "機械"
+  },
+  {
+    "symbol": "6305",
+    "name": "日立建機",
+    "sector": "機械"
+  },
+  {
+    "symbol": "6326",
+    "name": "クボタ",
+    "sector": "機械"
+  },
+  {
+    "symbol": "7012",
+    "name": "川崎重工業",
+    "sector": "機械"
+  },
+  {
+    "symbol": "6367",
+    "name": "ダイキン工業",
+    "sector": "機械"
+  },
+  {
+    "symbol": "9020",
+    "name": "東日本旅客鉄道",
+    "sector": "鉄道"
+  },
+  {
+    "symbol": "9022",
+    "name": "東海旅客鉄道",
+    "sector": "鉄道"
+  },
+  {
+    "symbol": "9021",
+    "name": "西日本旅客鉄道",
+    "sector": "鉄道"
+  },
+  {
+    "symbol": "9009",
+    "name": "京成電鉄",
+    "sector": "鉄道"
+  },
+  {
+    "symbol": "9005",
+    "name": "東京急行電鉄",
+    "sector": "鉄道"
+  },
+  {
+    "symbol": "9202",
+    "name": "ANAホールディングス",
+    "sector": "空運"
+  },
+  {
+    "symbol": "9201",
+    "name": "日本航空",
+    "sector": "空運"
+  },
+  {
+    "symbol": "9101",
+    "name": "日本郵船",
+    "sector": "海運"
+  },
+  {
+    "symbol": "9104",
+    "name": "商船三井",
+    "sector": "海運"
+  },
+  {
+    "symbol": "9107",
+    "name": "川崎汽船",
+    "sector": "海運"
+  },
+  {
+    "symbol": "9064",
+    "name": "ヤマトホールディングス",
+    "sector": "物流"
+  },
+  {
+    "symbol": "9301",
+    "name": "三菱倉庫",
+    "sector": "倉庫"
+  },
+  {
+    "symbol": "9302",
+    "name": "三井倉庫ホールディングス",
+    "sector": "倉庫"
+  },
+  {
+    "symbol": "4543",
+    "name": "テルモ",
+    "sector": "医療機器"
+  },
+  {
+    "symbol": "9602",
+    "name": "東宝",
+    "sector": "娯楽"
+  },
+  {
+    "symbol": "9601",
+    "name": "松竹",
+    "sector": "娯楽"
+  },
+  {
+    "symbol": "4751",
+    "name": "サイバーエージェント",
+    "sector": "IT"
+  },
+  {
+    "symbol": "2432",
+    "name": "ディー・エヌ・エー",
+    "sector": "IT"
+  },
+  {
+    "symbol": "3092",
+    "name": "ZOZO",
+    "sector": "小売"
+  },
+  {
+    "symbol": "7581",
+    "name": "サイゼリヤ",
+    "sector": "外食"
+  },
+  {
+    "symbol": "9983",
+    "name": "すかいらーくホールディングス",
+    "sector": "外食"
+  },
+  {
+    "symbol": "7616",
+    "name": "コロワイド",
+    "sector": "外食"
+  },
+  {
+    "symbol": "3086",
+    "name": "Jフロント リテイリング",
+    "sector": "小売"
+  },
+  {
+    "symbol": "8252",
+    "name": "丸井グループ",
+    "sector": "小売"
+  },
+  {
+    "symbol": "7412",
+    "name": "アトム",
+    "sector": "外食"
+  },
+  {
+    "symbol": "8591",
+    "name": "オリックス",
+    "sector": "金融"
+  },
+  {
+    "symbol": "7186",
+    "name": "コンコルディア・フィナンシャルグループ",
+    "sector": "金融"
+  },
+  {
+    "symbol": "8309",
+    "name": "三井住友トラスト・ホールディングス",
+    "sector": "金融"
+  },
+  {
+    "symbol": "7182",
+    "name": "ゆうちょ銀行",
+    "sector": "金融"
+  },
+  {
+    "symbol": "7167",
+    "name": "めぶきフィナンシャルグループ",
+    "sector": "金融"
+  },
+  {
+    "symbol": "8308",
+    "name": "りそなホールディングス",
+    "sector": "金融"
+  },
+  {
+    "symbol": "8473",
+    "name": "SBIホールディングス",
+    "sector": "金融"
+  },
+  {
+    "symbol": "8750",
+    "name": "第一生命ホールディングス",
+    "sector": "金融"
+  },
+  {
+    "symbol": "8630",
+    "name": "SOMPOホールディングス",
+    "sector": "金融"
+  },
+  {
+    "symbol": "1333",
+    "name": "マルハニチロ",
+    "sector": "食品"
+  },
+  {
+    "symbol": "2810",
+    "name": "ハウス食品グループ本社",
+    "sector": "食品"
+  },
+  {
+    "symbol": "2588",
+    "name": "プレミアムウォーターホールディングス",
+    "sector": "食品"
+  },
+  {
+    "symbol": "7419",
+    "name": "ノジマ",
+    "sector": "小売"
+  },
+  {
+    "symbol": "8252",
+    "name": "ビックカメラ",
+    "sector": "小売"
   }
 ]

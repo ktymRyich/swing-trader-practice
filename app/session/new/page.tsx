@@ -86,12 +86,12 @@ export default function NewSessionPage() {
         .equals(randomStock.symbol)
         .toArray();
 
-      // ランダムな期間を選択（過去60日分も含む）
+      // ランダムな期間を選択（過去120日分も含む）
       const { prices, startDate, endDate, practiceStartIndex } = selectRandomPeriod(
         allPrices,
         randomStock.symbol,
         periodDays,
-        60 // 過去60日分を含む
+        120 // 過去120日分を含む（100日線表示用）
       );
 
       // セッションを作成
@@ -130,43 +130,43 @@ export default function NewSessionPage() {
   };
 
   return (
-    <div className="h-screen flex flex-col bg-gradient-to-br from-slate-50 to-slate-100 overflow-hidden">
+    <div className="h-screen flex flex-col bg-background overflow-hidden">
       {/* ヘッダー */}
-      <header className="bg-white shadow-sm border-b flex-shrink-0">
+      <header className="bg-card border-b flex-shrink-0">
         <div className="px-4 py-3">
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="p-2 hover:bg-gray-100 rounded-lg transition"
+              className="p-2 hover:bg-accent rounded-lg transition"
             >
               <ArrowLeft className="w-5 h-5" />
             </Link>
-            <h1 className="text-lg font-bold text-gray-900">新規セッション</h1>
+            <h1 className="text-lg font-bold">新規セッション</h1>
           </div>
         </div>
       </header>
 
       {/* メインコンテンツ */}
       <main className="flex-1 overflow-y-auto px-4 py-4">
-        <div className="bg-white rounded-xl shadow-sm border p-4">
+        <div className="bg-card rounded-xl border p-4">
           {/* 設定フォーム */}
           <div className="space-y-4">
             {/* データソース情報（簡潔版） */}
             {cacheInfo && (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-xs text-green-700">
+              <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-3 text-xs text-green-500">
                 ✓ {cacheInfo.stockCount || 50}銘柄・実データ使用中
               </div>
             )}
             
             {!cacheInfo && (
-              <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 text-xs text-gray-600">
+              <div className="bg-muted border rounded-lg p-3 text-xs text-muted-foreground">
                 データ読み込み中...
               </div>
             )}
 
             {/* 期間設定 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium mb-2">
                 セッション期間
               </label>
               <div className="grid grid-cols-3 gap-2">
@@ -176,12 +176,12 @@ export default function NewSessionPage() {
                     onClick={() => setPeriodDays(days)}
                     className={`p-3 rounded-lg border-2 transition ${
                       periodDays === days
-                        ? 'border-blue-600 bg-blue-50 text-blue-900'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-primary bg-primary/10'
+                        : 'border-border hover:border-primary/50'
                     }`}
                   >
                     <div className="text-xl font-bold">{days}日</div>
-                    <div className="text-xs text-gray-500">
+                    <div className="text-xs text-muted-foreground">
                       {days === 20 && '約1ヶ月'}
                       {days === 40 && '約2ヶ月'}
                       {days === 60 && '約3ヶ月'}
@@ -193,7 +193,7 @@ export default function NewSessionPage() {
 
             {/* 再生速度 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium mb-2">
                 再生速度: {playbackSpeed}秒/日
               </label>
               <div className="flex items-center gap-3">
@@ -207,12 +207,12 @@ export default function NewSessionPage() {
                   className="flex-1"
                 />
                 <div className="w-16 text-center">
-                  <div className="text-lg font-bold text-gray-900">
+                  <div className="text-lg font-bold">
                     {playbackSpeed}秒
                   </div>
                 </div>
               </div>
-              <div className="flex justify-between text-xs text-gray-500 mt-1">
+              <div className="flex justify-between text-xs text-muted-foreground mt-1">
                 <span>1秒(最速)</span>
                 <span>15秒(標準)</span>
                 <span>30秒(じっくり)</span>
@@ -221,7 +221,7 @@ export default function NewSessionPage() {
 
             {/* 移動平均線設定 */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium mb-2">
                 移動平均線
               </label>
               <div className="grid grid-cols-5 gap-2">
@@ -235,7 +235,7 @@ export default function NewSessionPage() {
                       newSettings[index] = Number(e.target.value);
                       setMaSettings(newSettings);
                     }}
-                    className="px-2 py-2 border rounded-lg text-center text-sm"
+                    className="px-2 py-2 border rounded-lg text-center text-sm bg-background"
                     min="1"
                     max="200"
                   />
@@ -248,11 +248,11 @@ export default function NewSessionPage() {
           <button
             onClick={handleStartSession}
             disabled={isLoading || !dataReady}
-            className="w-full mt-8 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white font-bold py-4 px-6 rounded-lg flex items-center justify-center gap-3 transition transform hover:scale-105 disabled:transform-none"
+            className="w-full mt-8 bg-primary hover:bg-primary/90 disabled:bg-muted text-primary-foreground font-bold py-4 px-6 rounded-lg flex items-center justify-center gap-3 transition disabled:opacity-50"
           >
             {isLoading ? (
               <>
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
                 セッション作成中...
               </>
             ) : !dataReady ? (

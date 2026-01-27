@@ -1,28 +1,25 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { createChart, IChartApi, ISeriesApi, CandlestickData, LineData, HistogramData } from 'lightweight-charts';
-import { StockPrice } from '@/lib/db/schema';
+import { createChart, IChartApi, ISeriesApi, CandlestickData, LineData, HistogramData, SeriesMarker, Time } from 'lightweight-charts';
+import { StockPrice, Trade } from '@/lib/db/schema';
 import { convertToChartData, convertMAToLineData, calculateMultipleSMA } from '@/lib/trading/indicators';
+import { CHART_COLORS } from '@/lib/constants/colors';
 
 interface TradingChartProps {
   stockPrices: StockPrice[];
   maSettings: number[];
+  trades?: Trade[];
+  onTradeClick?: (tradeId: string) => void;
   width?: number;
   height?: number;
 }
 
-const MA_COLORS = [
-  '#FF1744', // 赤
-  '#00C853', // 緑
-  '#2962FF', // 青
-  '#D500F9', // 紫
-  '#FF6D00', // オレンジ
-];
-
 export default function TradingChart({
   stockPrices,
   maSettings,
+  trades = [],
+  onTradeClick,
   width,
   height = 500
 }: TradingChartProps) {
@@ -41,18 +38,22 @@ export default function TradingChart({
       width: width || chartContainerRef.current.clientWidth,
       height,
       layout: {
-        background: { color: '#ffffff' },
-        textColor: '#333',
+        background: { color: 'transparent' },
+        textColor: '#e5e5e5',
       },
       grid: {
-        vertLines: { color: '#f0f0f0' },
-        horzLines: { color: '#f0f0f0' },
+        vertLines: { color: '#262626' },
+        horzLines: { color: '#262626' },
       },
       crosshair: {
         mode: 1,
       },
       rightPriceScale: {
         borderColor: '#d1d4dc',
+        scaleMargins: {
+          top: 0.15,
+          bottom: 0.1,
+        },
       },
       timeScale: {
         borderColor: '#d1d4dc',
@@ -64,17 +65,17 @@ export default function TradingChart({
 
     // ローソク足シリーズ
     const candlestickSeries = chart.addCandlestickSeries({
-      upColor: '#26a69a',
-      downColor: '#ef5350',
+      upColor: CHART_COLORS.candlestick.up,
+      downColor: CHART_COLORS.candlestick.down,
       borderVisible: false,
-      wickUpColor: '#26a69a',
-      wickDownColor: '#ef5350',
+      wickUpColor: CHART_COLORS.candlestick.up,
+      wickDownColor: CHART_COLORS.candlestick.down,
     });
     candlestickSeriesRef.current = candlestickSeries;
 
     // 出来高シリーズ
     const volumeSeries = chart.addHistogramSeries({
-      color: '#26a69a',
+      color: CHART_COLORS.volume.up,
       priceFormat: {
         type: 'volume',
       },
@@ -93,7 +94,7 @@ export default function TradingChart({
     // 移動平均線シリーズ
     maSeriesRefs.current = maSettings.map((period, index) => {
       return chart.addLineSeries({
-        color: MA_COLORS[index % MA_COLORS.length],
+        color: CHART_COLORS.ma[index % CHART_COLORS.ma.length],
         lineWidth: 2,
         lastValueVisible: false,
         priceLineVisible: false,
@@ -111,8 +112,25 @@ export default function TradingChart({
 
     window.addEventListener('resize', handleResize);
 
+    // クリックイベントを追加（マーカークリック用）
+    const handleClick = (param: any) => {
+      if (!param.time || !onTradeClick || !trades) return;
+      
+      // クリックした位置の日付を取得
+      const clickedDate = param.time;
+      
+      // その日付の取引を探す（最初の取引をスクロール対象にする）
+      const dayTrades = trades.filter(t => t.tradeDate === clickedDate);
+      if (dayTrades.length > 0 && dayTrades[0]?.id) {
+        onTradeClick(dayTrades[0].id);
+      }
+    };
+    
+    chart.subscribeClick(handleClick);
+
     return () => {
       window.removeEventListener('resize', handleResize);
+      chart.unsubscribeClick(handleClick);
       chart.remove();
     };
   }, [width, height, maSettings]);
@@ -187,10 +205,75 @@ export default function TradingChart({
       });
 
       if (chartRef.current) {
-        chartRef.current.timeScale().fitContent();
+        // 最新30データのみを表示するように設定
+        if (candlestickData.length > 0) {
+          const visibleDataCount = Math.min(50, candlestickData.length);
+          const from = candlestickData.length - visibleDataCount;
+          chartRef.current.timeScale().setVisibleLogicalRange({
+            from: from,
+            to: candlestickData.length - 1,
+          });
+        } else {
+          chartRef.current.timeScale().fitContent();
+        }
+
+        // 取引マーカーを追加
+        if (trades && trades.length > 0 && candlestickSeriesRef.current) {
+          // 同じ日付の取引をグループ化
+          const tradesByDate = trades.reduce((acc, trade) => {
+            const date = trade.tradeDate;
+            if (!acc[date]) {
+              acc[date] = [];
+            }
+            acc[date].push(trade);
+            return acc;
+          }, {} as Record<string, typeof trades>);
+
+          const markers: SeriesMarker<Time>[] = [];
+          
+          Object.entries(tradesByDate).forEach(([date, dayTrades]) => {
+            // 買いと売りを分ける
+            const buyTrades = dayTrades.filter(t => t.type === 'buy');
+            const sellTrades = dayTrades.filter(t => t.type === 'sell');
+
+            // 買いマーカー
+            if (buyTrades.length > 0) {
+              const totalShares = buyTrades.reduce((sum, t) => sum + t.shares, 0);
+              const shareText = totalShares >= 1000 
+                ? `${(totalShares / 1000).toFixed(1)}k` 
+                : totalShares.toString();
+              markers.push({
+                time: date as Time,
+                position: 'belowBar',
+                color: CHART_COLORS.trade.buy,
+                shape: 'circle',
+                text: `▲${shareText}`,
+                size: 0.5,
+              });
+            }
+
+            // 売りマーカー
+            if (sellTrades.length > 0) {
+              const totalShares = sellTrades.reduce((sum, t) => sum + t.shares, 0);
+              const shareText = totalShares >= 1000 
+                ? `${(totalShares / 1000).toFixed(1)}k` 
+                : totalShares.toString();
+              markers.push({
+                time: date as Time,
+                position: 'aboveBar',
+                color: CHART_COLORS.trade.sell,
+                shape: 'circle',
+                text: `▼${shareText}`,
+                size: 0.5,
+              });
+            }
+          });
+          
+          candlestickSeriesRef.current.setMarkers(markers);
+        }
       }
     }
-  }, [stockPrices, maSettings]);
+  }, [stockPrices, maSettings, trades]);
 
   return (
     <div className="w-full">

@@ -27,19 +27,19 @@ export default function PlaybackControls({
   const progress = (currentDay / totalDays) * 100;
 
   return (
-    <div className="bg-white rounded-lg border p-2">
+    <div className="bg-card rounded-lg border p-2">
       <div className="space-y-2">
         {/* プログレスバー */}
         <div>
           <div className="flex justify-between text-xs mb-1">
-            <span className="text-gray-600">
+            <span className="text-muted-foreground">
               {currentDay} / {totalDays}日
             </span>
-            <span className="text-gray-600">{progress.toFixed(0)}%</span>
+            <span className="text-muted-foreground">{progress.toFixed(0)}%</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden">
+          <div className="w-full bg-secondary rounded-full h-1.5 overflow-hidden">
             <div
-              className="bg-blue-600 h-full transition-all duration-300"
+              className="bg-primary h-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -50,10 +50,10 @@ export default function PlaybackControls({
           {/* 再生/一時停止 */}
           <button
             onClick={onTogglePlay}
-            className={`p-2 rounded-full transition ${
+            className={`p-2 rounded-full transition flex items-center justify-center ${
               isPlaying
                 ? 'bg-yellow-500 hover:bg-yellow-600 text-white'
-                : 'bg-blue-600 hover:bg-blue-700 text-white'
+                : 'bg-primary hover:bg-primary/90 text-primary-foreground'
             }`}
           >
             {isPlaying ? (
@@ -67,23 +67,23 @@ export default function PlaybackControls({
           <button
             onClick={onNext}
             disabled={isPlaying}
-            className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition"
+            className="p-2 rounded-full bg-secondary hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center"
           >
-            <SkipForward className="w-5 h-5 text-gray-700" />
+            <SkipForward className="w-5 h-5" />
           </button>
 
           {/* 速度設定 */}
           <div className="relative">
             <button
               onClick={() => setShowSpeedMenu(!showSpeedMenu)}
-              className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 transition"
+              className="p-2 rounded-full bg-secondary hover:bg-secondary/80 transition flex items-center justify-center"
             >
-              <Settings className="w-5 h-5 text-gray-700" />
+              <Settings className="w-5 h-5" />
             </button>
 
             {showSpeedMenu && (
-              <div className="absolute bottom-full right-0 mb-2 bg-white border rounded-lg shadow-lg p-3 w-64 z-10">
-                <div className="text-sm font-medium text-gray-700 mb-3 px-1">
+              <div className="absolute bottom-full right-0 mb-2 bg-card border rounded-lg shadow-lg p-3 w-64 z-10">
+                <div className="text-sm font-medium mb-3 px-1">
                   再生速度: {playbackSpeed}秒/日
                 </div>
                 <div className="px-1">
@@ -95,7 +95,7 @@ export default function PlaybackControls({
                     onChange={(e) => onSpeedChange(Number(e.target.value))}
                     className="w-full"
                   />
-                  <div className="flex justify-between text-xs text-gray-500 mt-1">
+                  <div className="flex justify-between text-xs text-muted-foreground mt-1">
                     <span>1秒</span>
                     <span>15秒</span>
                     <span>30秒</span>
@@ -103,7 +103,7 @@ export default function PlaybackControls({
                 </div>
                 <button
                   onClick={() => setShowSpeedMenu(false)}
-                  className="w-full mt-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded transition"
+                  className="w-full mt-3 py-1 text-sm bg-secondary hover:bg-secondary/80 rounded transition"
                 >
                   閉じる
                 </button>

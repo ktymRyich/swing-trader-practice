@@ -57,9 +57,8 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   setSession: (session) => set({ currentSession: session }),
   
   setStockPrices: (prices) => {
-    const currentPriceIndex = get().currentPriceIndex;
-    const visiblePrices = prices.slice(0, currentPriceIndex + 1);
-    set({ stockPrices: prices, visiblePrices });
+    // visiblePricesの更新はsetCurrentPriceIndexで行うため、ここでは単にpricesをセットするだけ
+    set({ stockPrices: prices });
   },
   
   setOpenPositions: (positions) => set({ openPositions: positions }),
