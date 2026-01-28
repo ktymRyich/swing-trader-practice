@@ -113,12 +113,14 @@ export default function TradeHistory({ trades, currentPrice, highlightedTradeId 
                 </div>
 
                 {/* 取引後の資金 */}
-                <div className="text-right">
-                  <div className="text-xs text-muted-foreground mb-1">取引後資金</div>
-                  <div className="font-bold">
-                    ¥{trade.capitalAfterTrade.toLocaleString()}
+                {trade.capitalAfterTrade !== undefined && (
+                  <div className="text-right">
+                    <div className="text-xs text-muted-foreground mb-1">取引後資金</div>
+                    <div className="font-bold">
+                      ¥{trade.capitalAfterTrade.toLocaleString()}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           );

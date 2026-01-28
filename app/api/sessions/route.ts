@@ -49,9 +49,10 @@ export async function GET(request: Request) {
         stockName: session.stock_name,
         initialCapital: session.initial_capital,
         currentCapital: session.current_capital,
-        startDateOfData: session.practice_start_date, // フィールド名を合わせる
+        startDateOfData: session.practice_start_date, // 株価データの開始日
         practiceStartIndex: session.practice_start_index,
-        endDateOfData: session.practice_end_date, // フィールド名を合わせる
+        practiceStartDate: session.practice_replay_date, // 練習開始日（リプレイ開始日）
+        endDateOfData: session.practice_end_date, // 株価データの終了日
         status: session.status,
         currentDay: session.current_day || 0,
         periodDays: session.period_days || 60,
@@ -60,6 +61,7 @@ export async function GET(request: Request) {
         winRate: session.win_rate || 0,
         maxDrawdown: session.max_drawdown || 0,
         ruleViolations: session.rule_violations || 0,
+        maSettings: session.ma_settings ? JSON.parse(session.ma_settings) : [5, 10, 20, 50, 100], // 移動平均線設定
         createdAt: session.created_at,
         updatedAt: session.updated_at,
         positions: positions.map((p: any) => ({
@@ -167,10 +169,10 @@ export async function POST(request: Request) {
       db.prepare(`
         INSERT OR REPLACE INTO sessions (
           id, nickname, symbol, stock_name, initial_capital, current_capital,
-          practice_start_date, practice_start_index, practice_end_date, status,
+          practice_start_date, practice_start_index, practice_end_date, practice_replay_date, status,
           current_day, period_days, trade_count, win_count, win_rate, max_drawdown, rule_violations,
-          created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE((SELECT created_at FROM sessions WHERE id = ?), ?), ?)
+          ma_settings, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE((SELECT created_at FROM sessions WHERE id = ?), ?), ?)
       `).run(
         session.id,
         nickname,
@@ -178,9 +180,10 @@ export async function POST(request: Request) {
         session.stockName,
         session.initialCapital,
         session.currentCapital,
-        session.startDateOfData || session.practiceStartDate || session.startDate, // 互換性対応
+        session.startDateOfData || session.startDate, // 株価データの開始日
         session.practiceStartIndex || 0,
-        session.endDateOfData || session.practiceEndDate || session.startDate, // 互換性対応
+        session.endDateOfData || session.startDate, // 株価データの終了日
+        session.practiceStartDate || null, // 練習開始日（リプレイ開始日）
         session.status,
         session.currentDay || 0,
         session.periodDays || 60,
@@ -189,6 +192,7 @@ export async function POST(request: Request) {
         session.winRate || 0,
         session.maxDrawdown || 0,
         session.ruleViolations || 0,
+        session.maSettings ? JSON.stringify(session.maSettings) : null, // 移動平均線設定
         session.id, // created_atの既存値チェック用
         now, // 新規作成時のcreated_at
         now  // updated_at

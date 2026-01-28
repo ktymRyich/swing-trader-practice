@@ -463,8 +463,23 @@ export default function HomePage() {
                       <div className="font-medium">
                         {session.stockName} ({session.symbol})
                       </div>
-                      <div className="text-sm text-muted-foreground">
-                        {new Date(session.startDate).toLocaleDateString('ja-JP')}
+                      <div className="text-sm text-muted-foreground flex items-center gap-2 flex-wrap">
+                        <span>
+                          {new Date(session.createdAt || session.startDate).toLocaleDateString('ja-JP', {
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </span>
+                        <span className="text-xs bg-muted px-1.5 py-0.5 rounded">
+                          {session.periodDays}日間
+                        </span>
+                        {(session.practiceStartDate || session.startDateOfData) && (
+                          <span className="text-xs">
+                            ({new Date(session.practiceStartDate || session.startDateOfData).toLocaleDateString('ja-JP', { year: 'numeric', month: 'short', day: 'numeric' })}〜)
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className="text-right">
@@ -483,8 +498,8 @@ export default function HomePage() {
                           </div>
                         </>
                       ) : (
-                        <div className="text-sm font-medium">
-                          進行中
+                        <div className="text-sm font-medium text-primary">
+                          進行中 ({session.currentDay || 0}/{session.periodDays}日)
                         </div>
                       )}
                     </div>

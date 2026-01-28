@@ -69,6 +69,7 @@ export default function NewSessionPage() {
         status: 'paused' as const,
         currentDay: 0,
         practiceStartIndex: data.practiceStartIndex,
+        practiceStartDate: data.practiceStartDate, // 練習開始日（リプレイ開始の株価日付）
         startDateOfData: data.startDate,
         endDateOfData: data.endDate,
         tradeCount: 0,

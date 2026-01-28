@@ -37,6 +37,7 @@ function initializeDatabase(db: Database.Database) {
       practice_start_date TEXT NOT NULL,
       practice_start_index INTEGER NOT NULL,
       practice_end_date TEXT NOT NULL,
+      practice_replay_date TEXT,
       status TEXT NOT NULL,
       current_day INTEGER DEFAULT 0,
       period_days INTEGER DEFAULT 60,
@@ -49,6 +50,20 @@ function initializeDatabase(db: Database.Database) {
       updated_at TEXT NOT NULL
     )
   `);
+
+  // 既存テーブルにpractice_replay_dateカラムがない場合は追加
+  try {
+    db.exec(`ALTER TABLE sessions ADD COLUMN practice_replay_date TEXT`);
+  } catch (e) {
+    // カラムが既に存在する場合は無視
+  }
+
+  // 既存テーブルにma_settingsカラムがない場合は追加
+  try {
+    db.exec(`ALTER TABLE sessions ADD COLUMN ma_settings TEXT`);
+  } catch (e) {
+    // カラムが既に存在する場合は無視
+  }
 
   // ポジションテーブル
   db.exec(`

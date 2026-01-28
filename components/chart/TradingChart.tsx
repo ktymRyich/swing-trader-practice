@@ -18,7 +18,7 @@ interface TradingChartProps {
 
 export default function TradingChart({
   stockPrices,
-  maSettings,
+  maSettings = [5, 25, 75],
   trades = [],
   onTradeClick,
   width,

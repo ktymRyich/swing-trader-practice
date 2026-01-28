@@ -58,6 +58,7 @@ export async function POST(request: Request) {
       stock: randomStock,
       // 株価データは返さない（後でAPIから取得）
       practiceStartIndex: startIndex + historicalDays,
+      practiceStartDate, // 練習開始日（リプレイ開始日）
       startDate: selectedPrices[0].date,
       endDate: selectedPrices[selectedPrices.length - 1].date,
     });

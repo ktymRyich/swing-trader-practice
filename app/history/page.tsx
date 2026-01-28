@@ -265,17 +265,24 @@ export default function HistoryPage() {
                       </div>
                       
                       <div className="text-sm text-muted-foreground mb-4">
-                        {new Date(session.startDate).toLocaleDateString('ja-JP', {
+                        {new Date(session.createdAt || session.startDate).toLocaleDateString('ja-JP', {
                           year: 'numeric',
                           month: 'long',
                           day: 'numeric',
-                        })}
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })} 開始
                       </div>
 
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                         <div>
-                          <div className="text-xs text-muted-foreground">期間</div>
+                          <div className="text-xs text-muted-foreground">練習期間</div>
                           <div className="font-medium">{session.periodDays}日</div>
+                          {(session.practiceStartDate || session.startDateOfData) && (
+                            <div className="text-xs text-muted-foreground mt-0.5">
+                              {new Date(session.practiceStartDate || session.startDateOfData).toLocaleDateString('ja-JP', { year: 'numeric', month: 'short', day: 'numeric' })}〜
+                            </div>
+                          )}
                         </div>
                         <div>
                           <div className="text-xs text-muted-foreground">取引回数</div>

@@ -11,8 +11,7 @@ import PlaybackControls from '@/components/trading/PlaybackControls';
 import TradeHistory from '@/components/trading/TradeHistory';
 import { ArrowLeft, Plus } from 'lucide-react';
 import Link from 'next/link';
-import { calculateBuyOrder, calculateSellOrder } from '@/lib/trading/calculator';
-import { checkAllRules } from '@/lib/trading/rules';
+import { calculateBuyOrder, calculateSellOrder, calculatePositionPnL } from '@/lib/trading/calculator';
 
 export default function SessionPage({ params }: { params: Promise<{ sessionId: string }> }) {
   const { sessionId } = use(params);
@@ -109,61 +108,135 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
     return () => clearInterval(timer);
   }, [isPlaying, currentPriceIndex, stockPrices.length, currentSession]);
 
-  // ルール違反チェック（1日ごと）
+  // 既に記録済みの違反を追跡（ポジションID + 違反タイプ）
+  const [recordedViolations, setRecordedViolations] = useState<Set<string>>(new Set());
+
+  // ルール違反チェック（1日ごと）- 同じポジションの同じ違反は1回のみ記録
   useEffect(() => {
     if (openPositions.length === 0 || !currentSession || !nickname) return;
     if (visiblePrices.length === 0) return;
 
     const currentPrice = visiblePrices[visiblePrices.length - 1].close;
-    
-    const positionsWithPrice = openPositions.map(p => ({
-      type: p.type,
-      shares: p.shares,
-      entryPrice: p.entryPrice,
-      currentPrice,
-    }));
 
+    // 各ポジションごとに違反をチェック
+    const newViolations: Array<{
+      positionId: string;
+      type: string;
+      description: string;
+      severity: 'warning' | 'critical';
+    }> = [];
+
+    for (const position of openPositions) {
+      // 損切りルール違反チェック
+      const { pnLPercent } = calculatePositionPnL({
+        type: position.type,
+        shares: position.shares,
+        entryPrice: position.entryPrice,
+        currentPrice: currentPrice,
+        unrealizedPnL: 0,
+        unrealizedPnLPercent: 0
+      });
+
+      const positionId = position.id || `pos_${position.entryDate}_${position.shares}`;
+
+      if (pnLPercent < -10) {
+        const violationKey = `${positionId}_stop_loss`;
+        if (!recordedViolations.has(violationKey)) {
+          newViolations.push({
+            positionId,
+            type: 'stop_loss',
+            description: `含み損が${pnLPercent.toFixed(2)}%に達しています（損切りライン: -10%）`,
+            severity: 'critical',
+          });
+        }
+      }
+
+      // ポジションサイズ違反チェック
+      const positionValue = position.shares * currentPrice;
+      const sizePercent = (positionValue / currentSession.currentCapital) * 100;
+      if (sizePercent > 30) {
+        const violationKey = `${positionId}_position_size`;
+        if (!recordedViolations.has(violationKey)) {
+          newViolations.push({
+            positionId,
+            type: 'position_size',
+            description: `ポジションサイズが${sizePercent.toFixed(1)}%です（上限: 30%）`,
+            severity: 'warning',
+          });
+        }
+      }
+    }
+
+    // 同時保有数違反チェック（セッション単位で1回のみ）
+    if (openPositions.length > 3) {
+      const violationKey = 'session_max_positions';
+      if (!recordedViolations.has(violationKey)) {
+        newViolations.push({
+          positionId: 'session',
+          type: 'max_positions',
+          description: `${openPositions.length}銘柄を同時保有しています（上限: 3銘柄）`,
+          severity: 'warning',
+        });
+      }
+    }
+
+    // レバレッジ違反チェック（セッション単位で1回のみ）
     const totalPositionValue = openPositions.reduce(
       (sum, p) => sum + p.shares * currentPrice,
       0
     );
-
-    const violations = checkAllRules({
-      openPositions: positionsWithPrice,
-      currentCapital: currentSession.currentCapital,
-      totalPositionValue,
-    });
+    const leverage = totalPositionValue / currentSession.currentCapital;
+    if (leverage > 2) {
+      const violationKey = 'session_leverage';
+      if (!recordedViolations.has(violationKey)) {
+        newViolations.push({
+          positionId: 'session',
+          type: 'leverage',
+          description: `レバレッジが${leverage.toFixed(2)}倍です（推奨上限: 2倍）`,
+          severity: 'critical',
+        });
+      }
+    }
 
     // 新しい違反があれば記録
-    if (violations.length > 0) {
-      violations.forEach((v) => {
+    if (newViolations.length > 0) {
+      const newRecordedKeys = new Set(recordedViolations);
+      let updatedViolations = [...(currentSession.violations || [])];
+      let violationCount = currentSession.ruleViolations || 0;
+
+      newViolations.forEach((v) => {
+        const violationKey = `${v.positionId}_${v.type}`;
+        newRecordedKeys.add(violationKey);
+
         const violation = {
           id: generateViolationId(),
           sessionId: currentSession.id!,
           timestamp: new Date().toISOString(),
+          positionId: v.positionId,
           type: v.type,
           description: v.description,
           severity: v.severity,
         };
-        
-        // セッションに違反を追加
-        const updatedViolations = [...(currentSession.violations || []), violation];
-        const currentViolations = currentSession.ruleViolations || 0;
-        
-        updateSession({ 
-          ruleViolations: currentViolations + 1,
-          violations: updatedViolations
-        });
-        
-        // サーバーに保存
-        saveSession({
-          ...currentSession,
-          ruleViolations: currentViolations + 1,
-          violations: updatedViolations
-        });
+
+        updatedViolations.push(violation);
+        violationCount++;
+      });
+
+      setRecordedViolations(newRecordedKeys);
+
+      updateSession({
+        ruleViolations: violationCount,
+        violations: updatedViolations
+      });
+
+      // サーバーに保存
+      saveSession({
+        ...currentSession,
+        ruleViolations: violationCount,
+        violations: updatedViolations
       });
     }
-  }, [currentPriceIndex]);
+  }, [currentPriceIndex, openPositions.length]);
 
   const saveSession = async (session: any) => {
     if (!nickname) return;
