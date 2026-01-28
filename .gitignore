@@ -42,3 +42,8 @@ next-env.d.ts
 
 # Stock data cache (optional: comment out if you want to commit cache)
 # lib/data/cache/*.json
+
+# SQLite database (but keep JSON backups)
+data/sessions.db
+data/sessions.db-shm
+data/sessions.db-wal

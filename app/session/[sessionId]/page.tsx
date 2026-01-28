@@ -169,10 +169,13 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
     if (!nickname) return;
     
     try {
+      // 株価データを除外してセッションを保存
+      const { prices, ...sessionWithoutPrices } = session;
+      
       await fetch(`/api/sessions/${sessionId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nickname, session })
+        body: JSON.stringify({ nickname, session: sessionWithoutPrices })
       });
     } catch (error) {
       console.error('セッション保存エラー:', error);
@@ -191,6 +194,16 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
       }
 
       const session = data.session;
+
+      // 株価データを動的に読み込む
+      const pricesResponse = await fetch(`/api/stocks/prices/${session.symbol}?startDate=${session.startDateOfData}&endDate=${session.endDateOfData}`);
+      const pricesData = await pricesResponse.json();
+      
+      if (!pricesData.success || !pricesData.prices || pricesData.prices.length === 0) {
+        alert('株価データの読み込みに失敗しました');
+        router.push('/');
+        return;
+      }
 
       // 株式情報を設定（セッションデータになければstocks.jsonから取得）
       let stockDescription = session.stockDescription;
@@ -222,8 +235,8 @@ export default function SessionPage({ params }: { params: Promise<{ sessionId: s
 
       // ストアに状態をセット（正しい順序で）
       setSession(session);
-      // まず価格データをセット
-      setStockPrices(session.prices || []);
+      // APIから取得した価格データをセット
+      setStockPrices(pricesData.prices);
       // その後に過去データ分を考慮してインデックスを設定（これでvisiblePricesが正しく計算される）
       const practiceStartIndex = session.practiceStartIndex || 0;
       const actualIndex = practiceStartIndex + (session.currentDay || 0);

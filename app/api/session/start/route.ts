@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: true,
       stock: randomStock,
-      prices: selectedPrices,
+      // 株価データは返さない（後でAPIから取得）
       practiceStartIndex: startIndex + historicalDays,
       startDate: selectedPrices[0].date,
       endDate: selectedPrices[selectedPrices.length - 1].date,

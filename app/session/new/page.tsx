@@ -80,7 +80,7 @@ export default function NewSessionPage() {
         positions: [],
         trades: [],
         violations: [],
-        prices: data.prices // サーバーから取得した価格データ
+        // 株価データは保存しない（後で動的に読み込む）
       };
 
       // サーバーに保存
