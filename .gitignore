@@ -15,12 +15,14 @@
 
 # Misc
 .DS_Store
+Thumbs.db
 *.pem
 
 # Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.log
 
 # Local env files
 .env*.local
@@ -40,10 +42,20 @@ next-env.d.ts
 *.swo
 *~
 
-# Stock data cache (optional: comment out if you want to commit cache)
-# lib/data/cache/*.json
+# User data (personal information)
+data/users/*.json
 
-# SQLite database (but keep JSON backups)
+# Session data (practice sessions)
+data/sessions/*.json
+
+# Stock data cache
+lib/data/cache/*.json
+
+# SQLite database
 data/sessions.db
 data/sessions.db-shm
 data/sessions.db-wal
+
+# Backup files
+*.backup.*
+*.json-backup.*
