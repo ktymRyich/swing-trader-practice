@@ -13437,5 +13437,7414 @@
       }
     ],
     "endDate": "2026-01-28T10:50:59.316Z"
+  },
+  {
+    "id": "session_1769597475907_z7vqihzzk",
+    "nickname": "りゅち",
+    "startDate": "2026-01-28T10:51:15.907Z",
+    "symbol": "7201",
+    "stockName": "日産自動車",
+    "stockSector": "自動車",
+    "stockDescription": "国内3位の自動車メーカー。電気自動車(EV)に注力",
+    "stockMarketCapEstimate": "約2兆円",
+    "periodDays": 60,
+    "initialCapital": 1000000,
+    "currentCapital": 1117120.851196289,
+    "playbackSpeed": 4,
+    "status": "completed",
+    "currentDay": 59,
+    "practiceStartIndex": 709,
+    "startDateOfData": "2020-01-06",
+    "endDateOfData": "2023-02-28",
+    "tradeCount": 3,
+    "winCount": 3,
+    "winRate": 100,
+    "maxDrawdown": 0,
+    "ruleViolations": 38,
+    "maSettings": [
+      5,
+      10,
+      20,
+      50,
+      100
+    ],
+    "positions": [
+      {
+        "id": "position_1769597878047_r655g8qgb",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "openTradeId": "trade_1769597878047_k48tcz6l4",
+        "type": "short",
+        "tradingType": "margin",
+        "shares": 1000,
+        "entryPrice": 489.20001220703125,
+        "entryDate": "2022-12-01",
+        "status": "closed",
+        "closeTradeId": "trade_1769598047918_0f3goh2gg",
+        "exitPrice": 462,
+        "exitDate": "2022-12-12",
+        "profit": 27172.81219482422,
+        "profitRate": 5.554540375466014
+      },
+      {
+        "id": "position_1769598211144_wufxq49px",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "openTradeId": "trade_1769598211144_zcuwv4p61",
+        "type": "long",
+        "tradingType": "spot",
+        "shares": 2000,
+        "entryPrice": 426.70001220703125,
+        "entryDate": "2023-01-06",
+        "status": "closed",
+        "closeTradeId": "trade_1769598256768_ofmxl4xvj",
+        "exitPrice": 427.79998779296875,
+        "exitDate": "2023-01-12",
+        "profit": 809.3511962890625,
+        "profitRate": 0.09483843134932606
+      },
+      {
+        "id": "position_1769598340878_c7wq4x9tf",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "openTradeId": "trade_1769598340878_zxqu2drzn",
+        "type": "long",
+        "tradingType": "spot",
+        "shares": 1000,
+        "entryPrice": 435.29998779296875,
+        "entryDate": "2023-01-18",
+        "status": "closed",
+        "closeTradeId": "trade_1769598472924_6b8af17qz",
+        "exitPrice": 527.5999755859375,
+        "exitDate": "2023-02-28",
+        "profit": 91237.38781738281,
+        "profitRate": 20.959657793690507
+      }
+    ],
+    "trades": [
+      {
+        "id": "trade_1769597878047_k48tcz6l4",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T10:57:58.047Z",
+        "tradeDate": "2022-12-01",
+        "type": "sell",
+        "tradingType": "margin",
+        "isShort": true,
+        "shares": 1000,
+        "price": 489.20001220703125,
+        "fee": 198,
+        "slippage": 489.20001220703125,
+        "totalCost": 488512.8121948242,
+        "memo": "オレンジに跳ね返された逆下半身",
+        "capitalAfterTrade": 1488512.8121948242
+      },
+      {
+        "id": "trade_1769598047918_0f3goh2gg",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:00:47.918Z",
+        "tradeDate": "2022-12-12",
+        "type": "sell",
+        "tradingType": "margin",
+        "isShort": false,
+        "shares": 1000,
+        "price": 462,
+        "fee": 198,
+        "slippage": 462,
+        "totalCost": 461340,
+        "memo": "横ばいになって陽線増えて前の底値に近いので手仕舞い",
+        "capitalAfterTrade": 1027172.8121948242
+      },
+      {
+        "id": "trade_1769598211144_zcuwv4p61",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:03:31.144Z",
+        "tradeDate": "2023-01-06",
+        "type": "buy",
+        "tradingType": "spot",
+        "isShort": false,
+        "shares": 2000,
+        "price": 426.70001220703125,
+        "fee": 535,
+        "slippage": 853.4000244140625,
+        "totalCost": 854788.4244384766,
+        "memo": "かなりの安値で下半身",
+        "capitalAfterTrade": 172384.38775634766
+      },
+      {
+        "id": "trade_1769598256768_ofmxl4xvj",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:04:16.769Z",
+        "tradeDate": "2023-01-12",
+        "type": "sell",
+        "tradingType": "spot",
+        "isShort": false,
+        "shares": 2000,
+        "price": 427.79998779296875,
+        "fee": 535,
+        "slippage": 855.5999755859375,
+        "totalCost": 854209.3756103516,
+        "memo": "陰線2個で手仕舞い物別れと判断",
+        "capitalAfterTrade": 1026593.7633666992
+      },
+      {
+        "id": "trade_1769598340878_zxqu2drzn",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:05:40.878Z",
+        "tradeDate": "2023-01-18",
+        "type": "buy",
+        "tradingType": "spot",
+        "isShort": false,
+        "shares": 1000,
+        "price": 435.29998779296875,
+        "fee": 275,
+        "slippage": 435.29998779296875,
+        "totalCost": 436010.2877807617,
+        "memo": "下半身。紫までは上がると見た",
+        "capitalAfterTrade": 590583.4755859375
+      },
+      {
+        "id": "trade_1769598472924_6b8af17qz",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:07:52.924Z",
+        "tradeDate": "2023-02-28",
+        "type": "sell",
+        "tradingType": "spot",
+        "isShort": false,
+        "shares": 1000,
+        "price": 527.5999755859375,
+        "fee": 535,
+        "slippage": 527.5999755859375,
+        "totalCost": 526537.3756103516,
+        "memo": "終わりだけどもう少し伸びそうだね",
+        "capitalAfterTrade": 1117120.851196289
+      }
+    ],
+    "violations": [
+      {
+        "id": "violation_1769597882096_na329b1y6",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T10:58:02.096Z",
+        "type": "position_size",
+        "description": "ポジションサイズが31.9%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769597886186_93u1av1wl",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T10:58:06.186Z",
+        "type": "position_size",
+        "description": "ポジションサイズが31.0%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769597888279_2fxcagjo2",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T10:58:08.279Z",
+        "type": "position_size",
+        "description": "ポジションサイズが31.3%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769597894817_b313zo9ie",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T10:58:14.817Z",
+        "type": "position_size",
+        "description": "ポジションサイズが31.2%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769597899164_0z161bqta",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T10:58:19.164Z",
+        "type": "position_size",
+        "description": "ポジションサイズが31.0%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769597900619_91kpq3ck6",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T10:58:20.619Z",
+        "type": "position_size",
+        "description": "ポジションサイズが30.8%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769597902097_4f9yedfw5",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T10:58:22.097Z",
+        "type": "position_size",
+        "description": "ポジションサイズが31.0%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598215108_5l661188d",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:03:35.108Z",
+        "type": "leverage",
+        "description": "レバレッジが5.00倍です（推奨上限: 2倍）",
+        "severity": "critical"
+      },
+      {
+        "id": "violation_1769598219273_sntmko5tj",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:03:39.273Z",
+        "type": "leverage",
+        "description": "レバレッジが4.99倍です（推奨上限: 2倍）",
+        "severity": "critical"
+      },
+      {
+        "id": "violation_1769598224910_fupjkq0a1",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:03:44.910Z",
+        "type": "leverage",
+        "description": "レバレッジが4.96倍です（推奨上限: 2倍）",
+        "severity": "critical"
+      },
+      {
+        "id": "violation_1769598358881_ea868wpfx",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:05:58.881Z",
+        "type": "position_size",
+        "description": "ポジションサイズが71.0%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598360299_ktbktenjr",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:00.299Z",
+        "type": "position_size",
+        "description": "ポジションサイズが72.9%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598361397_mbkmhlt6n",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:01.397Z",
+        "type": "position_size",
+        "description": "ポジションサイズが73.5%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598368849_ha4h3al8d",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:08.849Z",
+        "type": "position_size",
+        "description": "ポジションサイズが74.8%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598373984_i2heqejzi",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:13.984Z",
+        "type": "position_size",
+        "description": "ポジションサイズが75.2%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598375565_g19qohzon",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:15.565Z",
+        "type": "position_size",
+        "description": "ポジションサイズが76.2%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598377155_gwwgl4ep0",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:17.155Z",
+        "type": "position_size",
+        "description": "ポジションサイズが77.4%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598379968_cw9exrpay",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:19.968Z",
+        "type": "position_size",
+        "description": "ポジションサイズが76.9%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598381471_tzq4s723o",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:21.471Z",
+        "type": "position_size",
+        "description": "ポジションサイズが78.4%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598384421_30xm9ukyl",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:24.421Z",
+        "type": "position_size",
+        "description": "ポジションサイズが79.2%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598389904_ugqizlv29",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:29.904Z",
+        "type": "position_size",
+        "description": "ポジションサイズが77.7%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598393277_8c818j3pq",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:33.277Z",
+        "type": "position_size",
+        "description": "ポジションサイズが78.3%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598396490_7cjqbi4pr",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:36.490Z",
+        "type": "position_size",
+        "description": "ポジションサイズが80.0%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598400995_0807l3yn4",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:40.995Z",
+        "type": "position_size",
+        "description": "ポジションサイズが80.3%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598403208_qch2abzzo",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:43.208Z",
+        "type": "position_size",
+        "description": "ポジションサイズが80.1%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598404579_ee1o3loq0",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:44.579Z",
+        "type": "position_size",
+        "description": "ポジションサイズが80.0%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598407227_1wmyn5gdb",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:47.227Z",
+        "type": "position_size",
+        "description": "ポジションサイズが81.3%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598409445_g4lhhzs2m",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:49.445Z",
+        "type": "position_size",
+        "description": "ポジションサイズが81.8%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598411126_zi107y9re",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:51.126Z",
+        "type": "position_size",
+        "description": "ポジションサイズが81.7%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598416647_5rk15a4rg",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:06:56.647Z",
+        "type": "position_size",
+        "description": "ポジションサイズが82.9%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598438062_s86il0s9r",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:07:18.062Z",
+        "type": "position_size",
+        "description": "ポジションサイズが86.3%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598441831_eicne1gun",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:07:21.831Z",
+        "type": "position_size",
+        "description": "ポジションサイズが87.8%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598444998_lrafckqnq",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:07:24.998Z",
+        "type": "position_size",
+        "description": "ポジションサイズが88.8%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598448168_z0w6740o0",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:07:28.168Z",
+        "type": "position_size",
+        "description": "ポジションサイズが91.1%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598452466_elamq1hk7",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:07:32.466Z",
+        "type": "position_size",
+        "description": "ポジションサイズが88.0%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598454069_zqg8hvkc3",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:07:34.069Z",
+        "type": "position_size",
+        "description": "ポジションサイズが89.5%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598455835_5uvl8jbxx",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:07:35.835Z",
+        "type": "position_size",
+        "description": "ポジションサイズが89.5%です（上限: 30%）",
+        "severity": "warning"
+      },
+      {
+        "id": "violation_1769598457717_avls17iv4",
+        "sessionId": "session_1769597475907_z7vqihzzk",
+        "timestamp": "2026-01-28T11:07:37.717Z",
+        "type": "position_size",
+        "description": "ポジションサイズが89.3%です（上限: 30%）",
+        "severity": "warning"
+      }
+    ],
+    "prices": [
+      {
+        "symbol": "7201",
+        "date": "2020-01-06",
+        "open": 630.7000122070312,
+        "high": 632,
+        "low": 619.5,
+        "close": 625.5,
+        "volume": 17476800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-07",
+        "open": 630.0999755859375,
+        "high": 638.2999877929688,
+        "low": 630,
+        "close": 636.5,
+        "volume": 12454400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-08",
+        "open": 630,
+        "high": 634.7999877929688,
+        "low": 623.7999877929688,
+        "close": 630,
+        "volume": 14801000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-09",
+        "open": 640,
+        "high": 646.2000122070312,
+        "low": 637,
+        "close": 644.2999877929688,
+        "volume": 13161400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-10",
+        "open": 644.2999877929688,
+        "high": 646.2000122070312,
+        "low": 636.7000122070312,
+        "close": 636.9000244140625,
+        "volume": 12050100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-14",
+        "open": 630,
+        "high": 630.4000244140625,
+        "low": 617.7999877929688,
+        "close": 618,
+        "volume": 22549700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-15",
+        "open": 620,
+        "high": 629.2000122070312,
+        "low": 618.5999755859375,
+        "close": 627.5,
+        "volume": 12496000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-16",
+        "open": 626.0999755859375,
+        "high": 630.5,
+        "low": 624.2999877929688,
+        "close": 625.2999877929688,
+        "volume": 8394900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-17",
+        "open": 627,
+        "high": 635,
+        "low": 626.5999755859375,
+        "close": 634.7999877929688,
+        "volume": 9564000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-20",
+        "open": 638,
+        "high": 641,
+        "low": 636.4000244140625,
+        "close": 637.5,
+        "volume": 5206600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-21",
+        "open": 639,
+        "high": 641.2000122070312,
+        "low": 633.5,
+        "close": 634.4000244140625,
+        "volume": 6748500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-22",
+        "open": 631,
+        "high": 633.2999877929688,
+        "low": 627.2999877929688,
+        "close": 631.5,
+        "volume": 8153700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-23",
+        "open": 629,
+        "high": 630.4000244140625,
+        "low": 621.2999877929688,
+        "close": 621.5999755859375,
+        "volume": 8633300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-24",
+        "open": 620,
+        "high": 620.7000122070312,
+        "low": 616,
+        "close": 616.2000122070312,
+        "volume": 8837900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-27",
+        "open": 609.0999755859375,
+        "high": 609.0999755859375,
+        "low": 597,
+        "close": 597.7000122070312,
+        "volume": 21022800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-28",
+        "open": 597,
+        "high": 601.4000244140625,
+        "low": 589,
+        "close": 599.2000122070312,
+        "volume": 14670600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-29",
+        "open": 598.9000244140625,
+        "high": 600.7999877929688,
+        "low": 594.5,
+        "close": 599.7999877929688,
+        "volume": 8659600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-30",
+        "open": 597.4000244140625,
+        "high": 600.2999877929688,
+        "low": 593.7999877929688,
+        "close": 598.0999755859375,
+        "volume": 8354000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-01-31",
+        "open": 598.2000122070312,
+        "high": 602.5999755859375,
+        "low": 597.7000122070312,
+        "close": 599.5,
+        "volume": 8564800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-03",
+        "open": 589.9000244140625,
+        "high": 593.5,
+        "low": 586,
+        "close": 590,
+        "volume": 10267600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-04",
+        "open": 586.9000244140625,
+        "high": 589.4000244140625,
+        "low": 582.7999877929688,
+        "close": 587.5999755859375,
+        "volume": 10057600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-05",
+        "open": 593.2000122070312,
+        "high": 596.5,
+        "low": 590,
+        "close": 592.5999755859375,
+        "volume": 10432200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-06",
+        "open": 601.5999755859375,
+        "high": 607.5999755859375,
+        "low": 601.4000244140625,
+        "close": 604,
+        "volume": 13516900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-07",
+        "open": 604,
+        "high": 605.7000122070312,
+        "low": 595.0999755859375,
+        "close": 596.0999755859375,
+        "volume": 11162500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-10",
+        "open": 588,
+        "high": 591.4000244140625,
+        "low": 584.5,
+        "close": 587.2999877929688,
+        "volume": 7789800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-12",
+        "open": 587,
+        "high": 587,
+        "low": 577,
+        "close": 577.4000244140625,
+        "volume": 13383600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-13",
+        "open": 570.4000244140625,
+        "high": 572.7000122070312,
+        "low": 564.2999877929688,
+        "close": 568.5,
+        "volume": 16145100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-14",
+        "open": 528.5,
+        "high": 534.9000244140625,
+        "low": 511,
+        "close": 513.7000122070312,
+        "volume": 46835300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-17",
+        "open": 505,
+        "high": 506.5,
+        "low": 498,
+        "close": 502.79998779296875,
+        "volume": 25272300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-18",
+        "open": 500,
+        "high": 503.29998779296875,
+        "low": 492,
+        "close": 494.70001220703125,
+        "volume": 24386600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-19",
+        "open": 496.5,
+        "high": 509.3999938964844,
+        "low": 496,
+        "close": 504.6000061035156,
+        "volume": 20455600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-20",
+        "open": 509.3999938964844,
+        "high": 514.0999755859375,
+        "low": 501.3999938964844,
+        "close": 504.3999938964844,
+        "volume": 18192700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-21",
+        "open": 502.70001220703125,
+        "high": 508.1000061035156,
+        "low": 501.5,
+        "close": 504.1000061035156,
+        "volume": 15834700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-25",
+        "open": 484.8999938964844,
+        "high": 487.8999938964844,
+        "low": 480.29998779296875,
+        "close": 481.3999938964844,
+        "volume": 21730400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-26",
+        "open": 473.3999938964844,
+        "high": 482.79998779296875,
+        "low": 471.29998779296875,
+        "close": 481.79998779296875,
+        "volume": 19069300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-27",
+        "open": 470.8999938964844,
+        "high": 475.8999938964844,
+        "low": 469.1000061035156,
+        "close": 470.29998779296875,
+        "volume": 19643800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-02-28",
+        "open": 454.29998779296875,
+        "high": 464.70001220703125,
+        "low": 453,
+        "close": 463.6000061035156,
+        "volume": 29116800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-02",
+        "open": 453.8999938964844,
+        "high": 470.79998779296875,
+        "low": 443.79998779296875,
+        "close": 460.5,
+        "volume": 24801100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-03",
+        "open": 466.3999938964844,
+        "high": 467.79998779296875,
+        "low": 443.1000061035156,
+        "close": 443.1000061035156,
+        "volume": 26599000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-04",
+        "open": 440.29998779296875,
+        "high": 454.5,
+        "low": 436.29998779296875,
+        "close": 448.6000061035156,
+        "volume": 20189600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-05",
+        "open": 450.20001220703125,
+        "high": 451.3999938964844,
+        "low": 441.1000061035156,
+        "close": 445.3999938964844,
+        "volume": 15269500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-06",
+        "open": 437,
+        "high": 439.8999938964844,
+        "low": 422,
+        "close": 424.1000061035156,
+        "volume": 21743700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-09",
+        "open": 400,
+        "high": 402.70001220703125,
+        "low": 387,
+        "close": 389.20001220703125,
+        "volume": 33593900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-10",
+        "open": 382.3999938964844,
+        "high": 403.20001220703125,
+        "low": 372,
+        "close": 399.8999938964844,
+        "volume": 37890300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-11",
+        "open": 407,
+        "high": 421,
+        "low": 402.5,
+        "close": 403.3999938964844,
+        "volume": 28366100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-12",
+        "open": 397.79998779296875,
+        "high": 400.6000061035156,
+        "low": 382,
+        "close": 390.3999938964844,
+        "volume": 30853900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-13",
+        "open": 367.1000061035156,
+        "high": 400,
+        "low": 360,
+        "close": 382.70001220703125,
+        "volume": 50526300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-16",
+        "open": 385.3999938964844,
+        "high": 389.5,
+        "low": 368.79998779296875,
+        "close": 369.29998779296875,
+        "volume": 28998100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-17",
+        "open": 361.29998779296875,
+        "high": 382.1000061035156,
+        "low": 356.20001220703125,
+        "close": 378.20001220703125,
+        "volume": 30424500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-18",
+        "open": 374.79998779296875,
+        "high": 401.3999938964844,
+        "low": 373,
+        "close": 385,
+        "volume": 40688800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-19",
+        "open": 395.3999938964844,
+        "high": 415,
+        "low": 380.70001220703125,
+        "close": 390.29998779296875,
+        "volume": 33663000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-23",
+        "open": 382.29998779296875,
+        "high": 389.79998779296875,
+        "low": 361.79998779296875,
+        "close": 365.3999938964844,
+        "volume": 33583900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-24",
+        "open": 376.8999938964844,
+        "high": 381.1000061035156,
+        "low": 360.3999938964844,
+        "close": 366.79998779296875,
+        "volume": 30621300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-25",
+        "open": 382.79998779296875,
+        "high": 401.1000061035156,
+        "low": 377.70001220703125,
+        "close": 401.1000061035156,
+        "volume": 28187300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-26",
+        "open": 390,
+        "high": 392.6000061035156,
+        "low": 372.29998779296875,
+        "close": 380.3999938964844,
+        "volume": 28147800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-27",
+        "open": 386,
+        "high": 391.3999938964844,
+        "low": 374,
+        "close": 386.3999938964844,
+        "volume": 29122500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-30",
+        "open": 378.3999938964844,
+        "high": 385.20001220703125,
+        "low": 374.20001220703125,
+        "close": 384.8999938964844,
+        "volume": 23599200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-03-31",
+        "open": 380,
+        "high": 380.5,
+        "low": 356.6000061035156,
+        "close": 356.6000061035156,
+        "volume": 31871000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-01",
+        "open": 357.8999938964844,
+        "high": 363.5,
+        "low": 340,
+        "close": 342.3999938964844,
+        "volume": 31247700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-02",
+        "open": 332,
+        "high": 332.6000061035156,
+        "low": 322,
+        "close": 323.3999938964844,
+        "volume": 32114900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-03",
+        "open": 320.20001220703125,
+        "high": 329.3999938964844,
+        "low": 315.3999938964844,
+        "close": 315.5,
+        "volume": 28922700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-06",
+        "open": 314.6000061035156,
+        "high": 347.70001220703125,
+        "low": 311.20001220703125,
+        "close": 341.3999938964844,
+        "volume": 28681600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-07",
+        "open": 350,
+        "high": 353,
+        "low": 335,
+        "close": 346.70001220703125,
+        "volume": 26885700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-08",
+        "open": 350,
+        "high": 359,
+        "low": 339,
+        "close": 358.3999938964844,
+        "volume": 26202000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-09",
+        "open": 357.1000061035156,
+        "high": 363.5,
+        "low": 353,
+        "close": 363.5,
+        "volume": 21349800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-10",
+        "open": 363.1000061035156,
+        "high": 374.79998779296875,
+        "low": 357.70001220703125,
+        "close": 374.70001220703125,
+        "volume": 18448900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-13",
+        "open": 370.1000061035156,
+        "high": 375.8999938964844,
+        "low": 364.70001220703125,
+        "close": 369,
+        "volume": 13983300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-14",
+        "open": 366.1000061035156,
+        "high": 380.5,
+        "low": 361.29998779296875,
+        "close": 376.6000061035156,
+        "volume": 16690200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-15",
+        "open": 373.6000061035156,
+        "high": 375.5,
+        "low": 367.29998779296875,
+        "close": 369.20001220703125,
+        "volume": 15935000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-16",
+        "open": 358.6000061035156,
+        "high": 359,
+        "low": 351.6000061035156,
+        "close": 354.20001220703125,
+        "volume": 18626300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-17",
+        "open": 361.5,
+        "high": 372.1000061035156,
+        "low": 358.8999938964844,
+        "close": 364.70001220703125,
+        "volume": 25199300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-20",
+        "open": 361.20001220703125,
+        "high": 369.3999938964844,
+        "low": 360.79998779296875,
+        "close": 366.20001220703125,
+        "volume": 11714700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-21",
+        "open": 360.1000061035156,
+        "high": 366.8999938964844,
+        "low": 354.29998779296875,
+        "close": 354.70001220703125,
+        "volume": 16183300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-22",
+        "open": 350,
+        "high": 350.3999938964844,
+        "low": 336.5,
+        "close": 337.3999938964844,
+        "volume": 19877500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-23",
+        "open": 340.79998779296875,
+        "high": 352.70001220703125,
+        "low": 339,
+        "close": 351.79998779296875,
+        "volume": 18000500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-24",
+        "open": 347.29998779296875,
+        "high": 349.8999938964844,
+        "low": 340.70001220703125,
+        "close": 346.79998779296875,
+        "volume": 20458800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-27",
+        "open": 349,
+        "high": 360.5,
+        "low": 345.70001220703125,
+        "close": 360.5,
+        "volume": 15596700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-28",
+        "open": 362.79998779296875,
+        "high": 370.29998779296875,
+        "low": 358,
+        "close": 367.3999938964844,
+        "volume": 15980300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-04-30",
+        "open": 380,
+        "high": 386.3999938964844,
+        "low": 369.79998779296875,
+        "close": 369.79998779296875,
+        "volume": 26178000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-01",
+        "open": 364.29998779296875,
+        "high": 364.29998779296875,
+        "low": 345.3999938964844,
+        "close": 348.29998779296875,
+        "volume": 21768900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-07",
+        "open": 340.29998779296875,
+        "high": 341.70001220703125,
+        "low": 331.29998779296875,
+        "close": 333.6000061035156,
+        "volume": 21936600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-08",
+        "open": 337.29998779296875,
+        "high": 348,
+        "low": 334.70001220703125,
+        "close": 347.6000061035156,
+        "volume": 17923400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-11",
+        "open": 355.1000061035156,
+        "high": 380,
+        "low": 354.79998779296875,
+        "close": 380,
+        "volume": 23978100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-12",
+        "open": 375,
+        "high": 377.6000061035156,
+        "low": 368.8999938964844,
+        "close": 372.79998779296875,
+        "volume": 18455200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-13",
+        "open": 361,
+        "high": 369.5,
+        "low": 359,
+        "close": 363.20001220703125,
+        "volume": 15965100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-14",
+        "open": 355,
+        "high": 365,
+        "low": 353.1000061035156,
+        "close": 355.70001220703125,
+        "volume": 15479800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-15",
+        "open": 369,
+        "high": 377,
+        "low": 364.6000061035156,
+        "close": 369.5,
+        "volume": 22609900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-18",
+        "open": 370,
+        "high": 370.5,
+        "low": 364,
+        "close": 365,
+        "volume": 11619700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-19",
+        "open": 380.3999938964844,
+        "high": 387.20001220703125,
+        "low": 380.3999938964844,
+        "close": 384.8999938964844,
+        "volume": 24021700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-20",
+        "open": 383,
+        "high": 385.5,
+        "low": 376.79998779296875,
+        "close": 381,
+        "volume": 16945900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-21",
+        "open": 388.1000061035156,
+        "high": 391.70001220703125,
+        "low": 381.79998779296875,
+        "close": 382.6000061035156,
+        "volume": 13469600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-22",
+        "open": 384,
+        "high": 388.29998779296875,
+        "low": 370.29998779296875,
+        "close": 373,
+        "volume": 17161400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-25",
+        "open": 380,
+        "high": 381.5,
+        "low": 373,
+        "close": 374.70001220703125,
+        "volume": 12582700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-26",
+        "open": 379,
+        "high": 397.6000061035156,
+        "low": 375.5,
+        "close": 393.79998779296875,
+        "volume": 26758700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-27",
+        "open": 399.6000061035156,
+        "high": 416.79998779296875,
+        "low": 392.79998779296875,
+        "close": 415.5,
+        "volume": 28368200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-28",
+        "open": 440,
+        "high": 457.70001220703125,
+        "low": 432,
+        "close": 449.3999938964844,
+        "volume": 54649800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-05-29",
+        "open": 421,
+        "high": 428.5,
+        "low": 400.5,
+        "close": 400.8999938964844,
+        "volume": 62720800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-01",
+        "open": 405.1000061035156,
+        "high": 418.70001220703125,
+        "low": 403.1000061035156,
+        "close": 411.8999938964844,
+        "volume": 28607600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-02",
+        "open": 411.8999938964844,
+        "high": 415.5,
+        "low": 408,
+        "close": 410.29998779296875,
+        "volume": 22450100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-03",
+        "open": 422.70001220703125,
+        "high": 442.5,
+        "low": 422.29998779296875,
+        "close": 441,
+        "volume": 40631800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-04",
+        "open": 452,
+        "high": 454.1000061035156,
+        "low": 426.5,
+        "close": 431.6000061035156,
+        "volume": 40178400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-05",
+        "open": 432,
+        "high": 452.29998779296875,
+        "low": 431.1000061035156,
+        "close": 452.20001220703125,
+        "volume": 30682700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-08",
+        "open": 469,
+        "high": 491,
+        "low": 465.29998779296875,
+        "close": 487.6000061035156,
+        "volume": 47077900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-09",
+        "open": 480.1000061035156,
+        "high": 484,
+        "low": 458,
+        "close": 464.1000061035156,
+        "volume": 37992600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-10",
+        "open": 454.1000061035156,
+        "high": 467.3999938964844,
+        "low": 452.5,
+        "close": 463.8999938964844,
+        "volume": 21682100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-11",
+        "open": 440,
+        "high": 448.3999938964844,
+        "low": 423,
+        "close": 423,
+        "volume": 41833100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-12",
+        "open": 405,
+        "high": 429.1000061035156,
+        "low": 402.29998779296875,
+        "close": 422.1000061035156,
+        "volume": 45625200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-15",
+        "open": 415.79998779296875,
+        "high": 425.8999938964844,
+        "low": 408.29998779296875,
+        "close": 408.29998779296875,
+        "volume": 23648200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-16",
+        "open": 422.20001220703125,
+        "high": 444,
+        "low": 422.20001220703125,
+        "close": 441.1000061035156,
+        "volume": 32785500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-17",
+        "open": 434,
+        "high": 436.8999938964844,
+        "low": 424.79998779296875,
+        "close": 430.1000061035156,
+        "volume": 22034600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-18",
+        "open": 422.1000061035156,
+        "high": 424.6000061035156,
+        "low": 417.29998779296875,
+        "close": 422.70001220703125,
+        "volume": 22269000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-19",
+        "open": 429.1000061035156,
+        "high": 429.6000061035156,
+        "low": 419.5,
+        "close": 419.79998779296875,
+        "volume": 28446400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-22",
+        "open": 416,
+        "high": 421,
+        "low": 414.6000061035156,
+        "close": 415.8999938964844,
+        "volume": 14748100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-23",
+        "open": 421.29998779296875,
+        "high": 427.70001220703125,
+        "low": 414.8999938964844,
+        "close": 423,
+        "volume": 22747200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-24",
+        "open": 423,
+        "high": 425.70001220703125,
+        "low": 417.5,
+        "close": 417.6000061035156,
+        "volume": 17741400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-25",
+        "open": 407.3999938964844,
+        "high": 411.29998779296875,
+        "low": 402.1000061035156,
+        "close": 404.8999938964844,
+        "volume": 26533700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-26",
+        "open": 411,
+        "high": 411.79998779296875,
+        "low": 404.3999938964844,
+        "close": 408.6000061035156,
+        "volume": 19559200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-29",
+        "open": 400.3999938964844,
+        "high": 401.3999938964844,
+        "low": 392.1000061035156,
+        "close": 394.70001220703125,
+        "volume": 21461300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-06-30",
+        "open": 403.5,
+        "high": 409,
+        "low": 398.6000061035156,
+        "close": 399.20001220703125,
+        "volume": 20125800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-01",
+        "open": 398.6000061035156,
+        "high": 401.5,
+        "low": 391.29998779296875,
+        "close": 392.70001220703125,
+        "volume": 16175300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-02",
+        "open": 393,
+        "high": 404.8999938964844,
+        "low": 390.3999938964844,
+        "close": 398.5,
+        "volume": 19214800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-03",
+        "open": 404.5,
+        "high": 405,
+        "low": 388.5,
+        "close": 394,
+        "volume": 16902500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-06",
+        "open": 399,
+        "high": 416,
+        "low": 397,
+        "close": 414.29998779296875,
+        "volume": 23037900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-07",
+        "open": 406.5,
+        "high": 409,
+        "low": 395.70001220703125,
+        "close": 398.79998779296875,
+        "volume": 23066500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-08",
+        "open": 393.1000061035156,
+        "high": 399.79998779296875,
+        "low": 388.8999938964844,
+        "close": 391.20001220703125,
+        "volume": 19059700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-09",
+        "open": 391.6000061035156,
+        "high": 395,
+        "low": 382.1000061035156,
+        "close": 383.5,
+        "volume": 19227300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-10",
+        "open": 379.5,
+        "high": 380.3999938964844,
+        "low": 372.6000061035156,
+        "close": 374.79998779296875,
+        "volume": 20675800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-13",
+        "open": 385,
+        "high": 392.6000061035156,
+        "low": 382.1000061035156,
+        "close": 391.70001220703125,
+        "volume": 21413200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-14",
+        "open": 387.5,
+        "high": 393.5,
+        "low": 382.70001220703125,
+        "close": 390.29998779296875,
+        "volume": 14683700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-15",
+        "open": 409,
+        "high": 423.6000061035156,
+        "low": 407,
+        "close": 418.6000061035156,
+        "volume": 45754600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-16",
+        "open": 424,
+        "high": 446,
+        "low": 423.29998779296875,
+        "close": 444,
+        "volume": 60503700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-17",
+        "open": 447,
+        "high": 452.20001220703125,
+        "low": 438.20001220703125,
+        "close": 439.5,
+        "volume": 34077000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-20",
+        "open": 438,
+        "high": 438.1000061035156,
+        "low": 424.6000061035156,
+        "close": 426.29998779296875,
+        "volume": 20601200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-21",
+        "open": 421.29998779296875,
+        "high": 427.79998779296875,
+        "low": 418.3999938964844,
+        "close": 425.3999938964844,
+        "volume": 16034700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-22",
+        "open": 427,
+        "high": 432.70001220703125,
+        "low": 423.70001220703125,
+        "close": 424.20001220703125,
+        "volume": 13902000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-27",
+        "open": 419.79998779296875,
+        "high": 430.6000061035156,
+        "low": 414.1000061035156,
+        "close": 429.3999938964844,
+        "volume": 24896300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-28",
+        "open": 420.6000061035156,
+        "high": 421.29998779296875,
+        "low": 408.8999938964844,
+        "close": 410.79998779296875,
+        "volume": 31234100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-29",
+        "open": 386.79998779296875,
+        "high": 393.6000061035156,
+        "low": 368,
+        "close": 368.1000061035156,
+        "volume": 56718200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-30",
+        "open": 376.1000061035156,
+        "high": 379.79998779296875,
+        "low": 361.70001220703125,
+        "close": 373,
+        "volume": 33638800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-07-31",
+        "open": 371.29998779296875,
+        "high": 371.3999938964844,
+        "low": 361,
+        "close": 361,
+        "volume": 34927600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-03",
+        "open": 369,
+        "high": 377.1000061035156,
+        "low": 367,
+        "close": 370.70001220703125,
+        "volume": 22694800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-04",
+        "open": 377,
+        "high": 396.5,
+        "low": 375.6000061035156,
+        "close": 395.20001220703125,
+        "volume": 24679900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-05",
+        "open": 380.1000061035156,
+        "high": 393.29998779296875,
+        "low": 379.3999938964844,
+        "close": 388.20001220703125,
+        "volume": 19016300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-06",
+        "open": 384.1000061035156,
+        "high": 387.3999938964844,
+        "low": 378.20001220703125,
+        "close": 379.8999938964844,
+        "volume": 17093000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-07",
+        "open": 375,
+        "high": 386,
+        "low": 373.79998779296875,
+        "close": 382,
+        "volume": 16558400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-11",
+        "open": 398.79998779296875,
+        "high": 407.6000061035156,
+        "low": 396,
+        "close": 406.29998779296875,
+        "volume": 21762300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-12",
+        "open": 408.5,
+        "high": 418.20001220703125,
+        "low": 406.79998779296875,
+        "close": 413.8999938964844,
+        "volume": 21497100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-13",
+        "open": 419.29998779296875,
+        "high": 424.70001220703125,
+        "low": 415.29998779296875,
+        "close": 416.1000061035156,
+        "volume": 22801500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-14",
+        "open": 416.5,
+        "high": 418.5,
+        "low": 413.5,
+        "close": 416.5,
+        "volume": 12000500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-17",
+        "open": 417.1000061035156,
+        "high": 426.8999938964844,
+        "low": 415.6000061035156,
+        "close": 421.29998779296875,
+        "volume": 15650500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-18",
+        "open": 417,
+        "high": 422.3999938964844,
+        "low": 413,
+        "close": 416.79998779296875,
+        "volume": 13628400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-19",
+        "open": 412.5,
+        "high": 420.79998779296875,
+        "low": 409.70001220703125,
+        "close": 420.79998779296875,
+        "volume": 12351900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-20",
+        "open": 416,
+        "high": 425,
+        "low": 415.29998779296875,
+        "close": 416,
+        "volume": 13291300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-21",
+        "open": 422.1000061035156,
+        "high": 431.20001220703125,
+        "low": 418.8999938964844,
+        "close": 419.5,
+        "volume": 18650700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-24",
+        "open": 421.1000061035156,
+        "high": 422.8999938964844,
+        "low": 416.6000061035156,
+        "close": 417.5,
+        "volume": 8758300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-25",
+        "open": 428.79998779296875,
+        "high": 434.20001220703125,
+        "low": 426.5,
+        "close": 429,
+        "volume": 19457700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-26",
+        "open": 429.70001220703125,
+        "high": 434,
+        "low": 426.6000061035156,
+        "close": 431.79998779296875,
+        "volume": 13952600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-27",
+        "open": 429.29998779296875,
+        "high": 429.29998779296875,
+        "low": 421,
+        "close": 422.20001220703125,
+        "volume": 11287000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-28",
+        "open": 427.6000061035156,
+        "high": 444.3999938964844,
+        "low": 426.29998779296875,
+        "close": 433,
+        "volume": 35246000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-08-31",
+        "open": 439.29998779296875,
+        "high": 444,
+        "low": 431.5,
+        "close": 431.5,
+        "volume": 18943900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-01",
+        "open": 430,
+        "high": 434.70001220703125,
+        "low": 424.3999938964844,
+        "close": 430.70001220703125,
+        "volume": 12610600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-02",
+        "open": 432.5,
+        "high": 434,
+        "low": 420,
+        "close": 423.1000061035156,
+        "volume": 14730300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-03",
+        "open": 430.5,
+        "high": 431.79998779296875,
+        "low": 424.3999938964844,
+        "close": 425.29998779296875,
+        "volume": 11492500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-04",
+        "open": 418,
+        "high": 422,
+        "low": 415.20001220703125,
+        "close": 422,
+        "volume": 15442100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-07",
+        "open": 426,
+        "high": 428.5,
+        "low": 419.3999938964844,
+        "close": 419.8999938964844,
+        "volume": 14344400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-08",
+        "open": 422.70001220703125,
+        "high": 424.1000061035156,
+        "low": 416.29998779296875,
+        "close": 421,
+        "volume": 13582300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-09",
+        "open": 411.6000061035156,
+        "high": 414.79998779296875,
+        "low": 409.70001220703125,
+        "close": 413.5,
+        "volume": 15927500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-10",
+        "open": 416.20001220703125,
+        "high": 416.5,
+        "low": 407.20001220703125,
+        "close": 416,
+        "volume": 18477300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-11",
+        "open": 409,
+        "high": 414.79998779296875,
+        "low": 407.6000061035156,
+        "close": 413.20001220703125,
+        "volume": 14456300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-14",
+        "open": 413.29998779296875,
+        "high": 415.6000061035156,
+        "low": 409.29998779296875,
+        "close": 410.29998779296875,
+        "volume": 14598500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-15",
+        "open": 410,
+        "high": 410,
+        "low": 398.20001220703125,
+        "close": 398.20001220703125,
+        "volume": 19762000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-16",
+        "open": 394,
+        "high": 394.20001220703125,
+        "low": 385.8999938964844,
+        "close": 388.29998779296875,
+        "volume": 16419200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-17",
+        "open": 385.29998779296875,
+        "high": 387.79998779296875,
+        "low": 379,
+        "close": 379.1000061035156,
+        "volume": 23310000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-18",
+        "open": 381.29998779296875,
+        "high": 386.5,
+        "low": 380,
+        "close": 384.1000061035156,
+        "volume": 18715700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-23",
+        "open": 377,
+        "high": 378.29998779296875,
+        "low": 368.1000061035156,
+        "close": 372,
+        "volume": 27910100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-24",
+        "open": 368,
+        "high": 369,
+        "low": 364.79998779296875,
+        "close": 365,
+        "volume": 18588300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-25",
+        "open": 369.79998779296875,
+        "high": 369.8999938964844,
+        "low": 360,
+        "close": 363.6000061035156,
+        "volume": 26278300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-28",
+        "open": 364.29998779296875,
+        "high": 375,
+        "low": 359.70001220703125,
+        "close": 375,
+        "volume": 21145300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-29",
+        "open": 380.1000061035156,
+        "high": 388,
+        "low": 380,
+        "close": 385.29998779296875,
+        "volume": 19620800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-09-30",
+        "open": 373.70001220703125,
+        "high": 382.29998779296875,
+        "low": 371.20001220703125,
+        "close": 371.79998779296875,
+        "volume": 21151800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-02",
+        "open": 376,
+        "high": 383.3999938964844,
+        "low": 371.3999938964844,
+        "close": 372.5,
+        "volume": 20699100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-05",
+        "open": 380.8999938964844,
+        "high": 388.79998779296875,
+        "low": 380.20001220703125,
+        "close": 386.79998779296875,
+        "volume": 18111000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-06",
+        "open": 393,
+        "high": 395.70001220703125,
+        "low": 389.29998779296875,
+        "close": 390.1000061035156,
+        "volume": 19780700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-07",
+        "open": 385.1000061035156,
+        "high": 392.1000061035156,
+        "low": 381.20001220703125,
+        "close": 392.1000061035156,
+        "volume": 11699100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-08",
+        "open": 392.1000061035156,
+        "high": 394,
+        "low": 385,
+        "close": 385,
+        "volume": 12633700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-09",
+        "open": 386.1000061035156,
+        "high": 389.20001220703125,
+        "low": 379.79998779296875,
+        "close": 381.5,
+        "volume": 11512000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-12",
+        "open": 380.8999938964844,
+        "high": 385.20001220703125,
+        "low": 377.8999938964844,
+        "close": 381,
+        "volume": 10302200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-13",
+        "open": 381.70001220703125,
+        "high": 384.70001220703125,
+        "low": 378.8999938964844,
+        "close": 383.5,
+        "volume": 9598600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-14",
+        "open": 381.5,
+        "high": 381.5,
+        "low": 370.70001220703125,
+        "close": 372.6000061035156,
+        "volume": 14313600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-15",
+        "open": 372.29998779296875,
+        "high": 378.20001220703125,
+        "low": 371,
+        "close": 376.6000061035156,
+        "volume": 10716100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-16",
+        "open": 379,
+        "high": 379.29998779296875,
+        "low": 371.79998779296875,
+        "close": 371.8999938964844,
+        "volume": 10134800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-19",
+        "open": 373.20001220703125,
+        "high": 378.8999938964844,
+        "low": 373,
+        "close": 378.29998779296875,
+        "volume": 9898200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-20",
+        "open": 374.1000061035156,
+        "high": 376.20001220703125,
+        "low": 366.8999938964844,
+        "close": 368,
+        "volume": 12132500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-21",
+        "open": 371.6000061035156,
+        "high": 385.6000061035156,
+        "low": 371.1000061035156,
+        "close": 385.6000061035156,
+        "volume": 19815900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-22",
+        "open": 380,
+        "high": 382.6000061035156,
+        "low": 376.3999938964844,
+        "close": 380.3999938964844,
+        "volume": 11224600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-23",
+        "open": 385,
+        "high": 389.5,
+        "low": 382.79998779296875,
+        "close": 387.8999938964844,
+        "volume": 14205700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-26",
+        "open": 386,
+        "high": 391,
+        "low": 385.29998779296875,
+        "close": 391,
+        "volume": 10462800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-27",
+        "open": 389,
+        "high": 389,
+        "low": 381.8999938964844,
+        "close": 384.70001220703125,
+        "volume": 14657400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-28",
+        "open": 380.1000061035156,
+        "high": 381.1000061035156,
+        "low": 373.1000061035156,
+        "close": 374.1000061035156,
+        "volume": 13047900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-29",
+        "open": 365.20001220703125,
+        "high": 378.20001220703125,
+        "low": 364.20001220703125,
+        "close": 375.8999938964844,
+        "volume": 14951500
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-10-30",
+        "open": 372.5,
+        "high": 373.79998779296875,
+        "low": 365.3999938964844,
+        "close": 366,
+        "volume": 16980100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-02",
+        "open": 371.29998779296875,
+        "high": 381.79998779296875,
+        "low": 370.20001220703125,
+        "close": 381,
+        "volume": 18323700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-04",
+        "open": 390,
+        "high": 394.8999938964844,
+        "low": 386.29998779296875,
+        "close": 388.70001220703125,
+        "volume": 21397700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-05",
+        "open": 385.8999938964844,
+        "high": 386.5,
+        "low": 377.70001220703125,
+        "close": 381.8999938964844,
+        "volume": 14784400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-06",
+        "open": 383,
+        "high": 389.29998779296875,
+        "low": 380.29998779296875,
+        "close": 386.1000061035156,
+        "volume": 17011800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-09",
+        "open": 390.1000061035156,
+        "high": 393,
+        "low": 385.29998779296875,
+        "close": 386.5,
+        "volume": 12721900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-10",
+        "open": 399.1000061035156,
+        "high": 416.1000061035156,
+        "low": 398.8999938964844,
+        "close": 411,
+        "volume": 41976000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-11",
+        "open": 420,
+        "high": 428.1000061035156,
+        "low": 416.5,
+        "close": 421.20001220703125,
+        "volume": 29120800
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-12",
+        "open": 417.79998779296875,
+        "high": 419,
+        "low": 404.20001220703125,
+        "close": 409,
+        "volume": 18159400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-13",
+        "open": 411.6000061035156,
+        "high": 446,
+        "low": 411.5,
+        "close": 444.79998779296875,
+        "volume": 64141900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-16",
+        "open": 453.5,
+        "high": 470,
+        "low": 451.70001220703125,
+        "close": 469,
+        "volume": 43420600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-17",
+        "open": 479,
+        "high": 484,
+        "low": 473.1000061035156,
+        "close": 475.20001220703125,
+        "volume": 39319400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-18",
+        "open": 472.79998779296875,
+        "high": 484.8999938964844,
+        "low": 470.6000061035156,
+        "close": 481.70001220703125,
+        "volume": 33465400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-19",
+        "open": 488.5,
+        "high": 496,
+        "low": 468,
+        "close": 477,
+        "volume": 32039000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-20",
+        "open": 472.70001220703125,
+        "high": 485.79998779296875,
+        "low": 471.20001220703125,
+        "close": 485.79998779296875,
+        "volume": 21605200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-24",
+        "open": 500,
+        "high": 508.29998779296875,
+        "low": 494.79998779296875,
+        "close": 503.20001220703125,
+        "volume": 32053600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-25",
+        "open": 522,
+        "high": 547.5999755859375,
+        "low": 521.7000122070312,
+        "close": 538.2000122070312,
+        "volume": 64407300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-26",
+        "open": 533.5,
+        "high": 542.2000122070312,
+        "low": 521.7999877929688,
+        "close": 527.5999755859375,
+        "volume": 35087100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-27",
+        "open": 527.2999877929688,
+        "high": 528.7000122070312,
+        "low": 510.20001220703125,
+        "close": 517.2000122070312,
+        "volume": 29191400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-11-30",
+        "open": 514.7999877929688,
+        "high": 514.9000244140625,
+        "low": 491,
+        "close": 492.5,
+        "volume": 45359300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-01",
+        "open": 492.1000061035156,
+        "high": 505.8999938964844,
+        "low": 492,
+        "close": 504,
+        "volume": 25868300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-02",
+        "open": 506.5,
+        "high": 514.2999877929688,
+        "low": 498.3999938964844,
+        "close": 513.0999755859375,
+        "volume": 21190600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-03",
+        "open": 520.0999755859375,
+        "high": 532.2000122070312,
+        "low": 514.9000244140625,
+        "close": 527.7999877929688,
+        "volume": 21388900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-04",
+        "open": 524.9000244140625,
+        "high": 541.9000244140625,
+        "low": 524.2000122070312,
+        "close": 541.5,
+        "volume": 26982900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-07",
+        "open": 550,
+        "high": 555.2000122070312,
+        "low": 527.2999877929688,
+        "close": 532.5999755859375,
+        "volume": 28458000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-08",
+        "open": 525.0999755859375,
+        "high": 541.2999877929688,
+        "low": 521.9000244140625,
+        "close": 537.7000122070312,
+        "volume": 18041900
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-09",
+        "open": 530.0999755859375,
+        "high": 576,
+        "low": 530.0999755859375,
+        "close": 574.0999755859375,
+        "volume": 42385200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-10",
+        "open": 567.7999877929688,
+        "high": 578,
+        "low": 558.5,
+        "close": 561.2999877929688,
+        "volume": 32084000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-11",
+        "open": 557,
+        "high": 566.7999877929688,
+        "low": 544.4000244140625,
+        "close": 554.0999755859375,
+        "volume": 25834000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-14",
+        "open": 549,
+        "high": 564.2000122070312,
+        "low": 546.5,
+        "close": 559.2999877929688,
+        "volume": 21772100
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-15",
+        "open": 558.2000122070312,
+        "high": 571.4000244140625,
+        "low": 553.0999755859375,
+        "close": 566.7999877929688,
+        "volume": 20536300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-16",
+        "open": 574,
+        "high": 586.5,
+        "low": 573,
+        "close": 584.9000244140625,
+        "volume": 26660400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-17",
+        "open": 584.7000122070312,
+        "high": 587.4000244140625,
+        "low": 573.4000244140625,
+        "close": 574.2000122070312,
+        "volume": 23061300
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-18",
+        "open": 570,
+        "high": 586.5,
+        "low": 565,
+        "close": 582.5999755859375,
+        "volume": 20888000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-21",
+        "open": 580.0999755859375,
+        "high": 582.4000244140625,
+        "low": 551.7000122070312,
+        "close": 562.5999755859375,
+        "volume": 30506700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-22",
+        "open": 552.5999755859375,
+        "high": 569.2999877929688,
+        "low": 551.7000122070312,
+        "close": 558.7000122070312,
+        "volume": 20129700
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-23",
+        "open": 558.0999755859375,
+        "high": 559.7000122070312,
+        "low": 535.5,
+        "close": 541.2999877929688,
+        "volume": 23018000
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-24",
+        "open": 556,
+        "high": 563.5,
+        "low": 549.2000122070312,
+        "close": 551.2999877929688,
+        "volume": 16036400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-25",
+        "open": 551.5999755859375,
+        "high": 564.2000122070312,
+        "low": 551.0999755859375,
+        "close": 555.2000122070312,
+        "volume": 13256200
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-28",
+        "open": 556,
+        "high": 561.2999877929688,
+        "low": 546.5,
+        "close": 551.7999877929688,
+        "volume": 14948600
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-29",
+        "open": 555.5999755859375,
+        "high": 570.0999755859375,
+        "low": 553.5999755859375,
+        "close": 569.0999755859375,
+        "volume": 19216400
+      },
+      {
+        "symbol": "7201",
+        "date": "2020-12-30",
+        "open": 564.2000122070312,
+        "high": 564.7000122070312,
+        "low": 554.5999755859375,
+        "close": 560,
+        "volume": 17124400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-04",
+        "open": 569,
+        "high": 569,
+        "low": 544.2000122070312,
+        "close": 553,
+        "volume": 17729600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-05",
+        "open": 545,
+        "high": 548.5999755859375,
+        "low": 535,
+        "close": 538.5999755859375,
+        "volume": 19036300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-06",
+        "open": 541,
+        "high": 555.4000244140625,
+        "low": 540.7000122070312,
+        "close": 554.2999877929688,
+        "volume": 21758100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-07",
+        "open": 566,
+        "high": 570.5999755859375,
+        "low": 552.5,
+        "close": 553,
+        "volume": 22147200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-08",
+        "open": 550.2999877929688,
+        "high": 552.2999877929688,
+        "low": 535.0999755859375,
+        "close": 544.0999755859375,
+        "volume": 29721200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-12",
+        "open": 540.2000122070312,
+        "high": 546.7999877929688,
+        "low": 533.2999877929688,
+        "close": 546,
+        "volume": 18748800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-13",
+        "open": 540,
+        "high": 543.2999877929688,
+        "low": 531.2000122070312,
+        "close": 533.7999877929688,
+        "volume": 18524700
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-14",
+        "open": 526.5999755859375,
+        "high": 541.4000244140625,
+        "low": 518.4000244140625,
+        "close": 538.7999877929688,
+        "volume": 23244500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-15",
+        "open": 541,
+        "high": 541,
+        "low": 528.7000122070312,
+        "close": 532.7000122070312,
+        "volume": 19146000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-18",
+        "open": 527.4000244140625,
+        "high": 532.2999877929688,
+        "low": 520.2000122070312,
+        "close": 523.7999877929688,
+        "volume": 12858300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-19",
+        "open": 529.9000244140625,
+        "high": 551,
+        "low": 526.5999755859375,
+        "close": 544.2999877929688,
+        "volume": 22793200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-20",
+        "open": 542.7000122070312,
+        "high": 556.7999877929688,
+        "low": 536,
+        "close": 556.2000122070312,
+        "volume": 22907800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-21",
+        "open": 562,
+        "high": 573.7999877929688,
+        "low": 560.5,
+        "close": 567.5,
+        "volume": 23597600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-22",
+        "open": 560.0999755859375,
+        "high": 562.2000122070312,
+        "low": 551.7999877929688,
+        "close": 555.5999755859375,
+        "volume": 17327100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-25",
+        "open": 559.5,
+        "high": 559.5,
+        "low": 546.2000122070312,
+        "close": 549.5,
+        "volume": 12955200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-26",
+        "open": 542.2000122070312,
+        "high": 546,
+        "low": 534.5,
+        "close": 538.4000244140625,
+        "volume": 14637600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-27",
+        "open": 541,
+        "high": 542.4000244140625,
+        "low": 535.2999877929688,
+        "close": 542.0999755859375,
+        "volume": 11631000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-28",
+        "open": 529,
+        "high": 557.2999877929688,
+        "low": 526.2999877929688,
+        "close": 552,
+        "volume": 23521000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-01-29",
+        "open": 546.7999877929688,
+        "high": 548.7000122070312,
+        "low": 528,
+        "close": 532.0999755859375,
+        "volume": 24350200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-01",
+        "open": 530.7000122070312,
+        "high": 543,
+        "low": 530.0999755859375,
+        "close": 540.4000244140625,
+        "volume": 11887200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-02",
+        "open": 539.7000122070312,
+        "high": 557.5,
+        "low": 534.2000122070312,
+        "close": 554,
+        "volume": 18086500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-03",
+        "open": 560.0999755859375,
+        "high": 582.7000122070312,
+        "low": 559.7999877929688,
+        "close": 575.4000244140625,
+        "volume": 26533800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-04",
+        "open": 579,
+        "high": 589.5999755859375,
+        "low": 574.7999877929688,
+        "close": 579.2999877929688,
+        "volume": 19263600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-05",
+        "open": 589.2999877929688,
+        "high": 626.7999877929688,
+        "low": 588,
+        "close": 622.7999877929688,
+        "volume": 45086300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-08",
+        "open": 642.5999755859375,
+        "high": 650,
+        "low": 618.7999877929688,
+        "close": 629.5999755859375,
+        "volume": 32993600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-09",
+        "open": 640,
+        "high": 644.2999877929688,
+        "low": 618.0999755859375,
+        "close": 629.5,
+        "volume": 28517100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-10",
+        "open": 610.2000122070312,
+        "high": 664.5,
+        "low": 610.2000122070312,
+        "close": 653,
+        "volume": 42891600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-12",
+        "open": 650,
+        "high": 652.7000122070312,
+        "low": 620.2000122070312,
+        "close": 627.7000122070312,
+        "volume": 32611000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-15",
+        "open": 629.0999755859375,
+        "high": 647.5999755859375,
+        "low": 601,
+        "close": 609.9000244140625,
+        "volume": 36866600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-16",
+        "open": 613.7999877929688,
+        "high": 618,
+        "low": 591,
+        "close": 602.5,
+        "volume": 26069600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-17",
+        "open": 605,
+        "high": 626,
+        "low": 605,
+        "close": 617.9000244140625,
+        "volume": 19879800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-18",
+        "open": 627.9000244140625,
+        "high": 628.5,
+        "low": 591.5,
+        "close": 595.4000244140625,
+        "volume": 21890100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-19",
+        "open": 597.9000244140625,
+        "high": 607,
+        "low": 582.7999877929688,
+        "close": 588.7000122070312,
+        "volume": 19304300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-22",
+        "open": 598.7000122070312,
+        "high": 603.5,
+        "low": 586.2000122070312,
+        "close": 587.2000122070312,
+        "volume": 11755100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-24",
+        "open": 590,
+        "high": 601.5999755859375,
+        "low": 586,
+        "close": 586,
+        "volume": 15669400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-25",
+        "open": 603.5999755859375,
+        "high": 604.7999877929688,
+        "low": 585.2999877929688,
+        "close": 586,
+        "volume": 14725500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-02-26",
+        "open": 580,
+        "high": 585,
+        "low": 572.0999755859375,
+        "close": 574.7000122070312,
+        "volume": 17941100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-01",
+        "open": 580.5,
+        "high": 583,
+        "low": 573.4000244140625,
+        "close": 582.9000244140625,
+        "volume": 9313900
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-02",
+        "open": 589.2000122070312,
+        "high": 592.0999755859375,
+        "low": 578.2000122070312,
+        "close": 584.4000244140625,
+        "volume": 12259600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-03",
+        "open": 592.2000122070312,
+        "high": 608.7000122070312,
+        "low": 589.7999877929688,
+        "close": 608.7000122070312,
+        "volume": 19719600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-04",
+        "open": 608.9000244140625,
+        "high": 609.7000122070312,
+        "low": 583.0999755859375,
+        "close": 590.2999877929688,
+        "volume": 17274400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-05",
+        "open": 597.4000244140625,
+        "high": 607,
+        "low": 585.7000122070312,
+        "close": 604.2000122070312,
+        "volume": 18085200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-08",
+        "open": 610,
+        "high": 615.7000122070312,
+        "low": 591.7000122070312,
+        "close": 593.7999877929688,
+        "volume": 17810000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-09",
+        "open": 603.7999877929688,
+        "high": 614.7999877929688,
+        "low": 598.2000122070312,
+        "close": 614.7999877929688,
+        "volume": 19868000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-10",
+        "open": 612.5999755859375,
+        "high": 612.5999755859375,
+        "low": 596.5999755859375,
+        "close": 604.5999755859375,
+        "volume": 15659400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-11",
+        "open": 607.2999877929688,
+        "high": 618.5,
+        "low": 603.7999877929688,
+        "close": 610.7999877929688,
+        "volume": 16525600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-12",
+        "open": 610,
+        "high": 610.0999755859375,
+        "low": 595.2999877929688,
+        "close": 605.5,
+        "volume": 19242800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-15",
+        "open": 610,
+        "high": 621.7000122070312,
+        "low": 609.7999877929688,
+        "close": 615,
+        "volume": 17452600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-16",
+        "open": 613.2999877929688,
+        "high": 616.2999877929688,
+        "low": 605.2000122070312,
+        "close": 605.4000244140625,
+        "volume": 14737900
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-17",
+        "open": 600,
+        "high": 600.7999877929688,
+        "low": 591.5,
+        "close": 596.2999877929688,
+        "volume": 16420500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-18",
+        "open": 603,
+        "high": 605.7000122070312,
+        "low": 595.4000244140625,
+        "close": 605.0999755859375,
+        "volume": 19099400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-19",
+        "open": 600,
+        "high": 624.0999755859375,
+        "low": 599.7000122070312,
+        "close": 624.0999755859375,
+        "volume": 27775200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-22",
+        "open": 610,
+        "high": 612.4000244140625,
+        "low": 601,
+        "close": 601,
+        "volume": 22723600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-23",
+        "open": 604.4000244140625,
+        "high": 619.7000122070312,
+        "low": 603.4000244140625,
+        "close": 605.4000244140625,
+        "volume": 17912800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-24",
+        "open": 596.7000122070312,
+        "high": 600.5,
+        "low": 579,
+        "close": 581.0999755859375,
+        "volume": 21750900
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-25",
+        "open": 580.5,
+        "high": 594.7999877929688,
+        "low": 580.4000244140625,
+        "close": 591.4000244140625,
+        "volume": 14308300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-26",
+        "open": 602,
+        "high": 618.5,
+        "low": 602,
+        "close": 605,
+        "volume": 18166900
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-29",
+        "open": 612.7000122070312,
+        "high": 614.5,
+        "low": 597.7000122070312,
+        "close": 604.0999755859375,
+        "volume": 14556300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-30",
+        "open": 604.5999755859375,
+        "high": 613.4000244140625,
+        "low": 601.2999877929688,
+        "close": 612.5999755859375,
+        "volume": 12419800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-03-31",
+        "open": 616,
+        "high": 629.9000244140625,
+        "low": 613.7999877929688,
+        "close": 615.9000244140625,
+        "volume": 19200500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-01",
+        "open": 620,
+        "high": 621.5,
+        "low": 587.5,
+        "close": 590.7000122070312,
+        "volume": 22262900
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-02",
+        "open": 593,
+        "high": 595.2000122070312,
+        "low": 579.4000244140625,
+        "close": 579.5999755859375,
+        "volume": 20382200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-05",
+        "open": 584.9000244140625,
+        "high": 592.5999755859375,
+        "low": 580.4000244140625,
+        "close": 591.2999877929688,
+        "volume": 13788200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-06",
+        "open": 589,
+        "high": 589.7999877929688,
+        "low": 567.7999877929688,
+        "close": 570,
+        "volume": 20432400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-07",
+        "open": 580,
+        "high": 587.5,
+        "low": 572.5999755859375,
+        "close": 578.2000122070312,
+        "volume": 16479600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-08",
+        "open": 574.5999755859375,
+        "high": 575.5,
+        "low": 560.2999877929688,
+        "close": 574.2999877929688,
+        "volume": 17508600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-09",
+        "open": 574.5999755859375,
+        "high": 588,
+        "low": 571.9000244140625,
+        "close": 573.5999755859375,
+        "volume": 16676300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-12",
+        "open": 576.7999877929688,
+        "high": 582.5,
+        "low": 571.7000122070312,
+        "close": 575.4000244140625,
+        "volume": 12320500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-13",
+        "open": 577.2999877929688,
+        "high": 582.7999877929688,
+        "low": 572,
+        "close": 576.7000122070312,
+        "volume": 10700500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-14",
+        "open": 571.4000244140625,
+        "high": 576.2000122070312,
+        "low": 568.7000122070312,
+        "close": 574.2999877929688,
+        "volume": 10882800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-15",
+        "open": 576.7000122070312,
+        "high": 590.9000244140625,
+        "low": 575.2999877929688,
+        "close": 582.2999877929688,
+        "volume": 14344200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-16",
+        "open": 580.4000244140625,
+        "high": 584.7000122070312,
+        "low": 570.5,
+        "close": 576.0999755859375,
+        "volume": 11798300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-19",
+        "open": 578,
+        "high": 578,
+        "low": 568.2999877929688,
+        "close": 571,
+        "volume": 10982500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-20",
+        "open": 564.7999877929688,
+        "high": 565,
+        "low": 554.5999755859375,
+        "close": 557.2000122070312,
+        "volume": 18648000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-21",
+        "open": 542,
+        "high": 547.4000244140625,
+        "low": 535.4000244140625,
+        "close": 546.9000244140625,
+        "volume": 19227200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-22",
+        "open": 554.4000244140625,
+        "high": 555.2999877929688,
+        "low": 545.2999877929688,
+        "close": 550,
+        "volume": 12425200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-23",
+        "open": 544.0999755859375,
+        "high": 551.7999877929688,
+        "low": 538.7000122070312,
+        "close": 551.2000122070312,
+        "volume": 11700100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-26",
+        "open": 554.9000244140625,
+        "high": 558,
+        "low": 550.5999755859375,
+        "close": 555.2999877929688,
+        "volume": 8594600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-27",
+        "open": 553,
+        "high": 561.9000244140625,
+        "low": 550,
+        "close": 554.9000244140625,
+        "volume": 11860200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-28",
+        "open": 555,
+        "high": 557.5999755859375,
+        "low": 548.0999755859375,
+        "close": 551.0999755859375,
+        "volume": 11989100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-04-30",
+        "open": 552.7999877929688,
+        "high": 555.5,
+        "low": 544.0999755859375,
+        "close": 547.7000122070312,
+        "volume": 16664000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-06",
+        "open": 558.7000122070312,
+        "high": 566.7999877929688,
+        "low": 557.0999755859375,
+        "close": 563.7000122070312,
+        "volume": 14080300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-07",
+        "open": 561.0999755859375,
+        "high": 563.7000122070312,
+        "low": 552.2999877929688,
+        "close": 557.9000244140625,
+        "volume": 11856600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-10",
+        "open": 563.7000122070312,
+        "high": 583.2000122070312,
+        "low": 563.2000122070312,
+        "close": 582.4000244140625,
+        "volume": 15805600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-11",
+        "open": 574.0999755859375,
+        "high": 583.2000122070312,
+        "low": 571.7000122070312,
+        "close": 578.5999755859375,
+        "volume": 17370200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-12",
+        "open": 538.5999755859375,
+        "high": 540.0999755859375,
+        "low": 501,
+        "close": 520.5,
+        "volume": 52884400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-13",
+        "open": 520.5999755859375,
+        "high": 533.2999877929688,
+        "low": 515,
+        "close": 523.4000244140625,
+        "volume": 21469200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-14",
+        "open": 526.7999877929688,
+        "high": 540,
+        "low": 522.5,
+        "close": 534.4000244140625,
+        "volume": 15846700
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-17",
+        "open": 540.9000244140625,
+        "high": 547.7999877929688,
+        "low": 535.5,
+        "close": 537.7999877929688,
+        "volume": 13688000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-18",
+        "open": 541.7000122070312,
+        "high": 550.7999877929688,
+        "low": 538.0999755859375,
+        "close": 539.5999755859375,
+        "volume": 14419300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-19",
+        "open": 527.4000244140625,
+        "high": 530,
+        "low": 522,
+        "close": 522.4000244140625,
+        "volume": 18229600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-20",
+        "open": 521.9000244140625,
+        "high": 534.7000122070312,
+        "low": 519.0999755859375,
+        "close": 530.0999755859375,
+        "volume": 12624000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-21",
+        "open": 526.7999877929688,
+        "high": 534.2000122070312,
+        "low": 524,
+        "close": 528.0999755859375,
+        "volume": 10067500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-24",
+        "open": 531.2000122070312,
+        "high": 538.2000122070312,
+        "low": 531.2000122070312,
+        "close": 532.7999877929688,
+        "volume": 9895000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-25",
+        "open": 536,
+        "high": 536.5,
+        "low": 529.5,
+        "close": 532.4000244140625,
+        "volume": 8409800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-26",
+        "open": 530,
+        "high": 536,
+        "low": 526.2000122070312,
+        "close": 527,
+        "volume": 11608600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-27",
+        "open": 529,
+        "high": 537.2000122070312,
+        "low": 526.5999755859375,
+        "close": 536.7000122070312,
+        "volume": 27266500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-28",
+        "open": 546.7000122070312,
+        "high": 555.7000122070312,
+        "low": 545.0999755859375,
+        "close": 553.2999877929688,
+        "volume": 15326900
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-05-31",
+        "open": 549,
+        "high": 550.5999755859375,
+        "low": 537.5,
+        "close": 539.0999755859375,
+        "volume": 12047600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-01",
+        "open": 542.7999877929688,
+        "high": 545.7000122070312,
+        "low": 536.7999877929688,
+        "close": 544.5,
+        "volume": 8265100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-02",
+        "open": 546.0999755859375,
+        "high": 556.2000122070312,
+        "low": 544.7999877929688,
+        "close": 553.9000244140625,
+        "volume": 9990200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-03",
+        "open": 553.9000244140625,
+        "high": 569.2999877929688,
+        "low": 551.9000244140625,
+        "close": 562.2000122070312,
+        "volume": 11847700
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-04",
+        "open": 566.7000122070312,
+        "high": 571.4000244140625,
+        "low": 563.0999755859375,
+        "close": 571.2000122070312,
+        "volume": 11794200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-07",
+        "open": 564.5,
+        "high": 571,
+        "low": 552.2000122070312,
+        "close": 558.0999755859375,
+        "volume": 11682800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-08",
+        "open": 557.2999877929688,
+        "high": 564.0999755859375,
+        "low": 553.5,
+        "close": 558.5,
+        "volume": 10146700
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-09",
+        "open": 558.4000244140625,
+        "high": 563.7999877929688,
+        "low": 555,
+        "close": 555,
+        "volume": 6167500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-10",
+        "open": 551,
+        "high": 558.2000122070312,
+        "low": 550.5,
+        "close": 556.7000122070312,
+        "volume": 7867600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-11",
+        "open": 550.5,
+        "high": 550.7999877929688,
+        "low": 541.2000122070312,
+        "close": 548.7999877929688,
+        "volume": 14961500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-14",
+        "open": 553.9000244140625,
+        "high": 562.9000244140625,
+        "low": 553.2999877929688,
+        "close": 555.2999877929688,
+        "volume": 8443100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-15",
+        "open": 553,
+        "high": 563,
+        "low": 551.7999877929688,
+        "close": 563,
+        "volume": 10625900
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-16",
+        "open": 564.7999877929688,
+        "high": 568.2999877929688,
+        "low": 559.0999755859375,
+        "close": 559.0999755859375,
+        "volume": 8472500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-17",
+        "open": 563.2000122070312,
+        "high": 565.9000244140625,
+        "low": 561.2000122070312,
+        "close": 562.0999755859375,
+        "volume": 8083400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-18",
+        "open": 553.9000244140625,
+        "high": 555,
+        "low": 544.2000122070312,
+        "close": 545.2999877929688,
+        "volume": 16314600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-21",
+        "open": 530.9000244140625,
+        "high": 532,
+        "low": 517.5,
+        "close": 523.0999755859375,
+        "volume": 20155100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-22",
+        "open": 538.2000122070312,
+        "high": 545.2000122070312,
+        "low": 535,
+        "close": 542.7000122070312,
+        "volume": 14336000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-23",
+        "open": 539,
+        "high": 541.2000122070312,
+        "low": 533.5,
+        "close": 538.7999877929688,
+        "volume": 7746000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-24",
+        "open": 544,
+        "high": 548.2000122070312,
+        "low": 540.5,
+        "close": 542.5999755859375,
+        "volume": 9613100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-25",
+        "open": 548.4000244140625,
+        "high": 553,
+        "low": 545,
+        "close": 552.5999755859375,
+        "volume": 8861200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-28",
+        "open": 553.0999755859375,
+        "high": 567.7000122070312,
+        "low": 553.0999755859375,
+        "close": 566.0999755859375,
+        "volume": 13461900
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-29",
+        "open": 554.9000244140625,
+        "high": 558.5,
+        "low": 550.9000244140625,
+        "close": 554.7999877929688,
+        "volume": 10526300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-06-30",
+        "open": 557.2000122070312,
+        "high": 560.5,
+        "low": 551.2999877929688,
+        "close": 551.2999877929688,
+        "volume": 10050000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-01",
+        "open": 556.0999755859375,
+        "high": 557.7000122070312,
+        "low": 543.5999755859375,
+        "close": 547.7999877929688,
+        "volume": 10374000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-02",
+        "open": 555,
+        "high": 570.5999755859375,
+        "low": 552.2000122070312,
+        "close": 567.5999755859375,
+        "volume": 17937300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-05",
+        "open": 562.5,
+        "high": 578.7000122070312,
+        "low": 561.5,
+        "close": 577.9000244140625,
+        "volume": 15328600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-06",
+        "open": 579.5,
+        "high": 596,
+        "low": 579,
+        "close": 595.5,
+        "volume": 20413000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-07",
+        "open": 578.4000244140625,
+        "high": 586.5999755859375,
+        "low": 574,
+        "close": 584.2000122070312,
+        "volume": 19463200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-08",
+        "open": 584.2999877929688,
+        "high": 588.9000244140625,
+        "low": 575.5,
+        "close": 578.5999755859375,
+        "volume": 12799200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-09",
+        "open": 568.5999755859375,
+        "high": 577.7999877929688,
+        "low": 560,
+        "close": 576.0999755859375,
+        "volume": 16255000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-12",
+        "open": 593.2999877929688,
+        "high": 599.2999877929688,
+        "low": 585.2999877929688,
+        "close": 586,
+        "volume": 16717800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-13",
+        "open": 589.9000244140625,
+        "high": 591.2000122070312,
+        "low": 582.7999877929688,
+        "close": 587.0999755859375,
+        "volume": 11621500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-14",
+        "open": 583,
+        "high": 588.7000122070312,
+        "low": 578.9000244140625,
+        "close": 580.2000122070312,
+        "volume": 13307400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-15",
+        "open": 570.2000122070312,
+        "high": 574.2999877929688,
+        "low": 566.5,
+        "close": 566.7999877929688,
+        "volume": 10476900
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-16",
+        "open": 571.5999755859375,
+        "high": 581.4000244140625,
+        "low": 567,
+        "close": 576.2000122070312,
+        "volume": 13658900
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-19",
+        "open": 566.2000122070312,
+        "high": 571.5999755859375,
+        "low": 558.7000122070312,
+        "close": 561.9000244140625,
+        "volume": 11752100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-20",
+        "open": 553,
+        "high": 554.5999755859375,
+        "low": 545.9000244140625,
+        "close": 545.9000244140625,
+        "volume": 13183300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-21",
+        "open": 556.5999755859375,
+        "high": 566.5,
+        "low": 554.7000122070312,
+        "close": 555.5999755859375,
+        "volume": 15175400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-26",
+        "open": 565,
+        "high": 569.2000122070312,
+        "low": 558.5,
+        "close": 559.7999877929688,
+        "volume": 8851400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-27",
+        "open": 564.5,
+        "high": 573.9000244140625,
+        "low": 559.7000122070312,
+        "close": 571.5,
+        "volume": 15106200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-28",
+        "open": 577.9000244140625,
+        "high": 593.7999877929688,
+        "low": 576.2000122070312,
+        "close": 593.7000122070312,
+        "volume": 22702900
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-29",
+        "open": 630,
+        "high": 650,
+        "low": 624.5,
+        "close": 627.9000244140625,
+        "volume": 62769000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-07-30",
+        "open": 617.9000244140625,
+        "high": 631.9000244140625,
+        "low": 612.2000122070312,
+        "close": 630.9000244140625,
+        "volume": 30314700
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-02",
+        "open": 634.5,
+        "high": 638,
+        "low": 624,
+        "close": 628.2999877929688,
+        "volume": 16246200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-03",
+        "open": 620,
+        "high": 627.5,
+        "low": 616.0999755859375,
+        "close": 617.4000244140625,
+        "volume": 16101500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-04",
+        "open": 619,
+        "high": 628,
+        "low": 618,
+        "close": 620.0999755859375,
+        "volume": 12024400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-05",
+        "open": 617.4000244140625,
+        "high": 619,
+        "low": 605.5,
+        "close": 606.7000122070312,
+        "volume": 11142500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-06",
+        "open": 606.0999755859375,
+        "high": 610.5999755859375,
+        "low": 600.5999755859375,
+        "close": 606.0999755859375,
+        "volume": 9022100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-10",
+        "open": 608.5,
+        "high": 614,
+        "low": 606.9000244140625,
+        "close": 607,
+        "volume": 8656400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-11",
+        "open": 615,
+        "high": 619.7999877929688,
+        "low": 610,
+        "close": 619,
+        "volume": 11093600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-12",
+        "open": 626,
+        "high": 634,
+        "low": 625.2999877929688,
+        "close": 626.5999755859375,
+        "volume": 14873300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-13",
+        "open": 628,
+        "high": 628,
+        "low": 615.9000244140625,
+        "close": 616.9000244140625,
+        "volume": 9818200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-16",
+        "open": 608.4000244140625,
+        "high": 610.9000244140625,
+        "low": 593.2999877929688,
+        "close": 593.5,
+        "volume": 15680600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-17",
+        "open": 595,
+        "high": 596,
+        "low": 579.5,
+        "close": 579.5,
+        "volume": 10411500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-18",
+        "open": 579.9000244140625,
+        "high": 584.0999755859375,
+        "low": 574.4000244140625,
+        "close": 581,
+        "volume": 9634500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-19",
+        "open": 575.5999755859375,
+        "high": 578.0999755859375,
+        "low": 565.7000122070312,
+        "close": 565.7000122070312,
+        "volume": 10937400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-20",
+        "open": 555.7000122070312,
+        "high": 562.5999755859375,
+        "low": 521.5999755859375,
+        "close": 524.7000122070312,
+        "volume": 33269400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-23",
+        "open": 534.7000122070312,
+        "high": 550,
+        "low": 533.5,
+        "close": 542.5999755859375,
+        "volume": 16013400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-24",
+        "open": 546.2999877929688,
+        "high": 562.7999877929688,
+        "low": 546.2999877929688,
+        "close": 559.7999877929688,
+        "volume": 14442900
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-25",
+        "open": 562.7999877929688,
+        "high": 576.2999877929688,
+        "low": 560.5,
+        "close": 568.2999877929688,
+        "volume": 13556300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-26",
+        "open": 570.7999877929688,
+        "high": 571.7000122070312,
+        "low": 560.2999877929688,
+        "close": 566,
+        "volume": 9378400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-27",
+        "open": 557.5999755859375,
+        "high": 569.0999755859375,
+        "low": 555.5999755859375,
+        "close": 569.0999755859375,
+        "volume": 10154500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-30",
+        "open": 586.0999755859375,
+        "high": 587.5999755859375,
+        "low": 575.5,
+        "close": 579.4000244140625,
+        "volume": 9803300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-08-31",
+        "open": 566,
+        "high": 581.4000244140625,
+        "low": 563.7000122070312,
+        "close": 578.5,
+        "volume": 11541200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-01",
+        "open": 583.7999877929688,
+        "high": 585.2000122070312,
+        "low": 573.5999755859375,
+        "close": 575.4000244140625,
+        "volume": 9597500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-02",
+        "open": 570.5,
+        "high": 572.7000122070312,
+        "low": 556.0999755859375,
+        "close": 559.0999755859375,
+        "volume": 19761600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-03",
+        "open": 561.4000244140625,
+        "high": 570.7000122070312,
+        "low": 561.4000244140625,
+        "close": 569.5999755859375,
+        "volume": 13135800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-06",
+        "open": 575.0999755859375,
+        "high": 576.5,
+        "low": 570,
+        "close": 572.2000122070312,
+        "volume": 9016000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-07",
+        "open": 576.4000244140625,
+        "high": 577.5999755859375,
+        "low": 566,
+        "close": 574.7000122070312,
+        "volume": 13224600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-08",
+        "open": 576.2999877929688,
+        "high": 588.7000122070312,
+        "low": 572.7999877929688,
+        "close": 588.4000244140625,
+        "volume": 14496200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-09",
+        "open": 580,
+        "high": 585.5999755859375,
+        "low": 571.2999877929688,
+        "close": 573.0999755859375,
+        "volume": 12936000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-10",
+        "open": 570.5999755859375,
+        "high": 578,
+        "low": 569.5,
+        "close": 571.5999755859375,
+        "volume": 12555600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-13",
+        "open": 562,
+        "high": 570.7999877929688,
+        "low": 559,
+        "close": 565.0999755859375,
+        "volume": 12526400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-14",
+        "open": 575,
+        "high": 584.5999755859375,
+        "low": 574.0999755859375,
+        "close": 578.5999755859375,
+        "volume": 16271200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-15",
+        "open": 570,
+        "high": 572.9000244140625,
+        "low": 568.5999755859375,
+        "close": 572.4000244140625,
+        "volume": 8879700
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-16",
+        "open": 571.4000244140625,
+        "high": 577,
+        "low": 566,
+        "close": 571.2999877929688,
+        "volume": 10842200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-17",
+        "open": 573.5,
+        "high": 576.9000244140625,
+        "low": 567.2000122070312,
+        "close": 572.7000122070312,
+        "volume": 15182400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-21",
+        "open": 558,
+        "high": 560.9000244140625,
+        "low": 555.4000244140625,
+        "close": 556.2999877929688,
+        "volume": 15304600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-22",
+        "open": 551,
+        "high": 551.7000122070312,
+        "low": 541.2999877929688,
+        "close": 546.2000122070312,
+        "volume": 13482400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-24",
+        "open": 561.0999755859375,
+        "high": 565.2999877929688,
+        "low": 556.7999877929688,
+        "close": 558.9000244140625,
+        "volume": 15361200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-27",
+        "open": 564,
+        "high": 570.7999877929688,
+        "low": 562.5999755859375,
+        "close": 566.7000122070312,
+        "volume": 11922100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-28",
+        "open": 574,
+        "high": 576.4000244140625,
+        "low": 566.5999755859375,
+        "close": 572.7999877929688,
+        "volume": 13795600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-29",
+        "open": 568.5999755859375,
+        "high": 571.2000122070312,
+        "low": 558.2000122070312,
+        "close": 566.5,
+        "volume": 13884400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-09-30",
+        "open": 570.0999755859375,
+        "high": 573.0999755859375,
+        "low": 560.5999755859375,
+        "close": 562.0999755859375,
+        "volume": 17688600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-01",
+        "open": 552.0999755859375,
+        "high": 560,
+        "low": 548.7999877929688,
+        "close": 555.2999877929688,
+        "volume": 14881700
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-04",
+        "open": 563.2000122070312,
+        "high": 569.9000244140625,
+        "low": 556.2999877929688,
+        "close": 557.7000122070312,
+        "volume": 12520100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-05",
+        "open": 555.2000122070312,
+        "high": 557,
+        "low": 547.5,
+        "close": 552.2999877929688,
+        "volume": 14146700
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-06",
+        "open": 550.2000122070312,
+        "high": 551.4000244140625,
+        "low": 519.5,
+        "close": 521.4000244140625,
+        "volume": 33656900
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-07",
+        "open": 520.9000244140625,
+        "high": 528.2000122070312,
+        "low": 516.5,
+        "close": 524.7000122070312,
+        "volume": 13583300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-08",
+        "open": 532.5999755859375,
+        "high": 543.5,
+        "low": 532.5999755859375,
+        "close": 535.9000244140625,
+        "volume": 18734800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-11",
+        "open": 542.4000244140625,
+        "high": 568.5,
+        "low": 541.5999755859375,
+        "close": 564.4000244140625,
+        "volume": 24806900
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-12",
+        "open": 562.4000244140625,
+        "high": 579.9000244140625,
+        "low": 562.2999877929688,
+        "close": 578.2000122070312,
+        "volume": 24341500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-13",
+        "open": 578,
+        "high": 585.5,
+        "low": 575.0999755859375,
+        "close": 581.2000122070312,
+        "volume": 16894700
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-14",
+        "open": 571.2999877929688,
+        "high": 581.7000122070312,
+        "low": 563.5999755859375,
+        "close": 580.4000244140625,
+        "volume": 14754500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-15",
+        "open": 583.9000244140625,
+        "high": 591.5999755859375,
+        "low": 581.2999877929688,
+        "close": 587.7999877929688,
+        "volume": 15010600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-18",
+        "open": 590,
+        "high": 598.5999755859375,
+        "low": 589.0999755859375,
+        "close": 589.7999877929688,
+        "volume": 16349400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-19",
+        "open": 586.9000244140625,
+        "high": 592.5999755859375,
+        "low": 582.4000244140625,
+        "close": 592.2000122070312,
+        "volume": 13810200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-20",
+        "open": 598.0999755859375,
+        "high": 608.7000122070312,
+        "low": 597.4000244140625,
+        "close": 604,
+        "volume": 17150100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-21",
+        "open": 608.5,
+        "high": 611.9000244140625,
+        "low": 595.5,
+        "close": 595.5,
+        "volume": 13012200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-22",
+        "open": 589,
+        "high": 593.7000122070312,
+        "low": 583.2999877929688,
+        "close": 587.2000122070312,
+        "volume": 12572900
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-25",
+        "open": 585,
+        "high": 585.9000244140625,
+        "low": 576.7000122070312,
+        "close": 579.2999877929688,
+        "volume": 10680100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-26",
+        "open": 591.5999755859375,
+        "high": 597.9000244140625,
+        "low": 586.2000122070312,
+        "close": 588.2000122070312,
+        "volume": 12532700
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-27",
+        "open": 583.7000122070312,
+        "high": 585.5999755859375,
+        "low": 578.5,
+        "close": 584.7999877929688,
+        "volume": 8737400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-28",
+        "open": 576.9000244140625,
+        "high": 582.2999877929688,
+        "low": 573.9000244140625,
+        "close": 579.7999877929688,
+        "volume": 9927200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-10-29",
+        "open": 578.2999877929688,
+        "high": 583,
+        "low": 572.7000122070312,
+        "close": 577.4000244140625,
+        "volume": 12209400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-01",
+        "open": 585.0999755859375,
+        "high": 591.5,
+        "low": 581,
+        "close": 590.5999755859375,
+        "volume": 11225600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-02",
+        "open": 594.2000122070312,
+        "high": 600.7000122070312,
+        "low": 590.4000244140625,
+        "close": 596.0999755859375,
+        "volume": 12121600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-04",
+        "open": 600,
+        "high": 607,
+        "low": 595.5999755859375,
+        "close": 604.7000122070312,
+        "volume": 12246400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-05",
+        "open": 610,
+        "high": 612,
+        "low": 587.0999755859375,
+        "close": 589.0999755859375,
+        "volume": 16856700
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-08",
+        "open": 595.2999877929688,
+        "high": 597.4000244140625,
+        "low": 590.2000122070312,
+        "close": 591.2000122070312,
+        "volume": 14520400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-09",
+        "open": 594.4000244140625,
+        "high": 597.7999877929688,
+        "low": 586.2000122070312,
+        "close": 589.7000122070312,
+        "volume": 14562600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-10",
+        "open": 615,
+        "high": 638,
+        "low": 610.2999877929688,
+        "close": 634,
+        "volume": 56450100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-11",
+        "open": 634,
+        "high": 637.0999755859375,
+        "low": 622.2000122070312,
+        "close": 625.7000122070312,
+        "volume": 24932700
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-12",
+        "open": 624,
+        "high": 638.4000244140625,
+        "low": 618.2000122070312,
+        "close": 630.5999755859375,
+        "volume": 18946800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-15",
+        "open": 638,
+        "high": 649,
+        "low": 635.5,
+        "close": 648.7999877929688,
+        "volume": 20539600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-16",
+        "open": 642,
+        "high": 652.9000244140625,
+        "low": 640.0999755859375,
+        "close": 640.7000122070312,
+        "volume": 14734200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-17",
+        "open": 639.5999755859375,
+        "high": 641,
+        "low": 625.2000122070312,
+        "close": 628.0999755859375,
+        "volume": 13838900
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-18",
+        "open": 623.7999877929688,
+        "high": 635.5,
+        "low": 622.5999755859375,
+        "close": 634.5999755859375,
+        "volume": 11582200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-19",
+        "open": 649,
+        "high": 654.2999877929688,
+        "low": 633,
+        "close": 636.2000122070312,
+        "volume": 19016300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-22",
+        "open": 626.5999755859375,
+        "high": 628.0999755859375,
+        "low": 611,
+        "close": 614.5,
+        "volume": 19448000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-24",
+        "open": 630.0999755859375,
+        "high": 643.7999877929688,
+        "low": 630,
+        "close": 641.4000244140625,
+        "volume": 27394500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-25",
+        "open": 645,
+        "high": 650,
+        "low": 638.5999755859375,
+        "close": 639.2999877929688,
+        "volume": 13892500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-26",
+        "open": 636,
+        "high": 636.9000244140625,
+        "low": 624.2000122070312,
+        "close": 628.9000244140625,
+        "volume": 13231500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-29",
+        "open": 611,
+        "high": 611.4000244140625,
+        "low": 593.4000244140625,
+        "close": 593.5,
+        "volume": 25632100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-11-30",
+        "open": 603.5,
+        "high": 606.0999755859375,
+        "low": 562.9000244140625,
+        "close": 562.9000244140625,
+        "volume": 36118700
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-01",
+        "open": 565.5,
+        "high": 572.0999755859375,
+        "low": 553,
+        "close": 558,
+        "volume": 26110100
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-02",
+        "open": 558.7999877929688,
+        "high": 558.9000244140625,
+        "low": 542.0999755859375,
+        "close": 542.5,
+        "volume": 26349000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-03",
+        "open": 553.7000122070312,
+        "high": 566.5999755859375,
+        "low": 548.0999755859375,
+        "close": 564.5,
+        "volume": 19221000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-06",
+        "open": 565.5,
+        "high": 568.9000244140625,
+        "low": 550.5999755859375,
+        "close": 550.9000244140625,
+        "volume": 14919200
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-07",
+        "open": 560.9000244140625,
+        "high": 573.9000244140625,
+        "low": 554.5,
+        "close": 570.0999755859375,
+        "volume": 18156600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-08",
+        "open": 564.5999755859375,
+        "high": 572.9000244140625,
+        "low": 558.7000122070312,
+        "close": 568.5,
+        "volume": 17600500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-09",
+        "open": 566.7000122070312,
+        "high": 569.4000244140625,
+        "low": 555.7000122070312,
+        "close": 555.7000122070312,
+        "volume": 13471400
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-10",
+        "open": 552.9000244140625,
+        "high": 558.2999877929688,
+        "low": 544.2999877929688,
+        "close": 546.4000244140625,
+        "volume": 14842900
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-13",
+        "open": 556.4000244140625,
+        "high": 557.2000122070312,
+        "low": 549.2999877929688,
+        "close": 550.5999755859375,
+        "volume": 10615000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-14",
+        "open": 543,
+        "high": 545.4000244140625,
+        "low": 533,
+        "close": 535.0999755859375,
+        "volume": 14353800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-15",
+        "open": 532,
+        "high": 541.7999877929688,
+        "low": 532,
+        "close": 537.5999755859375,
+        "volume": 11197300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-16",
+        "open": 559.2999877929688,
+        "high": 571.5,
+        "low": 557,
+        "close": 559.5,
+        "volume": 25210800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-17",
+        "open": 561.2000122070312,
+        "high": 571.5999755859375,
+        "low": 560.7000122070312,
+        "close": 562,
+        "volume": 20561800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-20",
+        "open": 542.5,
+        "high": 555.9000244140625,
+        "low": 542.2999877929688,
+        "close": 548.0999755859375,
+        "volume": 13991800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-21",
+        "open": 552,
+        "high": 553.5,
+        "low": 543.7000122070312,
+        "close": 544.7999877929688,
+        "volume": 14009300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-22",
+        "open": 545.5999755859375,
+        "high": 551.0999755859375,
+        "low": 545,
+        "close": 547,
+        "volume": 9972300
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-23",
+        "open": 550,
+        "high": 559.7000122070312,
+        "low": 549.2000122070312,
+        "close": 559.7000122070312,
+        "volume": 12006800
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-24",
+        "open": 563.4000244140625,
+        "high": 568.0999755859375,
+        "low": 557.7000122070312,
+        "close": 557.9000244140625,
+        "volume": 9862000
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-27",
+        "open": 557.4000244140625,
+        "high": 560,
+        "low": 549.2999877929688,
+        "close": 552.7000122070312,
+        "volume": 8529600
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-28",
+        "open": 557.7999877929688,
+        "high": 559.2999877929688,
+        "low": 551.0999755859375,
+        "close": 553.5,
+        "volume": 8943500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-29",
+        "open": 554.7999877929688,
+        "high": 559.0999755859375,
+        "low": 552,
+        "close": 558.0999755859375,
+        "volume": 8450500
+      },
+      {
+        "symbol": "7201",
+        "date": "2021-12-30",
+        "open": 553,
+        "high": 558.5999755859375,
+        "low": 547.5,
+        "close": 555.7999877929688,
+        "volume": 9762400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-04",
+        "open": 569,
+        "high": 591.0999755859375,
+        "low": 566.5999755859375,
+        "close": 590.0999755859375,
+        "volume": 22205600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-05",
+        "open": 607,
+        "high": 615.5999755859375,
+        "low": 599.2999877929688,
+        "close": 615.2000122070312,
+        "volume": 27747100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-06",
+        "open": 614,
+        "high": 620.5999755859375,
+        "low": 610.9000244140625,
+        "close": 615.7999877929688,
+        "volume": 21014700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-07",
+        "open": 624,
+        "high": 635,
+        "low": 619.0999755859375,
+        "close": 629,
+        "volume": 19015100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-11",
+        "open": 624.4000244140625,
+        "high": 631.4000244140625,
+        "low": 615.2000122070312,
+        "close": 622.2999877929688,
+        "volume": 13452500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-12",
+        "open": 627.5999755859375,
+        "high": 632.0999755859375,
+        "low": 624.2000122070312,
+        "close": 631.9000244140625,
+        "volume": 15479000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-13",
+        "open": 630,
+        "high": 650,
+        "low": 627.0999755859375,
+        "close": 646,
+        "volume": 22550500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-14",
+        "open": 641.5999755859375,
+        "high": 642.5,
+        "low": 620.0999755859375,
+        "close": 624.2000122070312,
+        "volume": 24482500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-17",
+        "open": 630,
+        "high": 639.7999877929688,
+        "low": 629.5999755859375,
+        "close": 639.4000244140625,
+        "volume": 13814100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-18",
+        "open": 638.5,
+        "high": 646.7000122070312,
+        "low": 630.7000122070312,
+        "close": 632.7999877929688,
+        "volume": 18305500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-19",
+        "open": 617.9000244140625,
+        "high": 629.7999877929688,
+        "low": 614.2999877929688,
+        "close": 615.5999755859375,
+        "volume": 18606400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-20",
+        "open": 607.2000122070312,
+        "high": 620.5999755859375,
+        "low": 600.0999755859375,
+        "close": 618.0999755859375,
+        "volume": 19815000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-21",
+        "open": 606.7000122070312,
+        "high": 613.5,
+        "low": 596.7000122070312,
+        "close": 612.2000122070312,
+        "volume": 16994400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-24",
+        "open": 603,
+        "high": 608.7999877929688,
+        "low": 593,
+        "close": 599.9000244140625,
+        "volume": 15918700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-25",
+        "open": 613,
+        "high": 615,
+        "low": 600,
+        "close": 605.4000244140625,
+        "volume": 24344100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-26",
+        "open": 607.9000244140625,
+        "high": 609.5999755859375,
+        "low": 596.4000244140625,
+        "close": 605.5,
+        "volume": 16388700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-27",
+        "open": 610,
+        "high": 612,
+        "low": 585.7000122070312,
+        "close": 590.9000244140625,
+        "volume": 16387900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-28",
+        "open": 590,
+        "high": 607,
+        "low": 589.5999755859375,
+        "close": 605.4000244140625,
+        "volume": 14569400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-01-31",
+        "open": 602.2000122070312,
+        "high": 612.9000244140625,
+        "low": 595.7999877929688,
+        "close": 607.4000244140625,
+        "volume": 13401000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-01",
+        "open": 610.5,
+        "high": 616,
+        "low": 592.2999877929688,
+        "close": 594.2000122070312,
+        "volume": 14447200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-02",
+        "open": 599.7999877929688,
+        "high": 617,
+        "low": 598.2000122070312,
+        "close": 612.5999755859375,
+        "volume": 16063300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-03",
+        "open": 610.2999877929688,
+        "high": 622.7999877929688,
+        "low": 609.7999877929688,
+        "close": 618,
+        "volume": 11011600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-04",
+        "open": 610.5,
+        "high": 611.9000244140625,
+        "low": 593.0999755859375,
+        "close": 599.2000122070312,
+        "volume": 20583300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-07",
+        "open": 596.7999877929688,
+        "high": 602.7999877929688,
+        "low": 592.2999877929688,
+        "close": 598.9000244140625,
+        "volume": 11836200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-08",
+        "open": 600.5999755859375,
+        "high": 608.7999877929688,
+        "low": 585.2000122070312,
+        "close": 593,
+        "volume": 20411700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-09",
+        "open": 612.5999755859375,
+        "high": 629.0999755859375,
+        "low": 604.2999877929688,
+        "close": 626.5999755859375,
+        "volume": 39167800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-10",
+        "open": 630,
+        "high": 643,
+        "low": 629.5,
+        "close": 635.5999755859375,
+        "volume": 19254000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-14",
+        "open": 621.7000122070312,
+        "high": 623.7999877929688,
+        "low": 612.7000122070312,
+        "close": 614.5,
+        "volume": 18508100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-15",
+        "open": 616,
+        "high": 627,
+        "low": 602,
+        "close": 606.4000244140625,
+        "volume": 20040600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-16",
+        "open": 616.4000244140625,
+        "high": 618.5,
+        "low": 604.2000122070312,
+        "close": 610.7000122070312,
+        "volume": 16692600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-17",
+        "open": 605.2000122070312,
+        "high": 613.2999877929688,
+        "low": 604.4000244140625,
+        "close": 608.5,
+        "volume": 12929600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-18",
+        "open": 602.7000122070312,
+        "high": 616.2999877929688,
+        "low": 602.2999877929688,
+        "close": 615,
+        "volume": 12484300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-21",
+        "open": 605.2999877929688,
+        "high": 607,
+        "low": 596.7000122070312,
+        "close": 598.0999755859375,
+        "volume": 18928500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-22",
+        "open": 588.0999755859375,
+        "high": 589.5999755859375,
+        "low": 560.2000122070312,
+        "close": 562.0999755859375,
+        "volume": 25740400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-24",
+        "open": 558.0999755859375,
+        "high": 571.0999755859375,
+        "low": 554,
+        "close": 564.2000122070312,
+        "volume": 20876000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-25",
+        "open": 569,
+        "high": 573.9000244140625,
+        "low": 563.0999755859375,
+        "close": 564.9000244140625,
+        "volume": 18316900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-02-28",
+        "open": 560,
+        "high": 561,
+        "low": 537.0999755859375,
+        "close": 545.2999877929688,
+        "volume": 33206400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-01",
+        "open": 551.0999755859375,
+        "high": 555.2999877929688,
+        "low": 544.2000122070312,
+        "close": 545.0999755859375,
+        "volume": 19673500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-02",
+        "open": 531.5,
+        "high": 533.7000122070312,
+        "low": 521.5,
+        "close": 524.2999877929688,
+        "volume": 26574300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-03",
+        "open": 529,
+        "high": 534.7000122070312,
+        "low": 524.9000244140625,
+        "close": 524.9000244140625,
+        "volume": 17006100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-04",
+        "open": 519.4000244140625,
+        "high": 519.5999755859375,
+        "low": 494.1000061035156,
+        "close": 496,
+        "volume": 30338100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-07",
+        "open": 481.70001220703125,
+        "high": 484.20001220703125,
+        "low": 453,
+        "close": 464.3999938964844,
+        "volume": 35494900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-08",
+        "open": 456.3999938964844,
+        "high": 457.3999938964844,
+        "low": 437,
+        "close": 438.79998779296875,
+        "volume": 32535700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-09",
+        "open": 447.5,
+        "high": 450.8999938964844,
+        "low": 436.5,
+        "close": 437.79998779296875,
+        "volume": 30004400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-10",
+        "open": 466,
+        "high": 480.8999938964844,
+        "low": 462,
+        "close": 475.5,
+        "volume": 32955200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-11",
+        "open": 461.70001220703125,
+        "high": 464.6000061035156,
+        "low": 450.1000061035156,
+        "close": 455.5,
+        "volume": 23252000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-14",
+        "open": 460.8999938964844,
+        "high": 468.6000061035156,
+        "low": 459.20001220703125,
+        "close": 464.79998779296875,
+        "volume": 20007500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-15",
+        "open": 465.5,
+        "high": 492.70001220703125,
+        "low": 464.6000061035156,
+        "close": 484.3999938964844,
+        "volume": 25904000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-16",
+        "open": 490,
+        "high": 503.5,
+        "low": 488.79998779296875,
+        "close": 502.20001220703125,
+        "volume": 27596900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-17",
+        "open": 516.2000122070312,
+        "high": 519.5,
+        "low": 503.70001220703125,
+        "close": 513.5,
+        "volume": 25903100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-18",
+        "open": 501,
+        "high": 507.29998779296875,
+        "low": 498,
+        "close": 505.3999938964844,
+        "volume": 22950700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-22",
+        "open": 518.4000244140625,
+        "high": 523.9000244140625,
+        "low": 509.3999938964844,
+        "close": 515.2000122070312,
+        "volume": 19122600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-23",
+        "open": 523,
+        "high": 536,
+        "low": 520,
+        "close": 534.7999877929688,
+        "volume": 25387800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-24",
+        "open": 520,
+        "high": 533.2999877929688,
+        "low": 519.7000122070312,
+        "close": 533.2999877929688,
+        "volume": 18293500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-25",
+        "open": 542.2000122070312,
+        "high": 542.5,
+        "low": 526.0999755859375,
+        "close": 530.5,
+        "volume": 16242800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-28",
+        "open": 533.0999755859375,
+        "high": 543.4000244140625,
+        "low": 528.4000244140625,
+        "close": 540.0999755859375,
+        "volume": 15375400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-29",
+        "open": 543.5,
+        "high": 549.4000244140625,
+        "low": 540.7000122070312,
+        "close": 547.9000244140625,
+        "volume": 16760700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-30",
+        "open": 556.2999877929688,
+        "high": 563.0999755859375,
+        "low": 540.0999755859375,
+        "close": 549.7999877929688,
+        "volume": 23171100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-03-31",
+        "open": 538,
+        "high": 552.5,
+        "low": 533.2999877929688,
+        "close": 547.7999877929688,
+        "volume": 16104600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-01",
+        "open": 538.0999755859375,
+        "high": 543.5999755859375,
+        "low": 533.2999877929688,
+        "close": 540,
+        "volume": 14160900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-04",
+        "open": 534.4000244140625,
+        "high": 537.5,
+        "low": 528.0999755859375,
+        "close": 529.5999755859375,
+        "volume": 16916900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-05",
+        "open": 535,
+        "high": 539,
+        "low": 529.7000122070312,
+        "close": 531.7000122070312,
+        "volume": 13520600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-06",
+        "open": 524.7999877929688,
+        "high": 525.2999877929688,
+        "low": 515,
+        "close": 516.7000122070312,
+        "volume": 16656900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-07",
+        "open": 508.3999938964844,
+        "high": 511.79998779296875,
+        "low": 500.1000061035156,
+        "close": 508.79998779296875,
+        "volume": 14141500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-08",
+        "open": 511.20001220703125,
+        "high": 515,
+        "low": 501.5,
+        "close": 508.6000061035156,
+        "volume": 16929400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-11",
+        "open": 512.5,
+        "high": 514.2000122070312,
+        "low": 504.70001220703125,
+        "close": 509.79998779296875,
+        "volume": 10364600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-12",
+        "open": 507.3999938964844,
+        "high": 508.3999938964844,
+        "low": 500,
+        "close": 500.20001220703125,
+        "volume": 17000700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-13",
+        "open": 503.79998779296875,
+        "high": 506,
+        "low": 497,
+        "close": 504,
+        "volume": 15636200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-14",
+        "open": 496,
+        "high": 508.1000061035156,
+        "low": 492.5,
+        "close": 507,
+        "volume": 12105200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-15",
+        "open": 504.1000061035156,
+        "high": 511.70001220703125,
+        "low": 503.1000061035156,
+        "close": 510.6000061035156,
+        "volume": 9287300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-18",
+        "open": 507,
+        "high": 511.8999938964844,
+        "low": 500.3999938964844,
+        "close": 506.5,
+        "volume": 7955000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-19",
+        "open": 513.4000244140625,
+        "high": 528.4000244140625,
+        "low": 512.4000244140625,
+        "close": 526.2999877929688,
+        "volume": 17866600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-20",
+        "open": 539.2999877929688,
+        "high": 557.0999755859375,
+        "low": 539,
+        "close": 550.7999877929688,
+        "volume": 30839800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-21",
+        "open": 540.7999877929688,
+        "high": 551.9000244140625,
+        "low": 540.7000122070312,
+        "close": 546.4000244140625,
+        "volume": 14215000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-22",
+        "open": 539,
+        "high": 540.7000122070312,
+        "low": 528.5,
+        "close": 536.9000244140625,
+        "volume": 14368600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-25",
+        "open": 521.0999755859375,
+        "high": 522,
+        "low": 508.6000061035156,
+        "close": 509.79998779296875,
+        "volume": 27716600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-26",
+        "open": 509.8999938964844,
+        "high": 511.70001220703125,
+        "low": 504.70001220703125,
+        "close": 509.29998779296875,
+        "volume": 18170500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-27",
+        "open": 496.6000061035156,
+        "high": 500.79998779296875,
+        "low": 493.70001220703125,
+        "close": 499.20001220703125,
+        "volume": 25001100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-04-28",
+        "open": 501,
+        "high": 518.5,
+        "low": 496.1000061035156,
+        "close": 517,
+        "volume": 22186400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-02",
+        "open": 520,
+        "high": 521.5999755859375,
+        "low": 510.29998779296875,
+        "close": 514.7000122070312,
+        "volume": 14588700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-06",
+        "open": 511,
+        "high": 524.0999755859375,
+        "low": 508.1000061035156,
+        "close": 523.2000122070312,
+        "volume": 20063000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-09",
+        "open": 521.4000244140625,
+        "high": 526.7999877929688,
+        "low": 517.5,
+        "close": 519.4000244140625,
+        "volume": 11441000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-10",
+        "open": 510,
+        "high": 515.7999877929688,
+        "low": 500.1000061035156,
+        "close": 507.1000061035156,
+        "volume": 19794400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-11",
+        "open": 508.70001220703125,
+        "high": 511.6000061035156,
+        "low": 495.1000061035156,
+        "close": 499.70001220703125,
+        "volume": 20658600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-12",
+        "open": 497,
+        "high": 511.6000061035156,
+        "low": 486.8999938964844,
+        "close": 505,
+        "volume": 22302900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-13",
+        "open": 495.3999938964844,
+        "high": 498.79998779296875,
+        "low": 473.20001220703125,
+        "close": 490.20001220703125,
+        "volume": 42026700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-16",
+        "open": 497.8999938964844,
+        "high": 502.20001220703125,
+        "low": 490.29998779296875,
+        "close": 494.70001220703125,
+        "volume": 21421400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-17",
+        "open": 493.20001220703125,
+        "high": 493.79998779296875,
+        "low": 482.6000061035156,
+        "close": 484.5,
+        "volume": 15519100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-18",
+        "open": 491.5,
+        "high": 505.29998779296875,
+        "low": 488,
+        "close": 502.5,
+        "volume": 22838600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-19",
+        "open": 485,
+        "high": 488,
+        "low": 479.1000061035156,
+        "close": 483,
+        "volume": 25678500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-20",
+        "open": 486,
+        "high": 499.20001220703125,
+        "low": 485.1000061035156,
+        "close": 496.8999938964844,
+        "volume": 28525000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-23",
+        "open": 502.5,
+        "high": 503.8999938964844,
+        "low": 492.3999938964844,
+        "close": 497.8999938964844,
+        "volume": 16182300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-24",
+        "open": 499,
+        "high": 501,
+        "low": 489.29998779296875,
+        "close": 489.6000061035156,
+        "volume": 19875800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-25",
+        "open": 485,
+        "high": 490.70001220703125,
+        "low": 482.3999938964844,
+        "close": 488.6000061035156,
+        "volume": 17588100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-26",
+        "open": 492.1000061035156,
+        "high": 497.70001220703125,
+        "low": 487.20001220703125,
+        "close": 487.6000061035156,
+        "volume": 13191300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-27",
+        "open": 493.5,
+        "high": 493.70001220703125,
+        "low": 487.3999938964844,
+        "close": 490.20001220703125,
+        "volume": 13943900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-30",
+        "open": 496.20001220703125,
+        "high": 502.29998779296875,
+        "low": 495.3999938964844,
+        "close": 502.29998779296875,
+        "volume": 21706900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-05-31",
+        "open": 499.29998779296875,
+        "high": 505.6000061035156,
+        "low": 498.1000061035156,
+        "close": 500.6000061035156,
+        "volume": 18400400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-01",
+        "open": 506.6000061035156,
+        "high": 539.5,
+        "low": 503.8999938964844,
+        "close": 539.5,
+        "volume": 38476600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-02",
+        "open": 536.7999877929688,
+        "high": 541.2000122070312,
+        "low": 531.5,
+        "close": 539,
+        "volume": 18747000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-03",
+        "open": 543.9000244140625,
+        "high": 545,
+        "low": 535.4000244140625,
+        "close": 538.0999755859375,
+        "volume": 18956900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-06",
+        "open": 537,
+        "high": 542.9000244140625,
+        "low": 535.0999755859375,
+        "close": 540.5,
+        "volume": 12714100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-07",
+        "open": 549,
+        "high": 558.7999877929688,
+        "low": 548.4000244140625,
+        "close": 554.5999755859375,
+        "volume": 20794400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-08",
+        "open": 553.5999755859375,
+        "high": 563.7000122070312,
+        "low": 553.0999755859375,
+        "close": 561,
+        "volume": 15724300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-09",
+        "open": 562.2000122070312,
+        "high": 577.5999755859375,
+        "low": 561.0999755859375,
+        "close": 571.7999877929688,
+        "volume": 21753000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-10",
+        "open": 565,
+        "high": 569.7999877929688,
+        "low": 560.5,
+        "close": 564,
+        "volume": 15220100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-13",
+        "open": 544,
+        "high": 551,
+        "low": 542,
+        "close": 544.5,
+        "volume": 17233000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-14",
+        "open": 537.9000244140625,
+        "high": 540.5999755859375,
+        "low": 534,
+        "close": 539.2000122070312,
+        "volume": 14978600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-15",
+        "open": 546,
+        "high": 546,
+        "low": 532.7999877929688,
+        "close": 533.5999755859375,
+        "volume": 14047700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-16",
+        "open": 541.4000244140625,
+        "high": 555.5,
+        "low": 538.9000244140625,
+        "close": 547.2000122070312,
+        "volume": 15942500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-17",
+        "open": 521.0999755859375,
+        "high": 527.7000122070312,
+        "low": 512.2000122070312,
+        "close": 524.2000122070312,
+        "volume": 24283700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-20",
+        "open": 534,
+        "high": 534.2999877929688,
+        "low": 522.7000122070312,
+        "close": 526.5999755859375,
+        "volume": 12627800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-21",
+        "open": 536.5999755859375,
+        "high": 546.5999755859375,
+        "low": 536,
+        "close": 543.5999755859375,
+        "volume": 13271000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-22",
+        "open": 556.2000122070312,
+        "high": 560.5,
+        "low": 552.2999877929688,
+        "close": 555.7999877929688,
+        "volume": 16083800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-23",
+        "open": 552.2000122070312,
+        "high": 559.5,
+        "low": 548.5,
+        "close": 550.9000244140625,
+        "volume": 14345900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-24",
+        "open": 542.9000244140625,
+        "high": 546.2999877929688,
+        "low": 538.4000244140625,
+        "close": 544.5,
+        "volume": 15809600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-27",
+        "open": 552.7000122070312,
+        "high": 557.5999755859375,
+        "low": 546.7000122070312,
+        "close": 549,
+        "volume": 10891800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-28",
+        "open": 554.2000122070312,
+        "high": 566.9000244140625,
+        "low": 552.7999877929688,
+        "close": 566.2000122070312,
+        "volume": 17456000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-29",
+        "open": 569,
+        "high": 570,
+        "low": 548.7000122070312,
+        "close": 548.9000244140625,
+        "volume": 22228300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-06-30",
+        "open": 546.5,
+        "high": 547,
+        "low": 527.0999755859375,
+        "close": 528.2000122070312,
+        "volume": 22214400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-01",
+        "open": 523.7000122070312,
+        "high": 524.9000244140625,
+        "low": 505.29998779296875,
+        "close": 508.29998779296875,
+        "volume": 23845500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-04",
+        "open": 518.2999877929688,
+        "high": 518.4000244140625,
+        "low": 508.70001220703125,
+        "close": 512.4000244140625,
+        "volume": 16362400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-05",
+        "open": 518.7999877929688,
+        "high": 518.9000244140625,
+        "low": 512.7000122070312,
+        "close": 514.2000122070312,
+        "volume": 12914500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-06",
+        "open": 505,
+        "high": 505.1000061035156,
+        "low": 490.3999938964844,
+        "close": 490.79998779296875,
+        "volume": 25873400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-07",
+        "open": 498.79998779296875,
+        "high": 504.29998779296875,
+        "low": 490,
+        "close": 499.79998779296875,
+        "volume": 19515000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-08",
+        "open": 505.1000061035156,
+        "high": 513,
+        "low": 504.20001220703125,
+        "close": 504.20001220703125,
+        "volume": 15986900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-11",
+        "open": 514,
+        "high": 520.7000122070312,
+        "low": 512.5999755859375,
+        "close": 517.4000244140625,
+        "volume": 17913300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-12",
+        "open": 513.4000244140625,
+        "high": 514.2000122070312,
+        "low": 504,
+        "close": 505.6000061035156,
+        "volume": 15192000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-13",
+        "open": 511,
+        "high": 515.5999755859375,
+        "low": 508,
+        "close": 509.6000061035156,
+        "volume": 11730900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-14",
+        "open": 505.5,
+        "high": 514.9000244140625,
+        "low": 503.6000061035156,
+        "close": 513.5,
+        "volume": 12123700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-15",
+        "open": 510.1000061035156,
+        "high": 510.70001220703125,
+        "low": 503.1000061035156,
+        "close": 508.1000061035156,
+        "volume": 15380500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-19",
+        "open": 515.0999755859375,
+        "high": 518.5999755859375,
+        "low": 513.5,
+        "close": 515.9000244140625,
+        "volume": 12410500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-20",
+        "open": 523,
+        "high": 524.5,
+        "low": 519,
+        "close": 524.5,
+        "volume": 16654200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-21",
+        "open": 520,
+        "high": 526.9000244140625,
+        "low": 517.4000244140625,
+        "close": 521,
+        "volume": 13082200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-22",
+        "open": 519,
+        "high": 519.7000122070312,
+        "low": 514.2000122070312,
+        "close": 515.5,
+        "volume": 12718000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-25",
+        "open": 510.5,
+        "high": 517.7999877929688,
+        "low": 508.29998779296875,
+        "close": 514.0999755859375,
+        "volume": 8263400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-26",
+        "open": 516.5,
+        "high": 518.4000244140625,
+        "low": 512.2999877929688,
+        "close": 512.7999877929688,
+        "volume": 10202700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-27",
+        "open": 510.1000061035156,
+        "high": 511.29998779296875,
+        "low": 507.29998779296875,
+        "close": 509.3999938964844,
+        "volume": 11708000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-28",
+        "open": 517,
+        "high": 530.2999877929688,
+        "low": 513.0999755859375,
+        "close": 528,
+        "volume": 27589800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-07-29",
+        "open": 519.7999877929688,
+        "high": 521.9000244140625,
+        "low": 498.6000061035156,
+        "close": 502.3999938964844,
+        "volume": 48051100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-01",
+        "open": 504,
+        "high": 522.5999755859375,
+        "low": 503.6000061035156,
+        "close": 519,
+        "volume": 28398000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-02",
+        "open": 513.5,
+        "high": 518.5999755859375,
+        "low": 507.29998779296875,
+        "close": 507.29998779296875,
+        "volume": 21528500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-03",
+        "open": 504,
+        "high": 512.7000122070312,
+        "low": 496.6000061035156,
+        "close": 511,
+        "volume": 20553400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-04",
+        "open": 512.2999877929688,
+        "high": 514.5,
+        "low": 505.20001220703125,
+        "close": 509.3999938964844,
+        "volume": 17687100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-05",
+        "open": 505,
+        "high": 515.9000244140625,
+        "low": 504.29998779296875,
+        "close": 515.4000244140625,
+        "volume": 12812500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-08",
+        "open": 515.5999755859375,
+        "high": 524.7000122070312,
+        "low": 515.4000244140625,
+        "close": 524.2000122070312,
+        "volume": 14526200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-09",
+        "open": 524,
+        "high": 527.9000244140625,
+        "low": 520.0999755859375,
+        "close": 521,
+        "volume": 11788200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-10",
+        "open": 522.2000122070312,
+        "high": 529.4000244140625,
+        "low": 518.5999755859375,
+        "close": 529.4000244140625,
+        "volume": 11471100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-12",
+        "open": 531.5999755859375,
+        "high": 538.0999755859375,
+        "low": 531.5,
+        "close": 537.9000244140625,
+        "volume": 16571800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-15",
+        "open": 537.5999755859375,
+        "high": 537.5999755859375,
+        "low": 532.9000244140625,
+        "close": 534.7000122070312,
+        "volume": 10149000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-16",
+        "open": 534,
+        "high": 534.2000122070312,
+        "low": 524.5999755859375,
+        "close": 527.7000122070312,
+        "volume": 11780100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-17",
+        "open": 532.9000244140625,
+        "high": 539.5999755859375,
+        "low": 530.2999877929688,
+        "close": 539,
+        "volume": 14541500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-18",
+        "open": 535,
+        "high": 535,
+        "low": 528.0999755859375,
+        "close": 529.2999877929688,
+        "volume": 10723000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-19",
+        "open": 534.2999877929688,
+        "high": 539.7999877929688,
+        "low": 534.0999755859375,
+        "close": 536.2000122070312,
+        "volume": 11487100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-22",
+        "open": 531.2000122070312,
+        "high": 536.7999877929688,
+        "low": 529.7999877929688,
+        "close": 534.2000122070312,
+        "volume": 8395100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-23",
+        "open": 528,
+        "high": 529.4000244140625,
+        "low": 525.2000122070312,
+        "close": 527.2999877929688,
+        "volume": 11823200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-24",
+        "open": 530.0999755859375,
+        "high": 534.9000244140625,
+        "low": 527.7000122070312,
+        "close": 528,
+        "volume": 9821300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-25",
+        "open": 529,
+        "high": 536.0999755859375,
+        "low": 528.5999755859375,
+        "close": 535.2999877929688,
+        "volume": 9627700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-26",
+        "open": 539,
+        "high": 541.4000244140625,
+        "low": 532.5999755859375,
+        "close": 535.4000244140625,
+        "volume": 10479800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-29",
+        "open": 525,
+        "high": 533.9000244140625,
+        "low": 522.7000122070312,
+        "close": 531.7000122070312,
+        "volume": 11871900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-30",
+        "open": 538.2999877929688,
+        "high": 543.2999877929688,
+        "low": 537.2000122070312,
+        "close": 542.7000122070312,
+        "volume": 12691700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-08-31",
+        "open": 540,
+        "high": 553.4000244140625,
+        "low": 536.5999755859375,
+        "close": 549.9000244140625,
+        "volume": 16938400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-01",
+        "open": 543.0999755859375,
+        "high": 547,
+        "low": 538.5,
+        "close": 547,
+        "volume": 13426700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-02",
+        "open": 539.4000244140625,
+        "high": 543.4000244140625,
+        "low": 537.5,
+        "close": 539.5999755859375,
+        "volume": 12654400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-05",
+        "open": 539,
+        "high": 539.9000244140625,
+        "low": 528.2000122070312,
+        "close": 530,
+        "volume": 11858100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-06",
+        "open": 526,
+        "high": 528.5,
+        "low": 519,
+        "close": 525.7000122070312,
+        "volume": 14270900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-07",
+        "open": 533.7999877929688,
+        "high": 539.2999877929688,
+        "low": 528.4000244140625,
+        "close": 538.5,
+        "volume": 16250500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-08",
+        "open": 543.5,
+        "high": 546,
+        "low": 538.5999755859375,
+        "close": 544.9000244140625,
+        "volume": 16395200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-09",
+        "open": 544.9000244140625,
+        "high": 551,
+        "low": 539,
+        "close": 539.7000122070312,
+        "volume": 13750700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-12",
+        "open": 546.7999877929688,
+        "high": 558.2000122070312,
+        "low": 546.0999755859375,
+        "close": 552.9000244140625,
+        "volume": 16187600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-13",
+        "open": 549.2000122070312,
+        "high": 550.5999755859375,
+        "low": 543.0999755859375,
+        "close": 548.2000122070312,
+        "volume": 11504200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-14",
+        "open": 543.9000244140625,
+        "high": 549.2999877929688,
+        "low": 538.5999755859375,
+        "close": 538.5999755859375,
+        "volume": 16100600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-15",
+        "open": 541.4000244140625,
+        "high": 547.9000244140625,
+        "low": 539,
+        "close": 546.4000244140625,
+        "volume": 11406200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-16",
+        "open": 540,
+        "high": 543.5999755859375,
+        "low": 538.2999877929688,
+        "close": 539.2000122070312,
+        "volume": 15038600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-20",
+        "open": 544.4000244140625,
+        "high": 545.2000122070312,
+        "low": 536.0999755859375,
+        "close": 537.7000122070312,
+        "volume": 12578000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-21",
+        "open": 529.4000244140625,
+        "high": 530.0999755859375,
+        "low": 520.0999755859375,
+        "close": 521.2999877929688,
+        "volume": 17004000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-22",
+        "open": 512.4000244140625,
+        "high": 521.2999877929688,
+        "low": 512.2000122070312,
+        "close": 520.2000122070312,
+        "volume": 16511100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-26",
+        "open": 501.70001220703125,
+        "high": 502.5,
+        "low": 486.8999938964844,
+        "close": 490.5,
+        "volume": 33779500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-27",
+        "open": 497.79998779296875,
+        "high": 503.8999938964844,
+        "low": 492.29998779296875,
+        "close": 497.8999938964844,
+        "volume": 21643800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-28",
+        "open": 492,
+        "high": 492.20001220703125,
+        "low": 476.1000061035156,
+        "close": 484.70001220703125,
+        "volume": 22551600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-29",
+        "open": 491.20001220703125,
+        "high": 497.70001220703125,
+        "low": 484.8999938964844,
+        "close": 491.20001220703125,
+        "volume": 17177600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-09-30",
+        "open": 480,
+        "high": 480.79998779296875,
+        "low": 459.6000061035156,
+        "close": 460.20001220703125,
+        "volume": 32450400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-03",
+        "open": 459.20001220703125,
+        "high": 469.8999938964844,
+        "low": 454.5,
+        "close": 469.70001220703125,
+        "volume": 20872900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-04",
+        "open": 477,
+        "high": 482.8999938964844,
+        "low": 475.29998779296875,
+        "close": 479.3999938964844,
+        "volume": 23199900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-05",
+        "open": 488.70001220703125,
+        "high": 491,
+        "low": 477.29998779296875,
+        "close": 478.70001220703125,
+        "volume": 16762100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-06",
+        "open": 480.20001220703125,
+        "high": 487.3999938964844,
+        "low": 478.3999938964844,
+        "close": 478.3999938964844,
+        "volume": 18319800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-07",
+        "open": 467.8999938964844,
+        "high": 473.8999938964844,
+        "low": 464,
+        "close": 471,
+        "volume": 19078100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-11",
+        "open": 465.29998779296875,
+        "high": 468.1000061035156,
+        "low": 458.6000061035156,
+        "close": 461.20001220703125,
+        "volume": 25394900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-12",
+        "open": 456,
+        "high": 459.29998779296875,
+        "low": 448.29998779296875,
+        "close": 450,
+        "volume": 26254100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-13",
+        "open": 450.79998779296875,
+        "high": 452.5,
+        "low": 441.1000061035156,
+        "close": 444.1000061035156,
+        "volume": 20158900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-14",
+        "open": 453,
+        "high": 462.70001220703125,
+        "low": 449.29998779296875,
+        "close": 458,
+        "volume": 20375000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-17",
+        "open": 449,
+        "high": 459.20001220703125,
+        "low": 448.29998779296875,
+        "close": 457.79998779296875,
+        "volume": 15240500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-18",
+        "open": 465,
+        "high": 467.5,
+        "low": 455.8999938964844,
+        "close": 460,
+        "volume": 14168200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-19",
+        "open": 462.6000061035156,
+        "high": 473.8999938964844,
+        "low": 460.70001220703125,
+        "close": 465.6000061035156,
+        "volume": 20456300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-20",
+        "open": 461.1000061035156,
+        "high": 462.79998779296875,
+        "low": 458.3999938964844,
+        "close": 461.20001220703125,
+        "volume": 13744500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-21",
+        "open": 459.5,
+        "high": 460.5,
+        "low": 454.20001220703125,
+        "close": 456.29998779296875,
+        "volume": 13970800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-24",
+        "open": 461.8999938964844,
+        "high": 465.5,
+        "low": 457.20001220703125,
+        "close": 458.20001220703125,
+        "volume": 15174200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-25",
+        "open": 463,
+        "high": 466.8999938964844,
+        "low": 460.6000061035156,
+        "close": 466.20001220703125,
+        "volume": 12152200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-26",
+        "open": 467,
+        "high": 472.5,
+        "low": 466.5,
+        "close": 467.70001220703125,
+        "volume": 12694200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-27",
+        "open": 466.3999938964844,
+        "high": 467.29998779296875,
+        "low": 459.70001220703125,
+        "close": 462.6000061035156,
+        "volume": 10455400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-28",
+        "open": 462,
+        "high": 466,
+        "low": 460.79998779296875,
+        "close": 461.3999938964844,
+        "volume": 27965500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-10-31",
+        "open": 469.3999938964844,
+        "high": 474.3999938964844,
+        "low": 467.1000061035156,
+        "close": 474.3999938964844,
+        "volume": 13904800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-01",
+        "open": 475,
+        "high": 478.29998779296875,
+        "low": 472.70001220703125,
+        "close": 474.70001220703125,
+        "volume": 11774700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-02",
+        "open": 473.29998779296875,
+        "high": 484,
+        "low": 472.3999938964844,
+        "close": 484,
+        "volume": 17522800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-04",
+        "open": 480.3999938964844,
+        "high": 487.5,
+        "low": 477.1000061035156,
+        "close": 486.1000061035156,
+        "volume": 19359800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-07",
+        "open": 490.29998779296875,
+        "high": 492.70001220703125,
+        "low": 484.79998779296875,
+        "close": 488.5,
+        "volume": 14562200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-08",
+        "open": 490.8999938964844,
+        "high": 499.20001220703125,
+        "low": 487.1000061035156,
+        "close": 495.29998779296875,
+        "volume": 20004300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-09",
+        "open": 495.79998779296875,
+        "high": 497.20001220703125,
+        "low": 487.6000061035156,
+        "close": 492.8999938964844,
+        "volume": 20558900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-10",
+        "open": 491.79998779296875,
+        "high": 499.29998779296875,
+        "low": 485.20001220703125,
+        "close": 488.3999938964844,
+        "volume": 27903400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-11",
+        "open": 499,
+        "high": 501.20001220703125,
+        "low": 494.29998779296875,
+        "close": 499.5,
+        "volume": 28548300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-14",
+        "open": 498.20001220703125,
+        "high": 498.5,
+        "low": 491.70001220703125,
+        "close": 492.8999938964844,
+        "volume": 17479100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-15",
+        "open": 492.8999938964844,
+        "high": 500.6000061035156,
+        "low": 490.20001220703125,
+        "close": 500.6000061035156,
+        "volume": 13498600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-16",
+        "open": 494.8999938964844,
+        "high": 498.5,
+        "low": 492,
+        "close": 498,
+        "volume": 14053500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-17",
+        "open": 491.70001220703125,
+        "high": 494.3999938964844,
+        "low": 488.70001220703125,
+        "close": 488.79998779296875,
+        "volume": 16742700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-18",
+        "open": 493.70001220703125,
+        "high": 501.6000061035156,
+        "low": 492.1000061035156,
+        "close": 498.3999938964844,
+        "volume": 19802400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-21",
+        "open": 503,
+        "high": 504.3999938964844,
+        "low": 496,
+        "close": 497.70001220703125,
+        "volume": 11995800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-22",
+        "open": 503.1000061035156,
+        "high": 510.6000061035156,
+        "low": 502.3999938964844,
+        "close": 506,
+        "volume": 20541200
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-24",
+        "open": 510.20001220703125,
+        "high": 510.8999938964844,
+        "low": 502,
+        "close": 502.5,
+        "volume": 13003500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-25",
+        "open": 503,
+        "high": 504.5,
+        "low": 500.1000061035156,
+        "close": 504.3999938964844,
+        "volume": 9063100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-28",
+        "open": 506.6000061035156,
+        "high": 509.29998779296875,
+        "low": 501.8999938964844,
+        "close": 502,
+        "volume": 10807000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-29",
+        "open": 495,
+        "high": 495.20001220703125,
+        "low": 488.1000061035156,
+        "close": 493.5,
+        "volume": 16927600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-11-30",
+        "open": 494.79998779296875,
+        "high": 494.8999938964844,
+        "low": 488.29998779296875,
+        "close": 491.20001220703125,
+        "volume": 18277100
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-01",
+        "open": 493.1000061035156,
+        "high": 493.3999938964844,
+        "low": 488.20001220703125,
+        "close": 489.20001220703125,
+        "volume": 12389500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-02",
+        "open": 483,
+        "high": 483,
+        "low": 471.6000061035156,
+        "close": 474.6000061035156,
+        "volume": 19213600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-05",
+        "open": 471,
+        "high": 471.3999938964844,
+        "low": 459.20001220703125,
+        "close": 461.70001220703125,
+        "volume": 23003000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-06",
+        "open": 461.6000061035156,
+        "high": 468.20001220703125,
+        "low": 461,
+        "close": 466.20001220703125,
+        "volume": 15903700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-07",
+        "open": 460,
+        "high": 468.1000061035156,
+        "low": 459.20001220703125,
+        "close": 463.70001220703125,
+        "volume": 13965500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-08",
+        "open": 459.70001220703125,
+        "high": 462.3999938964844,
+        "low": 456.1000061035156,
+        "close": 461.6000061035156,
+        "volume": 15149900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-09",
+        "open": 462.3999938964844,
+        "high": 465.6000061035156,
+        "low": 459,
+        "close": 459,
+        "volume": 15499800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-12",
+        "open": 458,
+        "high": 462.6000061035156,
+        "low": 457.6000061035156,
+        "close": 462,
+        "volume": 10791800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-13",
+        "open": 466.79998779296875,
+        "high": 468.5,
+        "low": 461.70001220703125,
+        "close": 462.5,
+        "volume": 11748600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-14",
+        "open": 460,
+        "high": 463.6000061035156,
+        "low": 458.29998779296875,
+        "close": 462.20001220703125,
+        "volume": 9227300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-15",
+        "open": 459,
+        "high": 464.29998779296875,
+        "low": 457.5,
+        "close": 464.29998779296875,
+        "volume": 10071900
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-16",
+        "open": 460.6000061035156,
+        "high": 463.70001220703125,
+        "low": 458.5,
+        "close": 460.29998779296875,
+        "volume": 12412800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-19",
+        "open": 454.6000061035156,
+        "high": 454.70001220703125,
+        "low": 447.6000061035156,
+        "close": 450.70001220703125,
+        "volume": 18100800
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-20",
+        "open": 454.1000061035156,
+        "high": 454.5,
+        "low": 424.29998779296875,
+        "close": 428,
+        "volume": 42866600
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-21",
+        "open": 425.29998779296875,
+        "high": 425.29998779296875,
+        "low": 408.6000061035156,
+        "close": 413.3999938964844,
+        "volume": 39631300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-22",
+        "open": 426.6000061035156,
+        "high": 431.20001220703125,
+        "low": 421.3999938964844,
+        "close": 422.29998779296875,
+        "volume": 26523400
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-23",
+        "open": 416.79998779296875,
+        "high": 417,
+        "low": 409.70001220703125,
+        "close": 412.79998779296875,
+        "volume": 23055000
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-26",
+        "open": 416,
+        "high": 422.3999938964844,
+        "low": 415.29998779296875,
+        "close": 420.79998779296875,
+        "volume": 14433300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-27",
+        "open": 423,
+        "high": 425.79998779296875,
+        "low": 414.6000061035156,
+        "close": 416.29998779296875,
+        "volume": 17467300
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-28",
+        "open": 415,
+        "high": 418.29998779296875,
+        "low": 411.79998779296875,
+        "close": 416.5,
+        "volume": 16697700
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-29",
+        "open": 413.6000061035156,
+        "high": 415.6000061035156,
+        "low": 411.5,
+        "close": 415.1000061035156,
+        "volume": 11097500
+      },
+      {
+        "symbol": "7201",
+        "date": "2022-12-30",
+        "open": 416.5,
+        "high": 421.20001220703125,
+        "low": 416.5,
+        "close": 418.1000061035156,
+        "volume": 10809500
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-04",
+        "open": 412,
+        "high": 413.70001220703125,
+        "low": 408.1000061035156,
+        "close": 412.3999938964844,
+        "volume": 15157000
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-05",
+        "open": 416.3999938964844,
+        "high": 419.3999938964844,
+        "low": 413.29998779296875,
+        "close": 419.3999938964844,
+        "volume": 13635100
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-06",
+        "open": 421.1000061035156,
+        "high": 429.70001220703125,
+        "low": 420.1000061035156,
+        "close": 426.70001220703125,
+        "volume": 17176600
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-10",
+        "open": 429.3999938964844,
+        "high": 433.20001220703125,
+        "low": 427.29998779296875,
+        "close": 431.20001220703125,
+        "volume": 14949500
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-11",
+        "open": 431.8999938964844,
+        "high": 432.8999938964844,
+        "low": 429.20001220703125,
+        "close": 430.20001220703125,
+        "volume": 12436900
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-12",
+        "open": 429.8999938964844,
+        "high": 432.5,
+        "low": 427.79998779296875,
+        "close": 427.79998779296875,
+        "volume": 12972600
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-13",
+        "open": 422,
+        "high": 427.20001220703125,
+        "low": 418.1000061035156,
+        "close": 419.3999938964844,
+        "volume": 20669600
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-16",
+        "open": 414.5,
+        "high": 414.6000061035156,
+        "low": 410,
+        "close": 412.29998779296875,
+        "volume": 15010100
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-17",
+        "open": 415,
+        "high": 427.6000061035156,
+        "low": 415,
+        "close": 423.3999938964844,
+        "volume": 16225000
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-18",
+        "open": 425,
+        "high": 439.8999938964844,
+        "low": 418.1000061035156,
+        "close": 435.29998779296875,
+        "volume": 22871700
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-19",
+        "open": 424.3999938964844,
+        "high": 425.1000061035156,
+        "low": 419.5,
+        "close": 419.6000061035156,
+        "volume": 19663700
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-20",
+        "open": 421.20001220703125,
+        "high": 430.70001220703125,
+        "low": 419.5,
+        "close": 430.3999938964844,
+        "volume": 17459900
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-23",
+        "open": 440.1000061035156,
+        "high": 442.20001220703125,
+        "low": 433.20001220703125,
+        "close": 434.1000061035156,
+        "volume": 14630100
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-24",
+        "open": 441.3999938964844,
+        "high": 442.1000061035156,
+        "low": 436.8999938964844,
+        "close": 441.79998779296875,
+        "volume": 16373600
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-25",
+        "open": 441.79998779296875,
+        "high": 445,
+        "low": 440.20001220703125,
+        "close": 444.3999938964844,
+        "volume": 10860300
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-26",
+        "open": 446.5,
+        "high": 451.5,
+        "low": 446.1000061035156,
+        "close": 450.1000061035156,
+        "volume": 16442700
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-27",
+        "open": 452.8999938964844,
+        "high": 458.3999938964844,
+        "low": 451.3999938964844,
+        "close": 457,
+        "volume": 17209300
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-30",
+        "open": 458,
+        "high": 463.79998779296875,
+        "low": 449,
+        "close": 453.8999938964844,
+        "volume": 30798200
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-01-31",
+        "open": 465.1000061035156,
+        "high": 468.1000061035156,
+        "low": 457.5,
+        "close": 463.29998779296875,
+        "volume": 29728000
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-01",
+        "open": 468.5,
+        "high": 469.70001220703125,
+        "low": 463.6000061035156,
+        "close": 467.79998779296875,
+        "volume": 18097000
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-02",
+        "open": 464.79998779296875,
+        "high": 464.8999938964844,
+        "low": 454.1000061035156,
+        "close": 458.8999938964844,
+        "volume": 14047200
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-03",
+        "open": 459.79998779296875,
+        "high": 464.6000061035156,
+        "low": 459.5,
+        "close": 462.6000061035156,
+        "volume": 15471700
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-06",
+        "open": 474,
+        "high": 481.20001220703125,
+        "low": 470.70001220703125,
+        "close": 472.3999938964844,
+        "volume": 22654800
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-07",
+        "open": 485,
+        "high": 487,
+        "low": 472.70001220703125,
+        "close": 474.1000061035156,
+        "volume": 23102000
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-08",
+        "open": 474.79998779296875,
+        "high": 478.1000061035156,
+        "low": 471.3999938964844,
+        "close": 473.1000061035156,
+        "volume": 11942000
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-09",
+        "open": 471.79998779296875,
+        "high": 473.79998779296875,
+        "low": 468.6000061035156,
+        "close": 472.70001220703125,
+        "volume": 14535400
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-10",
+        "open": 478.5,
+        "high": 483.70001220703125,
+        "low": 471.1000061035156,
+        "close": 480.3999938964844,
+        "volume": 30439600
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-13",
+        "open": 476.20001220703125,
+        "high": 485.5,
+        "low": 472.6000061035156,
+        "close": 483.20001220703125,
+        "volume": 23378500
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-14",
+        "open": 488,
+        "high": 488.3999938964844,
+        "low": 480.20001220703125,
+        "close": 482.3999938964844,
+        "volume": 12249200
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-15",
+        "open": 486.70001220703125,
+        "high": 491.3999938964844,
+        "low": 484.79998779296875,
+        "close": 489.70001220703125,
+        "volume": 17368500
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-16",
+        "open": 499.29998779296875,
+        "high": 512,
+        "low": 499.1000061035156,
+        "close": 509.79998779296875,
+        "volume": 33229800
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-17",
+        "open": 504.8999938964844,
+        "high": 519.2000122070312,
+        "low": 503.29998779296875,
+        "close": 518.7000122070312,
+        "volume": 21846700
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-20",
+        "open": 518.7000122070312,
+        "high": 527,
+        "low": 518.2000122070312,
+        "close": 524.2000122070312,
+        "volume": 21399800
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-21",
+        "open": 524.2999877929688,
+        "high": 538.5,
+        "low": 524.2999877929688,
+        "close": 537.7999877929688,
+        "volume": 27275300
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-22",
+        "open": 533.5,
+        "high": 534.9000244140625,
+        "low": 517.5,
+        "close": 520,
+        "volume": 24528100
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-24",
+        "open": 526,
+        "high": 529.9000244140625,
+        "low": 523.2000122070312,
+        "close": 528.4000244140625,
+        "volume": 17507200
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-27",
+        "open": 535,
+        "high": 535.9000244140625,
+        "low": 525.7000122070312,
+        "close": 528.5999755859375,
+        "volume": 20333400
+      },
+      {
+        "symbol": "7201",
+        "date": "2023-02-28",
+        "open": 532.2000122070312,
+        "high": 535.7999877929688,
+        "low": 524.4000244140625,
+        "close": 527.5999755859375,
+        "volume": 20958900
+      }
+    ],
+    "endDate": "2026-01-28T11:08:03.223Z"
   }
 ]
