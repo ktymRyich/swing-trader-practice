@@ -10,6 +10,7 @@
     "update-stocks": "tsx scripts/update-stock-data.ts"
   },
   "dependencies": {
+    "@radix-ui/react-alert-dialog": "^1.1.15",
     "better-sqlite3": "^12.6.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
