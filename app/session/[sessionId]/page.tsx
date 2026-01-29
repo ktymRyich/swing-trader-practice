@@ -63,6 +63,8 @@ export default function SessionPage({
     const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
     const [isCompanyInfoOpen, setIsCompanyInfoOpen] = useState(false);
     const [isStatsModalOpen, setIsStatsModalOpen] = useState(false);
+    const [isReflectionModalOpen, setIsReflectionModalOpen] = useState(false);
+    const [reflection, setReflection] = useState("");
     const [highlightedTradeId, setHighlightedTradeId] = useState<string | null>(
         null,
     );
@@ -135,7 +137,10 @@ export default function SessionPage({
 
             if (currentPriceIndex >= practiceEndIndex) {
                 pause();
-                completeSession();
+                // 完了済みセッションのリプレイ終了時は感想入力を求めない
+                if (currentSession.status !== "completed") {
+                    completeSession();
+                }
             } else {
                 advanceDay();
             }
@@ -394,11 +399,58 @@ export default function SessionPage({
             setTrades(session.trades || []);
             setLocalTrades(session.trades || []);
 
+            // 感想を読み込み
+            if (session.reflection) {
+                setReflection(session.reflection);
+            }
+
             setIsLoading(false);
         } catch (error) {
             console.error("セッション読み込みエラー:", error);
             alert("セッションの読み込みに失敗しました");
             router.push("/");
+        }
+    };
+
+    const completeSession = async () => {
+        if (!currentSession || !nickname) return;
+
+        try {
+            const updatedSession = {
+                ...currentSession,
+                status: "completed" as const,
+                endDate: new Date().toISOString(),
+            };
+
+            updateSession(updatedSession);
+            await saveSession(updatedSession);
+
+            // 感想入力モーダルを表示
+            setIsReflectionModalOpen(true);
+        } catch (error) {
+            console.error("セッション完了エラー:", error);
+            alert("セッションの完了処理に失敗しました");
+        }
+    };
+
+    const saveReflection = async () => {
+        if (!currentSession || !nickname) return;
+
+        try {
+            const updatedSession = {
+                ...currentSession,
+                reflection: reflection.trim(),
+            };
+
+            updateSession(updatedSession);
+            await saveSession(updatedSession);
+
+            setIsReflectionModalOpen(false);
+            // 感想保存後は履歴画面に遷移
+            router.push("/history");
+        } catch (error) {
+            console.error("感想保存エラー:", error);
+            alert("感想の保存に失敗しました");
         }
     };
 
@@ -471,7 +523,13 @@ export default function SessionPage({
                 updatedOpenPositions.push(position);
                 setOpenPositions(updatedOpenPositions);
             } else if (type === "sell") {
-                if (tradingType === "margin") {
+                if (tradingType === "spot") {
+                    // 現物売り → エラー（現物売りはポジション決済のみ）
+                    alert(
+                        "現物売りはできません。保有ポジションの決済ボタンから売却してください。",
+                    );
+                    return;
+                } else if (tradingType === "margin") {
                     // 信用売り → ショートポジション作成
                     const position = {
                         id: generatePositionId(),
@@ -488,12 +546,6 @@ export default function SessionPage({
                     updatedPositions.push(position);
                     updatedOpenPositions.push(position);
                     setOpenPositions(updatedOpenPositions);
-                } else {
-                    // 現物売り → エラー（現物売りはポジション決済のみ）
-                    alert(
-                        "現物売りはできません。保有ポジションの決済ボタンから売却してください。",
-                    );
-                    return;
                 }
             }
 
@@ -716,26 +768,6 @@ export default function SessionPage({
         }
     };
 
-    const completeSession = async () => {
-        if (!currentSession || !nickname) return;
-
-        try {
-            const updatedSession = {
-                ...currentSession,
-                status: "completed",
-                endDate: new Date().toISOString(),
-            };
-
-            updateSession(updatedSession);
-            await saveSession(updatedSession);
-
-            alert("セッションが完了しました！");
-            router.push("/history");
-        } catch (error) {
-            console.error("セッション完了エラー:", error);
-        }
-    };
-
     const handleSaveAndExit = async () => {
         if (!currentSession || !nickname) return;
 
@@ -874,8 +906,109 @@ export default function SessionPage({
                                         {currentSession.stockName}
                                     </h1>
                                     <p className="text-xs text-muted-foreground">
-                                        資金: ¥
-                                        {currentSession.currentCapital.toLocaleString()}
+                                        資産: ¥
+                                        {(() => {
+                                            const unrealizedPnL =
+                                                visibleOpenPositions.reduce(
+                                                    (sum, p) => {
+                                                        const { pnL } =
+                                                            calculatePositionPnL(
+                                                                {
+                                                                    type: p.type,
+                                                                    shares: p.shares,
+                                                                    entryPrice:
+                                                                        p.entryPrice,
+                                                                    currentPrice:
+                                                                        currentPrice,
+                                                                    unrealizedPnL: 0,
+                                                                    unrealizedPnLPercent: 0,
+                                                                },
+                                                            );
+                                                        return sum + pnL;
+                                                    },
+                                                    0,
+                                                );
+                                            const totalAssets =
+                                                currentSession.currentCapital +
+                                                unrealizedPnL;
+                                            return totalAssets.toLocaleString();
+                                        })()}
+                                        <span
+                                            className={`ml-1 ${(() => {
+                                                const unrealizedPnL =
+                                                    visibleOpenPositions.reduce(
+                                                        (sum, p) => {
+                                                            const { pnL } =
+                                                                calculatePositionPnL(
+                                                                    {
+                                                                        type: p.type,
+                                                                        shares: p.shares,
+                                                                        entryPrice:
+                                                                            p.entryPrice,
+                                                                        currentPrice:
+                                                                            currentPrice,
+                                                                        unrealizedPnL: 0,
+                                                                        unrealizedPnLPercent: 0,
+                                                                    },
+                                                                );
+                                                            return sum + pnL;
+                                                        },
+                                                        0,
+                                                    );
+                                                return unrealizedPnL >= 0
+                                                    ? "text-green-500"
+                                                    : "text-red-500";
+                                            })()}`}
+                                        >
+                                            {(() => {
+                                                const unrealizedPnL =
+                                                    visibleOpenPositions.reduce(
+                                                        (sum, p) => {
+                                                            const { pnL } =
+                                                                calculatePositionPnL(
+                                                                    {
+                                                                        type: p.type,
+                                                                        shares: p.shares,
+                                                                        entryPrice:
+                                                                            p.entryPrice,
+                                                                        currentPrice:
+                                                                            currentPrice,
+                                                                        unrealizedPnL: 0,
+                                                                        unrealizedPnLPercent: 0,
+                                                                    },
+                                                                );
+                                                            return sum + pnL;
+                                                        },
+                                                        0,
+                                                    );
+                                                return unrealizedPnL >= 0
+                                                    ? "+"
+                                                    : "";
+                                            })()}
+                                            {(() => {
+                                                const unrealizedPnL =
+                                                    visibleOpenPositions.reduce(
+                                                        (sum, p) => {
+                                                            const { pnL } =
+                                                                calculatePositionPnL(
+                                                                    {
+                                                                        type: p.type,
+                                                                        shares: p.shares,
+                                                                        entryPrice:
+                                                                            p.entryPrice,
+                                                                        currentPrice:
+                                                                            currentPrice,
+                                                                        unrealizedPnL: 0,
+                                                                        unrealizedPnLPercent: 0,
+                                                                    },
+                                                                );
+                                                            return sum + pnL;
+                                                        },
+                                                        0,
+                                                    );
+                                                return unrealizedPnL.toLocaleString();
+                                            })()}
+                                        </span>
                                     </p>
                                 </div>
                             </button>
@@ -1005,6 +1138,54 @@ export default function SessionPage({
                                     </div>
                                     <div className="flex flex-col">
                                         <span className="text-muted-foreground mb-1">
+                                            資産増減
+                                        </span>
+                                        <span
+                                            className={`font-medium text-sm ${
+                                                currentSession.currentCapital >=
+                                                currentSession.initialCapital
+                                                    ? "text-green-500"
+                                                    : "text-red-500"
+                                            }`}
+                                        >
+                                            {currentSession.currentCapital >=
+                                            currentSession.initialCapital
+                                                ? "+"
+                                                : ""}
+                                            ¥
+                                            {(
+                                                currentSession.currentCapital -
+                                                currentSession.initialCapital
+                                            ).toLocaleString()}
+                                        </span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-muted-foreground mb-1">
+                                            資産増減率
+                                        </span>
+                                        <span
+                                            className={`font-medium text-sm ${
+                                                currentSession.currentCapital >=
+                                                currentSession.initialCapital
+                                                    ? "text-green-500"
+                                                    : "text-red-500"
+                                            }`}
+                                        >
+                                            {currentSession.currentCapital >=
+                                            currentSession.initialCapital
+                                                ? "+"
+                                                : ""}
+                                            {(
+                                                ((currentSession.currentCapital -
+                                                    currentSession.initialCapital) /
+                                                    currentSession.initialCapital) *
+                                                100
+                                            ).toFixed(2)}
+                                            %
+                                        </span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-muted-foreground mb-1">
                                             平均増益額
                                         </span>
                                         <span className="font-medium text-green-500 text-sm">
@@ -1033,27 +1214,96 @@ export default function SessionPage({
                                     </div>
                                     <div className="flex flex-col">
                                         <span className="text-muted-foreground mb-1">
-                                            資金増減
+                                            最大利益
+                                        </span>
+                                        <span className="font-medium text-green-500 text-sm">
+                                            {(() => {
+                                                const profits =
+                                                    visibleClosedPositions.map(
+                                                        (p) => p.profit || 0,
+                                                    );
+                                                const maxProfit =
+                                                    profits.length > 0
+                                                        ? Math.max(...profits)
+                                                        : 0;
+                                                return (
+                                                    "+¥" +
+                                                    maxProfit.toLocaleString(
+                                                        undefined,
+                                                        {
+                                                            maximumFractionDigits: 0,
+                                                        },
+                                                    )
+                                                );
+                                            })()}
+                                        </span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-muted-foreground mb-1">
+                                            最大損失
+                                        </span>
+                                        <span className="font-medium text-red-500 text-sm">
+                                            {(() => {
+                                                const losses =
+                                                    visibleClosedPositions
+                                                        .map(
+                                                            (p) =>
+                                                                p.profit || 0,
+                                                        )
+                                                        .filter((p) => p < 0);
+                                                const maxLoss =
+                                                    losses.length > 0
+                                                        ? Math.min(...losses)
+                                                        : 0;
+                                                return (
+                                                    "¥" +
+                                                    maxLoss.toLocaleString(
+                                                        undefined,
+                                                        {
+                                                            maximumFractionDigits: 0,
+                                                        },
+                                                    )
+                                                );
+                                            })()}
+                                        </span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-muted-foreground mb-1">
+                                            総損益
                                         </span>
                                         <span
-                                            className={`font-medium text-sm ${
-                                                currentSession.currentCapital >=
-                                                currentSession.initialCapital
+                                            className={`font-medium text-sm ${(() => {
+                                                const totalPnL =
+                                                    visibleClosedPositions.reduce(
+                                                        (sum, p) =>
+                                                            sum +
+                                                            (p.profit || 0),
+                                                        0,
+                                                    );
+                                                return totalPnL >= 0
                                                     ? "text-green-500"
-                                                    : "text-red-500"
-                                            }`}
+                                                    : "text-red-500";
+                                            })()}`}
                                         >
-                                            {currentSession.currentCapital >=
-                                            currentSession.initialCapital
-                                                ? "+"
-                                                : ""}
-                                            {(
-                                                ((currentSession.currentCapital -
-                                                    currentSession.initialCapital) /
-                                                    currentSession.initialCapital) *
-                                                100
-                                            ).toFixed(2)}
-                                            %
+                                            {(() => {
+                                                const totalPnL =
+                                                    visibleClosedPositions.reduce(
+                                                        (sum, p) =>
+                                                            sum +
+                                                            (p.profit || 0),
+                                                        0,
+                                                    );
+                                                return (
+                                                    (totalPnL >= 0 ? "+" : "") +
+                                                    "¥" +
+                                                    totalPnL.toLocaleString(
+                                                        undefined,
+                                                        {
+                                                            maximumFractionDigits: 0,
+                                                        },
+                                                    )
+                                                );
+                                            })()}
                                         </span>
                                     </div>
                                     <div className="flex flex-col">
@@ -1098,97 +1348,111 @@ export default function SessionPage({
             </main>
 
             {/* 下部コントロール */}
-            <footer className="flex-shrink-0 bg-card border-t px-4 py-3">
-                <div className="max-w-[1920px] mx-auto flex items-center justify-center gap-2">
-                    {/* 再生/一時停止ボタン */}
-                    <button
-                        onClick={togglePlayPause}
-                        disabled={
-                            currentSession.currentDay >=
-                            currentSession.periodDays
-                        }
-                        className="p-3 bg-primary hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground text-primary-foreground rounded-full transition-all hover:scale-105 disabled:hover:scale-100 shadow-lg"
-                        title={isPlaying ? "一時停止" : "再生"}
-                    >
-                        {isPlaying ? (
-                            <Pause className="w-5 h-5" />
-                        ) : (
-                            <Play className="w-5 h-5" />
-                        )}
-                    </button>
-
-                    {/* 一日送りボタン */}
-                    <button
-                        onClick={() => {
-                            pause();
-                            advanceDay();
+            <footer className="flex-shrink-0 bg-card border-t">
+                {/* プログレスバー */}
+                <div className="w-full bg-muted/30 h-1.5">
+                    <div
+                        className="bg-primary h-full transition-all duration-300 ease-out"
+                        style={{
+                            width: `${((currentSession.currentDay + 1) / currentSession.periodDays) * 100}%`,
                         }}
-                        disabled={
-                            currentSession.currentDay >=
-                            currentSession.periodDays
-                        }
-                        className="p-3 bg-secondary hover:bg-secondary/80 disabled:bg-muted disabled:text-muted-foreground text-secondary-foreground rounded-full transition-all hover:scale-105 disabled:hover:scale-100 shadow-lg"
-                        title="1日送り"
-                    >
-                        <SkipForward className="w-5 h-5" />
-                    </button>
+                    />
+                </div>
 
-                    {/* 進捗表示 */}
-                    <div className="px-5 py-2.5 bg-muted/50 rounded-full text-sm font-semibold border border-border/50">
-                        <span className="text-primary">
-                            {currentSession.currentDay + 1}
-                        </span>
-                        <span className="text-muted-foreground mx-1">/</span>
-                        <span className="text-muted-foreground">
-                            {currentSession.periodDays}
-                        </span>
-                    </div>
-
-                    {/* 速度設定 */}
-                    <div className="relative group">
+                <div className="px-4 py-3">
+                    <div className="max-w-[1920px] mx-auto flex items-center justify-center gap-2">
+                        {/* 再生/一時停止ボタン */}
                         <button
-                            className="p-3 bg-background hover:bg-accent border rounded-full transition-all hover:scale-105 shadow-lg"
-                            title="速度設定"
+                            onClick={togglePlayPause}
+                            disabled={
+                                currentSession.currentDay >=
+                                currentSession.periodDays
+                            }
+                            className="p-3 bg-primary hover:bg-primary/90 disabled:bg-muted disabled:text-muted-foreground text-primary-foreground rounded-full transition-all hover:scale-105 disabled:hover:scale-100 shadow-lg"
+                            title={isPlaying ? "一時停止" : "再生"}
                         >
-                            <Settings className="w-5 h-5" />
+                            {isPlaying ? (
+                                <Pause className="w-5 h-5" />
+                            ) : (
+                                <Play className="w-5 h-5" />
+                            )}
                         </button>
-                        <select
-                            value={currentSession.playbackSpeed}
-                            onChange={(e) => {
-                                updateSession({
-                                    playbackSpeed: Number(e.target.value),
-                                });
+
+                        {/* 一日送りボタン */}
+                        <button
+                            onClick={() => {
+                                pause();
+                                advanceDay();
                             }}
-                            className="absolute inset-0 opacity-0 cursor-pointer"
+                            disabled={
+                                currentSession.currentDay >=
+                                currentSession.periodDays
+                            }
+                            className="p-3 bg-secondary hover:bg-secondary/80 disabled:bg-muted disabled:text-muted-foreground text-secondary-foreground rounded-full transition-all hover:scale-105 disabled:hover:scale-100 shadow-lg"
+                            title="1日送り"
                         >
-                            <option value={0.5}>0.5秒/日</option>
-                            <option value={1}>1秒/日</option>
-                            <option value={2}>2秒/日</option>
-                            <option value={3}>3秒/日</option>
-                        </select>
-                    </div>
-
-                    <div className="w-px h-8 bg-border mx-2" />
-
-                    {/* 注文ボタン（進行中のみ） */}
-                    {currentSession.status !== "completed" && (
-                        <button
-                            onClick={() => setIsOrderModalOpen(true)}
-                            className="p-3 bg-green-600 hover:bg-green-700 text-white rounded-full transition-all hover:scale-105 shadow-lg"
-                            title="注文"
-                        >
-                            <Plus className="w-5 h-5" />
+                            <SkipForward className="w-5 h-5" />
                         </button>
-                    )}
 
-                    {/* 統計確認ボタン（モバイルのみ表示） */}
-                    <button
-                        onClick={() => setIsStatsModalOpen(true)}
-                        className="lg:hidden p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-all hover:scale-105 shadow-lg"
-                        title="統計・履歴"
-                    >
-                        <BarChart3 className="w-5 h-5" />
-                    </button>
+                        {/* 進捗表示 */}
+                        <div className="px-5 py-2.5 bg-muted/50 rounded-full text-sm font-semibold border border-border/50">
+                            <span className="text-primary">
+                                {currentSession.currentDay + 1}
+                            </span>
+                            <span className="text-muted-foreground mx-1">
+                                /
+                            </span>
+                            <span className="text-muted-foreground">
+                                {currentSession.periodDays}
+                            </span>
+                        </div>
+
+                        {/* 速度設定 */}
+                        <div className="relative group">
+                            <button
+                                className="p-3 bg-background hover:bg-accent border rounded-full transition-all hover:scale-105 shadow-lg"
+                                title="速度設定"
+                            >
+                                <Settings className="w-5 h-5" />
+                            </button>
+                            <select
+                                value={currentSession.playbackSpeed}
+                                onChange={(e) => {
+                                    updateSession({
+                                        playbackSpeed: Number(e.target.value),
+                                    });
+                                }}
+                                className="absolute inset-0 opacity-0 cursor-pointer"
+                            >
+                                <option value={0.5}>0.5秒/日</option>
+                                <option value={1}>1秒/日</option>
+                                <option value={2}>2秒/日</option>
+                                <option value={3}>3秒/日</option>
+                            </select>
+                        </div>
+
+                        <div className="w-px h-8 bg-border mx-2" />
+
+                        {/* 注文ボタン（進行中のみ） */}
+                        {currentSession.status !== "completed" && (
+                            <button
+                                onClick={() => setIsOrderModalOpen(true)}
+                                className="p-3 bg-green-600 hover:bg-green-700 text-white rounded-full transition-all hover:scale-105 shadow-lg"
+                                title="注文"
+                            >
+                                <Plus className="w-5 h-5" />
+                            </button>
+                        )}
+
+                        {/* 統計確認ボタン（モバイルのみ表示） */}
+                        <button
+                            onClick={() => setIsStatsModalOpen(true)}
+                            className="lg:hidden p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-all hover:scale-105 shadow-lg"
+                            title="統計・履歴"
+                        >
+                            <BarChart3 className="w-5 h-5" />
+                        </button>
+                    </div>
                 </div>
             </footer>
 
@@ -1254,6 +1518,54 @@ export default function SessionPage({
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-muted-foreground">
+                                            資産増減
+                                        </span>
+                                        <span
+                                            className={`font-medium ${
+                                                currentSession.currentCapital >=
+                                                currentSession.initialCapital
+                                                    ? "text-green-500"
+                                                    : "text-red-500"
+                                            }`}
+                                        >
+                                            {currentSession.currentCapital >=
+                                            currentSession.initialCapital
+                                                ? "+"
+                                                : ""}
+                                            ¥
+                                            {(
+                                                currentSession.currentCapital -
+                                                currentSession.initialCapital
+                                            ).toLocaleString()}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-muted-foreground">
+                                            資産増減率
+                                        </span>
+                                        <span
+                                            className={`font-medium ${
+                                                currentSession.currentCapital >=
+                                                currentSession.initialCapital
+                                                    ? "text-green-500"
+                                                    : "text-red-500"
+                                            }`}
+                                        >
+                                            {currentSession.currentCapital >=
+                                            currentSession.initialCapital
+                                                ? "+"
+                                                : ""}
+                                            {(
+                                                ((currentSession.currentCapital -
+                                                    currentSession.initialCapital) /
+                                                    currentSession.initialCapital) *
+                                                100
+                                            ).toFixed(2)}
+                                            %
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-muted-foreground">
                                             平均増益額
                                         </span>
                                         <span className="font-medium text-green-500">
@@ -1282,27 +1594,96 @@ export default function SessionPage({
                                     </div>
                                     <div className="flex justify-between">
                                         <span className="text-muted-foreground">
-                                            資金増減
+                                            最大利益
+                                        </span>
+                                        <span className="font-medium text-green-500">
+                                            {(() => {
+                                                const profits =
+                                                    visibleClosedPositions.map(
+                                                        (p) => p.profit || 0,
+                                                    );
+                                                const maxProfit =
+                                                    profits.length > 0
+                                                        ? Math.max(...profits)
+                                                        : 0;
+                                                return (
+                                                    "+¥" +
+                                                    maxProfit.toLocaleString(
+                                                        undefined,
+                                                        {
+                                                            maximumFractionDigits: 0,
+                                                        },
+                                                    )
+                                                );
+                                            })()}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-muted-foreground">
+                                            最大損失
+                                        </span>
+                                        <span className="font-medium text-red-500">
+                                            {(() => {
+                                                const losses =
+                                                    visibleClosedPositions
+                                                        .map(
+                                                            (p) =>
+                                                                p.profit || 0,
+                                                        )
+                                                        .filter((p) => p < 0);
+                                                const maxLoss =
+                                                    losses.length > 0
+                                                        ? Math.min(...losses)
+                                                        : 0;
+                                                return (
+                                                    "¥" +
+                                                    maxLoss.toLocaleString(
+                                                        undefined,
+                                                        {
+                                                            maximumFractionDigits: 0,
+                                                        },
+                                                    )
+                                                );
+                                            })()}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-muted-foreground">
+                                            総損益
                                         </span>
                                         <span
-                                            className={`font-medium ${
-                                                currentSession.currentCapital >=
-                                                currentSession.initialCapital
+                                            className={`font-medium ${(() => {
+                                                const totalPnL =
+                                                    visibleClosedPositions.reduce(
+                                                        (sum, p) =>
+                                                            sum +
+                                                            (p.profit || 0),
+                                                        0,
+                                                    );
+                                                return totalPnL >= 0
                                                     ? "text-green-500"
-                                                    : "text-red-500"
-                                            }`}
+                                                    : "text-red-500";
+                                            })()}`}
                                         >
-                                            {currentSession.currentCapital >=
-                                            currentSession.initialCapital
-                                                ? "+"
-                                                : ""}
-                                            {(
-                                                ((currentSession.currentCapital -
-                                                    currentSession.initialCapital) /
-                                                    currentSession.initialCapital) *
-                                                100
-                                            ).toFixed(2)}
-                                            %
+                                            {(() => {
+                                                const totalPnL =
+                                                    visibleClosedPositions.reduce(
+                                                        (sum, p) =>
+                                                            sum +
+                                                            (p.profit || 0),
+                                                        0,
+                                                    );
+                                                return (
+                                                    (totalPnL >= 0 ? "+" : "") +
+                                                    "¥" +
+                                                    totalPnL.toLocaleString(
+                                                        undefined,
+                                                        {
+                                                            maximumFractionDigits: 0,
+                                                        },
+                                                    )
+                                                );
+                                            })()}
                                         </span>
                                     </div>
                                     <div className="flex justify-between">
@@ -1336,6 +1717,89 @@ export default function SessionPage({
                                     currentPrice={currentPrice}
                                     highlightedTradeId={highlightedTradeId}
                                 />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* 感想・反省モーダル */}
+            {isReflectionModalOpen && (
+                <div
+                    className="fixed inset-0 bg-black/50 z-50"
+                    onClick={() => {
+                        if (
+                            currentSession.status === "completed" &&
+                            !currentSession.reflection
+                        ) {
+                            // 完了時の初回入力の場合は閉じない
+                            return;
+                        }
+                        setIsReflectionModalOpen(false);
+                    }}
+                >
+                    <div className="absolute inset-0 overflow-y-auto flex items-center justify-center p-4">
+                        <div
+                            className="bg-card rounded-xl border max-w-2xl w-full flex flex-col max-h-[85vh]"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <div className="sticky top-0 bg-card border-b px-6 py-4">
+                                <h2 className="text-xl font-bold">
+                                    セッションの感想・反省
+                                </h2>
+                                <p className="text-sm text-muted-foreground mt-1">
+                                    今回のトレードを振り返って、学んだことや反省点を記録しましょう
+                                </p>
+                            </div>
+                            <div className="p-6 overflow-y-auto flex-1">
+                                <textarea
+                                    value={reflection}
+                                    onChange={(e) =>
+                                        setReflection(e.target.value)
+                                    }
+                                    onFocus={(e) => {
+                                        setTimeout(() => {
+                                            e.target.scrollIntoView({
+                                                behavior: "smooth",
+                                                block: "center",
+                                            });
+                                        }, 300);
+                                    }}
+                                    rows={8}
+                                    className="w-full px-3 py-2 border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary text-base"
+                                    placeholder="例：&#10;・うまくいった点：移動平均線のクロスを見逃さず、早めにエントリーできた&#10;・反省点：損切りラインを守らず、含み損が大きくなってしまった&#10;・次回への改善：エントリー前に必ず損切りラインを設定する"
+                                    autoComplete="off"
+                                    style={{ fontSize: "16px" }}
+                                />
+                            </div>
+                            <div className="sticky bottom-0 bg-card border-t px-6 py-4 flex gap-3">
+                                {currentSession.status === "completed" &&
+                                !currentSession.reflection ? (
+                                    <button
+                                        onClick={() => {
+                                            setReflection("");
+                                            setIsReflectionModalOpen(false);
+                                        }}
+                                        className="flex-1 px-4 py-2 border rounded-lg hover:bg-accent transition"
+                                    >
+                                        後で入力
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={() =>
+                                            setIsReflectionModalOpen(false)
+                                        }
+                                        className="flex-1 px-4 py-2 border rounded-lg hover:bg-accent transition"
+                                    >
+                                        キャンセル
+                                    </button>
+                                )}
+                                <button
+                                    onClick={saveReflection}
+                                    className="flex-1 px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg font-medium transition"
+                                >
+                                    保存
+                                </button>
                             </div>
                         </div>
                     </div>

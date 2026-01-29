@@ -1,32 +1,32 @@
-import Database from 'better-sqlite3';
-import path from 'path';
-import fs from 'fs';
+import Database from "better-sqlite3";
+import path from "path";
+import fs from "fs";
 
-const DB_DIR = path.join(process.cwd(), 'data');
-const DB_PATH = path.join(DB_DIR, 'sessions.db');
+const DB_DIR = path.join(process.cwd(), "data");
+const DB_PATH = path.join(DB_DIR, "sessions.db");
 
 // データディレクトリが存在しない場合は作成
 if (!fs.existsSync(DB_DIR)) {
-  fs.mkdirSync(DB_DIR, { recursive: true });
+    fs.mkdirSync(DB_DIR, { recursive: true });
 }
 
 // データベース接続（シングルトン）
 let db: Database.Database | null = null;
 
 export function getDatabase(): Database.Database {
-  if (!db) {
-    db = new Database(DB_PATH);
-    db.pragma('journal_mode = WAL'); // Write-Ahead Logging（パフォーマンス向上）
-    db.pragma('foreign_keys = ON'); // 外部キー制約を有効化
-    initializeDatabase(db);
-  }
-  return db;
+    if (!db) {
+        db = new Database(DB_PATH);
+        db.pragma("journal_mode = WAL"); // Write-Ahead Logging（パフォーマンス向上）
+        db.pragma("foreign_keys = ON"); // 外部キー制約を有効化
+        initializeDatabase(db);
+    }
+    return db;
 }
 
 // データベーススキーマの初期化
 function initializeDatabase(db: Database.Database) {
-  // セッションテーブル
-  db.exec(`
+    // セッションテーブル
+    db.exec(`
     CREATE TABLE IF NOT EXISTS sessions (
       id TEXT PRIMARY KEY,
       nickname TEXT NOT NULL,
@@ -51,22 +51,29 @@ function initializeDatabase(db: Database.Database) {
     )
   `);
 
-  // 既存テーブルにpractice_replay_dateカラムがない場合は追加
-  try {
-    db.exec(`ALTER TABLE sessions ADD COLUMN practice_replay_date TEXT`);
-  } catch (e) {
-    // カラムが既に存在する場合は無視
-  }
+    // 既存テーブルにpractice_replay_dateカラムがない場合は追加
+    try {
+        db.exec(`ALTER TABLE sessions ADD COLUMN practice_replay_date TEXT`);
+    } catch (e) {
+        // カラムが既に存在する場合は無視
+    }
 
-  // 既存テーブルにma_settingsカラムがない場合は追加
-  try {
-    db.exec(`ALTER TABLE sessions ADD COLUMN ma_settings TEXT`);
-  } catch (e) {
-    // カラムが既に存在する場合は無視
-  }
+    // 既存テーブルにma_settingsカラムがない場合は追加
+    try {
+        db.exec(`ALTER TABLE sessions ADD COLUMN ma_settings TEXT`);
+    } catch (e) {
+        // カラムが既に存在する場合は無視
+    }
 
-  // ポジションテーブル
-  db.exec(`
+    // 既存テーブルにreflectionカラムがない場合は追加
+    try {
+        db.exec(`ALTER TABLE sessions ADD COLUMN reflection TEXT`);
+    } catch (e) {
+        // カラムが既に存在する場合は無視
+    }
+
+    // ポジションテーブル
+    db.exec(`
     CREATE TABLE IF NOT EXISTS positions (
       id TEXT PRIMARY KEY,
       session_id TEXT NOT NULL,
@@ -82,8 +89,8 @@ function initializeDatabase(db: Database.Database) {
     )
   `);
 
-  // トレードテーブル
-  db.exec(`
+    // トレードテーブル
+    db.exec(`
     CREATE TABLE IF NOT EXISTS trades (
       id TEXT PRIMARY KEY,
       session_id TEXT NOT NULL,
@@ -98,8 +105,8 @@ function initializeDatabase(db: Database.Database) {
     )
   `);
 
-  // インデックスの作成
-  db.exec(`
+    // インデックスの作成
+    db.exec(`
     CREATE INDEX IF NOT EXISTS idx_sessions_nickname ON sessions(nickname);
     CREATE INDEX IF NOT EXISTS idx_sessions_status ON sessions(status);
     CREATE INDEX IF NOT EXISTS idx_positions_session_id ON positions(session_id);
@@ -107,13 +114,13 @@ function initializeDatabase(db: Database.Database) {
     CREATE INDEX IF NOT EXISTS idx_trades_position_id ON trades(position_id);
   `);
 
-  console.log('✓ Database initialized');
+    console.log("✓ Database initialized");
 }
 
 // データベース接続を閉じる（通常は不要だが、テストやシャットダウン時に使用）
 export function closeDatabase() {
-  if (db) {
-    db.close();
-    db = null;
-  }
+    if (db) {
+        db.close();
+        db = null;
+    }
 }

@@ -39,66 +39,18 @@ export default function OrderFormModal({
     const [shares, setShares] = useState<number>(100);
     const [memo, setMemo] = useState("");
 
-    // モーダルが開かれたときにフォームをリセット
+    // モーダル表示中はbodyのスクロールを無効化
     useEffect(() => {
         if (isOpen) {
-            setOrderType("buy");
-            setTradingType("spot");
-            setShares(100);
-            setMemo("");
+            document.body.classList.add("modal-open");
+        } else {
+            document.body.classList.remove("modal-open");
         }
+
+        return () => {
+            document.body.classList.remove("modal-open");
+        };
     }, [isOpen]);
-
-    // iOSのズーム問題対策: モーダル表示中はbodyのスクロールを無効化
-    useEffect(() => {
-        if (isOpen) {
-            const originalStyle = window.getComputedStyle(
-                document.body,
-            ).overflow;
-            const originalPosition = window.getComputedStyle(
-                document.body,
-            ).position;
-
-            document.body.style.overflow = "hidden";
-            document.body.style.position = "fixed";
-            document.body.style.width = "100%";
-            document.body.style.height = "100%";
-
-            return () => {
-                document.body.style.overflow = originalStyle;
-                document.body.style.position = originalPosition;
-                document.body.style.width = "";
-                document.body.style.height = "";
-                // モーダルを閉じるときにスクロールをリセット
-                window.scrollTo(0, 0);
-            };
-        }
-    }, [isOpen]);
-
-    if (!isOpen) return null;
-
-    // キーボードが閉じた後の処理を強化
-    const handleInputBlur = () => {
-        if (typeof window !== "undefined") {
-            // 複数の方法でリセットを試みる
-            setTimeout(() => {
-                window.scrollTo(0, 0);
-                document.documentElement.scrollTop = 0;
-                document.body.scrollTop = 0;
-
-                // visualViewport APIを使用（利用可能な場合）
-                if (window.visualViewport) {
-                    window.visualViewport.addEventListener(
-                        "resize",
-                        () => {
-                            window.scrollTo(0, 0);
-                        },
-                        { once: true },
-                    );
-                }
-            }, 0);
-        }
-    };
 
     if (!isOpen) return null;
 
@@ -167,207 +119,222 @@ export default function OrderFormModal({
     };
 
     return (
-        <div
-            className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50"
-            onClick={onClose}
-        >
-            <div
-                className="bg-card rounded-t-2xl sm:rounded-2xl w-full sm:max-w-md max-h-[95vh] overflow-y-auto border"
-                onClick={(e) => e.stopPropagation()}
-            >
-                {/* ヘッダー */}
-                <div className="sticky top-0 bg-card border-b px-4 py-3 flex items-center justify-between">
-                    <h2 className="text-lg font-bold">注文</h2>
-                    <button
-                        onClick={onClose}
-                        className="p-1 hover:bg-accent rounded"
+        <div className="fixed inset-0 bg-black/50 z-50" onClick={onClose}>
+            <div className="absolute inset-0 overflow-y-auto flex items-center justify-center p-4">
+                <div
+                    className="bg-card rounded-2xl w-full sm:max-w-md flex flex-col border max-h-[90vh]"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    {/* ヘッダー */}
+                    <div className="sticky top-0 bg-card border-b px-4 py-3 flex items-center justify-between">
+                        <h2 className="text-lg font-bold">注文</h2>
+                        <button
+                            onClick={onClose}
+                            className="p-1 hover:bg-accent rounded"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+                    </div>
+
+                    {/* フォーム */}
+                    <form
+                        key={isOpen ? "open" : "closed"}
+                        onSubmit={handleSubmit}
+                        className="p-4 space-y-4 overflow-y-auto flex-1"
                     >
-                        <X className="w-5 h-5" />
-                    </button>
-                </div>
-
-                {/* フォーム */}
-                <form onSubmit={handleSubmit} className="p-4 space-y-4">
-                    {/* 注文種別 */}
-                    <div>
-                        <label className="block text-sm font-medium mb-2">
-                            注文種別
-                        </label>
-                        <div className="grid grid-cols-2 gap-2">
-                            <button
-                                type="button"
-                                onClick={() => setOrderType("buy")}
-                                className={`p-3 rounded-lg border-2 transition flex items-center justify-center gap-2 ${
-                                    orderType === "buy"
-                                        ? "border-green-500 bg-green-500/10 text-green-500"
-                                        : "border-border"
-                                }`}
-                            >
-                                <TrendingUp className="w-4 h-4" />
-                                <span className="font-medium">買い</span>
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => setOrderType("sell")}
-                                className={`p-3 rounded-lg border-2 transition flex items-center justify-center gap-2 ${
-                                    orderType === "sell"
-                                        ? "border-red-500 bg-red-500/10 text-red-500"
-                                        : "border-border"
-                                }`}
-                            >
-                                <TrendingDown className="w-4 h-4" />
-                                <span className="font-medium">売り</span>
-                            </button>
+                        {/* 注文種別 */}
+                        <div>
+                            <label className="block text-sm font-medium mb-2">
+                                注文種別
+                            </label>
+                            <div className="grid grid-cols-2 gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setOrderType("buy")}
+                                    className={`p-3 rounded-lg border-2 transition flex items-center justify-center gap-2 ${
+                                        orderType === "buy"
+                                            ? "border-green-500 bg-green-500/10 text-green-500"
+                                            : "border-border"
+                                    }`}
+                                >
+                                    <TrendingUp className="w-4 h-4" />
+                                    <span className="font-medium">買い</span>
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setOrderType("sell")}
+                                    className={`p-3 rounded-lg border-2 transition flex items-center justify-center gap-2 ${
+                                        orderType === "sell"
+                                            ? "border-red-500 bg-red-500/10 text-red-500"
+                                            : "border-border"
+                                    }`}
+                                >
+                                    <TrendingDown className="w-4 h-4" />
+                                    <span className="font-medium">売り</span>
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-                    {/* 取引区分 */}
-                    <div>
-                        <label className="block text-sm font-medium mb-2">
-                            取引区分
-                        </label>
-                        <div className="grid grid-cols-2 gap-2">
-                            <button
-                                type="button"
-                                onClick={() => setTradingType("spot")}
-                                className={`p-2 rounded-lg border-2 transition ${
-                                    tradingType === "spot"
-                                        ? "border-primary bg-primary/10"
-                                        : "border-border"
-                                }`}
-                            >
-                                <div className="font-medium text-sm">現物</div>
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => setTradingType("margin")}
-                                className={`p-2 rounded-lg border-2 transition ${
-                                    tradingType === "margin"
-                                        ? "border-primary bg-primary/10"
-                                        : "border-border"
-                                }`}
-                            >
-                                <div className="font-medium text-sm">信用</div>
-                            </button>
+                        {/* 取引区分 */}
+                        <div>
+                            <label className="block text-sm font-medium mb-2">
+                                取引区分
+                            </label>
+                            <div className="grid grid-cols-2 gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => setTradingType("spot")}
+                                    className={`p-2 rounded-lg border-2 transition ${
+                                        tradingType === "spot"
+                                            ? "border-primary bg-primary/10"
+                                            : "border-border"
+                                    }`}
+                                >
+                                    <div className="font-medium text-sm">
+                                        現物
+                                    </div>
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setTradingType("margin")}
+                                    className={`p-2 rounded-lg border-2 transition ${
+                                        tradingType === "margin"
+                                            ? "border-primary bg-primary/10"
+                                            : "border-border"
+                                    }`}
+                                >
+                                    <div className="font-medium text-sm">
+                                        信用
+                                    </div>
+                                </button>
+                            </div>
                         </div>
-                    </div>
 
-                    {/* 株数 */}
-                    <div>
-                        <label className="block text-sm font-medium mb-2">
-                            株数（100株単位）
-                        </label>
-                        <div className="flex gap-2">
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    setShares(Math.max(100, shares - 100))
-                                }
-                                className="flex-shrink-0 w-10 h-10 flex items-center justify-center border rounded-lg bg-background hover:bg-accent transition-colors"
-                            >
-                                <Minus className="w-4 h-4" />
-                            </button>
-                            <input
-                                type="number"
-                                value={shares}
-                                onChange={(e) =>
-                                    setShares(Number(e.target.value))
-                                }
-                                onClick={(e) => e.stopPropagation()}
-                                onFocus={(e) => e.stopPropagation()}
-                                onBlur={handleInputBlur}
-                                step="100"
-                                min="100"
-                                className="flex-1 px-3 py-2 border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary text-base text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        {/* 株数 */}
+                        <div>
+                            <label className="block text-sm font-medium mb-2">
+                                株数（100株単位）
+                            </label>
+                            <div className="flex gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setShares(Math.max(100, shares - 100))
+                                    }
+                                    className="flex-shrink-0 w-10 h-10 flex items-center justify-center border rounded-lg bg-background hover:bg-accent transition-colors"
+                                >
+                                    <Minus className="w-4 h-4" />
+                                </button>
+                                <input
+                                    type="number"
+                                    value={shares}
+                                    onChange={(e) =>
+                                        setShares(Number(e.target.value))
+                                    }
+                                    step="100"
+                                    min="100"
+                                    className="flex-1 px-3 py-2 border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary text-base text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                    autoComplete="off"
+                                    style={{ fontSize: "16px" }}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setShares(
+                                            Math.min(maxShares, shares + 100),
+                                        )
+                                    }
+                                    className="flex-shrink-0 w-10 h-10 flex items-center justify-center border rounded-lg bg-background hover:bg-accent transition-colors"
+                                >
+                                    <Plus className="w-4 h-4" />
+                                </button>
+                            </div>
+                            <p className="mt-1 text-xs text-muted-foreground">
+                                最大: {maxShares.toLocaleString()}株
+                            </p>
+                        </div>
+
+                        {/* 取引理由 */}
+                        <div>
+                            <label className="block text-sm font-medium mb-2">
+                                取引理由
+                            </label>
+                            <textarea
+                                key={`memo-${isOpen}`}
+                                value={memo}
+                                onChange={(e) => setMemo(e.target.value)}
+                                onFocus={(e) => {
+                                    setTimeout(() => {
+                                        e.target.scrollIntoView({
+                                            behavior: "smooth",
+                                            block: "center",
+                                        });
+                                    }, 300);
+                                }}
+                                rows={2}
+                                className="w-full px-3 py-2 border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary text-base"
+                                placeholder="なぜこの取引を？"
                                 autoComplete="off"
                                 style={{ fontSize: "16px" }}
                             />
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    setShares(Math.min(maxShares, shares + 100))
-                                }
-                                className="flex-shrink-0 w-10 h-10 flex items-center justify-center border rounded-lg bg-background hover:bg-accent transition-colors"
-                            >
-                                <Plus className="w-4 h-4" />
-                            </button>
                         </div>
-                        <p className="mt-1 text-xs text-muted-foreground">
-                            最大: {maxShares.toLocaleString()}株
-                        </p>
-                    </div>
 
-                    {/* 取引理由 */}
-                    <div>
-                        <label className="block text-sm font-medium mb-2">
-                            取引理由
-                        </label>
-                        <textarea
-                            value={memo}
-                            onChange={(e) => setMemo(e.target.value)}
-                            onClick={(e) => e.stopPropagation()}
-                            onFocus={(e) => e.stopPropagation()}
-                            onBlur={handleInputBlur}
-                            rows={2}
-                            className="w-full px-3 py-2 border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary text-base"
-                            placeholder="なぜこの取引を？"
-                            autoComplete="off"
-                            style={{ fontSize: "16px" }}
-                        />
-                    </div>
+                        {/* 概算 */}
+                        <div className="bg-muted rounded-lg p-3 space-y-1 text-sm">
+                            <div className="flex justify-between">
+                                <span className="text-muted-foreground">
+                                    約定代金
+                                </span>
+                                <span className="font-medium">
+                                    ¥{(currentPrice * shares).toLocaleString()}
+                                </span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="text-muted-foreground">
+                                    手数料等
+                                </span>
+                                <span className="font-medium">
+                                    ¥
+                                    {(
+                                        calculation.fee + calculation.slippage
+                                    ).toLocaleString()}
+                                </span>
+                            </div>
+                            <div className="flex justify-between pt-2 border-t">
+                                <span className="font-bold">合計</span>
+                                <span className="font-bold text-lg">
+                                    ¥{calculation.totalCost.toLocaleString()}
+                                </span>
+                            </div>
+                        </div>
 
-                    {/* 概算 */}
-                    <div className="bg-muted rounded-lg p-3 space-y-1 text-sm">
-                        <div className="flex justify-between">
-                            <span className="text-muted-foreground">
-                                約定代金
-                            </span>
-                            <span className="font-medium">
-                                ¥{(currentPrice * shares).toLocaleString()}
-                            </span>
-                        </div>
-                        <div className="flex justify-between">
-                            <span className="text-muted-foreground">
-                                手数料等
-                            </span>
-                            <span className="font-medium">
-                                ¥
-                                {(
-                                    calculation.fee + calculation.slippage
-                                ).toLocaleString()}
-                            </span>
-                        </div>
-                        <div className="flex justify-between pt-2 border-t">
-                            <span className="font-bold">合計</span>
-                            <span className="font-bold text-lg">
-                                ¥{calculation.totalCost.toLocaleString()}
-                            </span>
-                        </div>
-                    </div>
+                        {/* 警告 */}
+                        {violations.length > 0 && (
+                            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
+                                {violations.map((v, i) => (
+                                    <div
+                                        key={i}
+                                        className="text-xs text-red-500"
+                                    >
+                                        ⚠️ {v.description}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
 
-                    {/* 警告 */}
-                    {violations.length > 0 && (
-                        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3">
-                            {violations.map((v, i) => (
-                                <div key={i} className="text-xs text-red-500">
-                                    ⚠️ {v.description}
-                                </div>
-                            ))}
-                        </div>
-                    )}
-
-                    {/* 送信ボタン */}
-                    <button
-                        type="submit"
-                        className={`w-full py-3 rounded-lg font-bold transition ${
-                            orderType === "buy"
-                                ? "bg-green-500 hover:bg-green-600 text-white"
-                                : "bg-red-500 hover:bg-red-600 text-white"
-                        }`}
-                    >
-                        {orderType === "buy" ? "買い注文" : "売り注文"}
-                    </button>
-                </form>
+                        {/* 送信ボタン */}
+                        <button
+                            type="submit"
+                            className={`w-full py-3 rounded-lg font-bold transition ${
+                                orderType === "buy"
+                                    ? "bg-green-500 hover:bg-green-600 text-white"
+                                    : "bg-red-500 hover:bg-red-600 text-white"
+                            }`}
+                        >
+                            {orderType === "buy" ? "買い注文" : "売り注文"}
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     );

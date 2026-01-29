@@ -40,54 +40,23 @@ export default function PositionList({
             setIsClosingModalOpen(false);
             setSelectedPosition(null);
             setCloseMemo("");
+            setError("");
         }
     };
 
-    // iOSのズーム問題対策: モーダル表示中にbodyのスクロールを無効化
+    // モーダル表示中はbodyのスクロールを無効化
     useEffect(() => {
         if (isClosingModalOpen) {
-            const originalStyle = window.getComputedStyle(
-                document.body,
-            ).overflow;
-            const originalPosition = window.getComputedStyle(
-                document.body,
-            ).position;
-
-            document.body.style.overflow = "hidden";
-            document.body.style.position = "fixed";
-            document.body.style.width = "100%";
-            document.body.style.height = "100%";
-
-            return () => {
-                document.body.style.overflow = originalStyle;
-                document.body.style.position = originalPosition;
-                document.body.style.width = "";
-                document.body.style.height = "";
-                window.scrollTo(0, 0);
-            };
+            document.body.classList.add("modal-open");
+        } else {
+            document.body.classList.remove("modal-open");
         }
+
+        return () => {
+            document.body.classList.remove("modal-open");
+        };
     }, [isClosingModalOpen]);
 
-    // キーボードが閉じた後の処理を強化
-    const handleInputBlur = () => {
-        if (typeof window !== "undefined") {
-            setTimeout(() => {
-                window.scrollTo(0, 0);
-                document.documentElement.scrollTop = 0;
-                document.body.scrollTop = 0;
-
-                if (window.visualViewport) {
-                    window.visualViewport.addEventListener(
-                        "resize",
-                        () => {
-                            window.scrollTo(0, 0);
-                        },
-                        { once: true },
-                    );
-                }
-            }, 0);
-        }
-    };
     if (positions.length === 0) {
         return (
             <div className="bg-card rounded-lg border p-8 text-center">
@@ -237,88 +206,98 @@ export default function PositionList({
             {/* 決済モーダル */}
             {isClosingModalOpen && selectedPosition && (
                 <div
-                    className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+                    className="fixed inset-0 bg-black/50 z-50"
                     onClick={() => setIsClosingModalOpen(false)}
                 >
-                    <div
-                        className="bg-card rounded-xl border max-w-md w-full"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <div className="px-6 py-4 border-b">
-                            <h3 className="text-lg font-bold">
-                                ポジション決済
-                            </h3>
-                        </div>
+                    <div className="absolute inset-0 overflow-y-auto flex items-center justify-center p-4">
+                        <div
+                            className="bg-card rounded-xl border max-w-md w-full flex flex-col max-h-[90vh]"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <div className="px-6 py-4 border-b">
+                                <h3 className="text-lg font-bold">
+                                    ポジション決済
+                                </h3>
+                            </div>
 
-                        <div className="p-6 space-y-4">
-                            {/* ポジション情報 */}
-                            <div className="bg-muted/50 rounded-lg p-4 space-y-2">
-                                <div className="flex items-center gap-2">
-                                    <span
-                                        className={`px-2 py-1 rounded text-xs font-bold ${
-                                            selectedPosition.type === "long"
-                                                ? "bg-green-500/20 text-green-500"
-                                                : "bg-red-500/20 text-red-500"
-                                        }`}
-                                    >
-                                        {selectedPosition.type === "long"
-                                            ? "ロング"
-                                            : "ショート"}
-                                    </span>
-                                    <span className="text-sm font-medium">
-                                        {selectedPosition.shares.toLocaleString()}
-                                        株
-                                    </span>
+                            <div className="p-6 space-y-4 overflow-y-auto flex-1">
+                                {/* ポジション情報 */}
+                                <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+                                    <div className="flex items-center gap-2">
+                                        <span
+                                            className={`px-2 py-1 rounded text-xs font-bold ${
+                                                selectedPosition.type === "long"
+                                                    ? "bg-green-500/20 text-green-500"
+                                                    : "bg-red-500/20 text-red-500"
+                                            }`}
+                                        >
+                                            {selectedPosition.type === "long"
+                                                ? "ロング"
+                                                : "ショート"}
+                                        </span>
+                                        <span className="text-sm font-medium">
+                                            {selectedPosition.shares.toLocaleString()}
+                                            株
+                                        </span>
+                                    </div>
+                                    <div className="text-sm text-muted-foreground">
+                                        建玉価格: ¥
+                                        {selectedPosition.entryPrice.toLocaleString()}
+                                    </div>
+                                    <div className="text-sm text-muted-foreground">
+                                        現在価格: ¥
+                                        {currentPrice.toLocaleString()}
+                                    </div>
                                 </div>
-                                <div className="text-sm text-muted-foreground">
-                                    建玉価格: ¥
-                                    {selectedPosition.entryPrice.toLocaleString()}
-                                </div>
-                                <div className="text-sm text-muted-foreground">
-                                    現在価格: ¥{currentPrice.toLocaleString()}
+
+                                {/* 決済理由入力 */}
+                                <div>
+                                    <label className="block text-sm font-medium mb-2">
+                                        決済理由{" "}
+                                        <span className="text-red-500">*</span>
+                                    </label>
+                                    <textarea
+                                        key={`close-memo-${selectedPosition?.id}`}
+                                        value={closeMemo}
+                                        onChange={(e) => {
+                                            setCloseMemo(e.target.value);
+                                            setError("");
+                                        }}
+                                        onFocus={(e) => {
+                                            setTimeout(() => {
+                                                e.target.scrollIntoView({
+                                                    behavior: "smooth",
+                                                    block: "center",
+                                                });
+                                            }, 300);
+                                        }}
+                                        placeholder="例: 目標価格到達、損切り実行など"
+                                        className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-base"
+                                        rows={3}
+                                        style={{ fontSize: "16px" }}
+                                    />
+                                    {error && (
+                                        <p className="mt-1 text-sm text-red-500">
+                                            {error}
+                                        </p>
+                                    )}
                                 </div>
                             </div>
 
-                            {/* 決済理由入力 */}
-                            <div>
-                                <label className="block text-sm font-medium mb-2">
-                                    決済理由{" "}
-                                    <span className="text-red-500">*</span>
-                                </label>
-                                <textarea
-                                    value={closeMemo}
-                                    onChange={(e) => {
-                                        setCloseMemo(e.target.value);
-                                        setError("");
-                                    }}
-                                    onBlur={handleInputBlur}
-                                    placeholder="例: 目標価格到達、損切り実行など"
-                                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-base"
-                                    rows={3}
-                                    autoFocus
-                                    style={{ fontSize: "16px" }}
-                                />
-                                {error && (
-                                    <p className="mt-1 text-sm text-red-500">
-                                        {error}
-                                    </p>
-                                )}
+                            <div className="px-6 py-4 border-t flex gap-3 sticky bottom-0 bg-card">
+                                <button
+                                    onClick={() => setIsClosingModalOpen(false)}
+                                    className="flex-1 px-4 py-2 border rounded-lg hover:bg-accent transition"
+                                >
+                                    キャンセル
+                                </button>
+                                <button
+                                    onClick={handleCloseSubmit}
+                                    className="flex-1 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition font-medium"
+                                >
+                                    決済実行
+                                </button>
                             </div>
-                        </div>
-
-                        <div className="px-6 py-4 border-t flex gap-3">
-                            <button
-                                onClick={() => setIsClosingModalOpen(false)}
-                                className="flex-1 px-4 py-2 border rounded-lg hover:bg-accent transition"
-                            >
-                                キャンセル
-                            </button>
-                            <button
-                                onClick={handleCloseSubmit}
-                                className="flex-1 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition font-medium"
-                            >
-                                決済実行
-                            </button>
                         </div>
                     </div>
                 </div>
