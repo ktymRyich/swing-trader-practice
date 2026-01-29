@@ -98,8 +98,3 @@
         min-width: 44px;
     }
 }
-
-/* モーダル表示時のスクロール制御 */
-body.modal-open {
-    overflow: hidden;
-}

@@ -40,19 +40,6 @@ export default function HistoryPage() {
         description: string;
     }>({ open: false, title: "", description: "" });
 
-    // 感想モーダル表示中はbodyのスクロールを無効化
-    useEffect(() => {
-        if (isReflectionModalOpen) {
-            document.body.classList.add("modal-open");
-        } else {
-            document.body.classList.remove("modal-open");
-        }
-
-        return () => {
-            document.body.classList.remove("modal-open");
-        };
-    }, [isReflectionModalOpen]);
-
     useEffect(() => {
         const savedNickname = localStorage.getItem("userNickname");
         if (!savedNickname) {
@@ -970,49 +957,55 @@ export default function HistoryPage() {
             {/* 感想・反省モーダル */}
             {isReflectionModalOpen && (
                 <div
-                    className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4"
+                    className="fixed inset-0 bg-black/50 z-50"
                     onClick={() => setIsReflectionModalOpen(false)}
                 >
-                    <div
-                        className="bg-background rounded-t-2xl sm:rounded-lg p-6 max-w-2xl w-full flex flex-col max-h-[90vh] sm:max-h-[85vh]"
-                        onClick={(e) => e.stopPropagation()}
-                    >
-                        <h2 className="text-xl font-bold mb-4">
-                            セッションの感想・反省
-                        </h2>
-                        <p className="text-sm text-muted-foreground mb-4">
-                            このセッションで気づいたこと、良かった点、改善点などを記録しましょう
-                        </p>
-                        <div className="flex-1 overflow-y-auto mb-4">
-                            <textarea
-                                value={reflection}
-                                onChange={(e) => setReflection(e.target.value)}
-                                onFocus={(e) => {
-                                    setTimeout(() => {
-                                        e.target.scrollIntoView({
-                                            behavior: "smooth",
-                                            block: "center",
-                                        });
-                                    }, 300);
-                                }}
-                                className="w-full h-48 p-3 border rounded-md resize-none text-base"
-                                placeholder="例：&#10;・エントリータイミングが早すぎた&#10;・損切りルールを守れた&#10;・次回は移動平均線のクロスを待ってから入る"
-                                style={{ fontSize: "16px" }}
-                            />
-                        </div>
-                        <div className="flex gap-2">
-                            <button
-                                onClick={handleSaveReflection}
-                                className="flex-1 bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition"
-                            >
-                                保存
-                            </button>
-                            <button
-                                onClick={() => setIsReflectionModalOpen(false)}
-                                className="px-4 py-2 border rounded-md hover:bg-accent transition"
-                            >
-                                キャンセル
-                            </button>
+                    <div className="absolute inset-0 overflow-y-auto flex items-center justify-center p-4">
+                        <div
+                            className="bg-background rounded-lg p-6 max-w-2xl w-full flex flex-col max-h-[85vh]"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <h2 className="text-xl font-bold mb-4">
+                                セッションの感想・反省
+                            </h2>
+                            <p className="text-sm text-muted-foreground mb-4">
+                                このセッションで気づいたこと、良かった点、改善点などを記録しましょう
+                            </p>
+                            <div className="flex-1 overflow-y-auto mb-4">
+                                <textarea
+                                    value={reflection}
+                                    onChange={(e) =>
+                                        setReflection(e.target.value)
+                                    }
+                                    onFocus={(e) => {
+                                        setTimeout(() => {
+                                            e.target.scrollIntoView({
+                                                behavior: "smooth",
+                                                block: "center",
+                                            });
+                                        }, 300);
+                                    }}
+                                    className="w-full h-48 p-3 border rounded-md resize-none text-base"
+                                    placeholder="例：&#10;・エントリータイミングが早すぎた&#10;・損切りルールを守れた&#10;・次回は移動平均線のクロスを待ってから入る"
+                                    style={{ fontSize: "16px" }}
+                                />
+                            </div>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={handleSaveReflection}
+                                    className="flex-1 bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition"
+                                >
+                                    保存
+                                </button>
+                                <button
+                                    onClick={() =>
+                                        setIsReflectionModalOpen(false)
+                                    }
+                                    className="px-4 py-2 border rounded-md hover:bg-accent transition"
+                                >
+                                    キャンセル
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
