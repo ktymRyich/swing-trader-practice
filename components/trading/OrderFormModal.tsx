@@ -39,66 +39,18 @@ export default function OrderFormModal({
     const [shares, setShares] = useState<number>(100);
     const [memo, setMemo] = useState("");
 
-    // モーダルが開かれたときにフォームをリセット
+    // モーダル表示中はbodyのスクロールを無効化
     useEffect(() => {
         if (isOpen) {
-            setOrderType("buy");
-            setTradingType("spot");
-            setShares(100);
-            setMemo("");
+            document.body.classList.add("modal-open");
+        } else {
+            document.body.classList.remove("modal-open");
         }
+
+        return () => {
+            document.body.classList.remove("modal-open");
+        };
     }, [isOpen]);
-
-    // iOSのズーム問題対策: モーダル表示中はbodyのスクロールを無効化
-    useEffect(() => {
-        if (isOpen) {
-            const originalStyle = window.getComputedStyle(
-                document.body,
-            ).overflow;
-            const originalPosition = window.getComputedStyle(
-                document.body,
-            ).position;
-
-            document.body.style.overflow = "hidden";
-            document.body.style.position = "fixed";
-            document.body.style.width = "100%";
-            document.body.style.height = "100%";
-
-            return () => {
-                document.body.style.overflow = originalStyle;
-                document.body.style.position = originalPosition;
-                document.body.style.width = "";
-                document.body.style.height = "";
-                // モーダルを閉じるときにスクロールをリセット
-                window.scrollTo(0, 0);
-            };
-        }
-    }, [isOpen]);
-
-    if (!isOpen) return null;
-
-    // キーボードが閉じた後の処理を強化
-    const handleInputBlur = () => {
-        if (typeof window !== "undefined") {
-            // 複数の方法でリセットを試みる
-            setTimeout(() => {
-                window.scrollTo(0, 0);
-                document.documentElement.scrollTop = 0;
-                document.body.scrollTop = 0;
-
-                // visualViewport APIを使用（利用可能な場合）
-                if (window.visualViewport) {
-                    window.visualViewport.addEventListener(
-                        "resize",
-                        () => {
-                            window.scrollTo(0, 0);
-                        },
-                        { once: true },
-                    );
-                }
-            }, 0);
-        }
-    };
 
     if (!isOpen) return null;
 
@@ -168,11 +120,11 @@ export default function OrderFormModal({
 
     return (
         <div
-            className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50"
+            className="fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-0 sm:p-4"
             onClick={onClose}
         >
             <div
-                className="bg-card rounded-t-2xl sm:rounded-2xl w-full sm:max-w-md max-h-[95vh] overflow-y-auto border"
+                className="bg-card rounded-t-2xl sm:rounded-2xl w-full sm:max-w-md flex flex-col border max-h-[90vh] sm:max-h-[85vh]"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* ヘッダー */}
@@ -187,7 +139,11 @@ export default function OrderFormModal({
                 </div>
 
                 {/* フォーム */}
-                <form onSubmit={handleSubmit} className="p-4 space-y-4">
+                <form
+                    key={isOpen ? "open" : "closed"}
+                    onSubmit={handleSubmit}
+                    className="p-4 space-y-4 overflow-y-auto flex-1"
+                >
                     {/* 注文種別 */}
                     <div>
                         <label className="block text-sm font-medium mb-2">
@@ -273,9 +229,6 @@ export default function OrderFormModal({
                                 onChange={(e) =>
                                     setShares(Number(e.target.value))
                                 }
-                                onClick={(e) => e.stopPropagation()}
-                                onFocus={(e) => e.stopPropagation()}
-                                onBlur={handleInputBlur}
                                 step="100"
                                 min="100"
                                 className="flex-1 px-3 py-2 border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary text-base text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
@@ -303,11 +256,17 @@ export default function OrderFormModal({
                             取引理由
                         </label>
                         <textarea
+                            key={`memo-${isOpen}`}
                             value={memo}
                             onChange={(e) => setMemo(e.target.value)}
-                            onClick={(e) => e.stopPropagation()}
-                            onFocus={(e) => e.stopPropagation()}
-                            onBlur={handleInputBlur}
+                            onFocus={(e) => {
+                                setTimeout(() => {
+                                    e.target.scrollIntoView({
+                                        behavior: "smooth",
+                                        block: "center",
+                                    });
+                                }, 300);
+                            }}
                             rows={2}
                             className="w-full px-3 py-2 border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary text-base"
                             placeholder="なぜこの取引を？"
