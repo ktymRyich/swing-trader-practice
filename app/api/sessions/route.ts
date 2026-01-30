@@ -77,6 +77,12 @@ export async function GET(request: Request) {
                     ? JSON.parse(session.ma_settings)
                     : [5, 10, 20, 50, 100], // 移動平均線設定
                 reflection: session.reflection || null, // 感想・反省
+                // コンディション情報
+                physicalCondition: session.physical_condition || null,
+                sleepCondition: session.sleep_condition || null,
+                concentrationLevel: session.concentration_level || null,
+                stressLevel: session.stress_level || null,
+                preSessionNotes: session.pre_session_notes || null,
                 createdAt: session.created_at,
                 updatedAt: session.updated_at,
                 positions: positions.map((p: any) => ({
@@ -197,8 +203,9 @@ export async function POST(request: Request) {
           id, nickname, symbol, stock_name, initial_capital, current_capital,
           practice_start_date, practice_start_index, practice_end_date, practice_replay_date, status,
           current_day, period_days, trade_count, win_count, win_rate, max_drawdown, rule_violations,
-          ma_settings, created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE((SELECT created_at FROM sessions WHERE id = ?), ?), ?)
+          ma_settings, physical_condition, sleep_condition, concentration_level, stress_level, pre_session_notes,
+          created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE((SELECT created_at FROM sessions WHERE id = ?), ?), ?)
       `,
             ).run(
                 session.id,
@@ -220,6 +227,11 @@ export async function POST(request: Request) {
                 session.maxDrawdown || 0,
                 session.ruleViolations || 0,
                 session.maSettings ? JSON.stringify(session.maSettings) : null, // 移動平均線設定
+                session.physicalCondition || null, // 体調
+                session.sleepCondition || null, // 睡眠
+                session.concentrationLevel || null, // 集中力
+                session.stressLevel || null, // ストレス
+                session.preSessionNotes || null, // メモ
                 session.id, // created_atの既存値チェック用
                 now, // 新規作成時のcreated_at
                 now, // updated_at

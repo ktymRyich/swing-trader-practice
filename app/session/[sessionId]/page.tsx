@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState, use } from "react";
+import { useEffect, useState, use, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import {
     generateTradeId,
     generatePositionId,
     generateViolationId,
+    RuleViolation,
 } from "@/lib/db/schema";
 import { useSessionStore } from "@/lib/store/sessionStore";
 import TradingChart from "@/components/chart/TradingChart";
@@ -19,6 +20,7 @@ import {
     Play,
     Pause,
     SkipForward,
+    SkipBack,
     BarChart3,
     Settings,
 } from "lucide-react";
@@ -53,6 +55,7 @@ export default function SessionPage({
         pause,
         togglePlayPause,
         advanceDay,
+        rewindDay,
         updateSession,
         reset,
         setCurrentPriceIndex,
@@ -130,6 +133,9 @@ export default function SessionPage({
     useEffect(() => {
         if (!isPlaying || !currentSession) return;
 
+        // playbackSpeedが存在するかチェック（デフォルトは5秒）
+        const speed = currentSession.playbackSpeed || 1;
+
         const timer = setInterval(() => {
             const practiceStartIndex = currentSession.practiceStartIndex || 0;
             const practiceEndIndex =
@@ -144,7 +150,7 @@ export default function SessionPage({
             } else {
                 advanceDay();
             }
-        }, currentSession.playbackSpeed * 1000);
+        }, speed * 1000);
 
         return () => clearInterval(timer);
     }, [isPlaying, currentPriceIndex, stockPrices.length, currentSession]);
@@ -164,7 +170,7 @@ export default function SessionPage({
         // 各ポジションごとに違反をチェック
         const newViolations: Array<{
             positionId: string;
-            type: string;
+            type: "stop_loss" | "position_size" | "max_positions" | "leverage";
             description: string;
             severity: "warning" | "critical";
         }> = [];
@@ -246,21 +252,21 @@ export default function SessionPage({
         // 新しい違反があれば記録
         if (newViolations.length > 0) {
             const newRecordedKeys = new Set(recordedViolations);
-            let updatedViolations = [...(currentSession.violations || [])];
+            let updatedViolations = (currentSession.violations || []).slice();
             let violationCount = currentSession.ruleViolations || 0;
 
             newViolations.forEach((v) => {
                 const violationKey = `${v.positionId}_${v.type}`;
                 newRecordedKeys.add(violationKey);
 
-                const violation = {
+                const violation: RuleViolation = {
                     id: generateViolationId(),
                     sessionId: currentSession.id!,
                     timestamp: new Date().toISOString(),
-                    positionId: v.positionId,
                     type: v.type,
                     description: v.description,
                     severity: v.severity,
+                    positionId: v.positionId,
                 };
 
                 updatedViolations.push(violation);
@@ -276,7 +282,7 @@ export default function SessionPage({
 
             // サーバーに保存
             saveSession({
-                ...currentSession,
+                ...currentSession!,
                 ruleViolations: violationCount,
                 violations: updatedViolations,
             });
@@ -501,8 +507,8 @@ export default function SessionPage({
                     ? currentSession.currentCapital - calculation.totalCost
                     : currentSession.currentCapital + calculation.totalCost;
 
-            let updatedPositions = [...(currentSession.positions || [])];
-            let updatedOpenPositions = [...openPositions];
+            let updatedPositions = (currentSession.positions || []).slice();
+            let updatedOpenPositions = openPositions.slice();
 
             // ポジションを更新
             if (type === "buy") {
@@ -550,7 +556,7 @@ export default function SessionPage({
             }
 
             // 取引履歴を更新
-            const updatedTrades = [...(currentSession.trades || []), trade];
+            const updatedTrades = (currentSession.trades || []).concat(trade);
             setTrades(updatedTrades);
             setLocalTrades(updatedTrades);
 
@@ -646,7 +652,10 @@ export default function SessionPage({
                 sessionId: currentSession.id!,
                 timestamp: new Date().toISOString(),
                 tradeDate: visiblePrices[visiblePrices.length - 1].date,
-                type: "sell" as const,
+                type:
+                    position.type === "long"
+                        ? ("sell" as const)
+                        : ("buy" as const), // ロングの決済は売り、ショートの決済は買い
                 tradingType: position.tradingType,
                 isShort: false,
                 shares: position.shares,
@@ -682,7 +691,7 @@ export default function SessionPage({
                 (profit / (position.entryPrice * position.shares)) * 100;
 
             // ポジションを更新
-            let updatedPositions = [...(currentSession.positions || [])];
+            let updatedPositions = (currentSession.positions || []).slice();
             const posIndex = updatedPositions.findIndex(
                 (p) => p.id === positionId,
             );
@@ -711,7 +720,7 @@ export default function SessionPage({
                     : 0;
 
             // 取引履歴を更新
-            const updatedTrades = [...(currentSession.trades || []), trade];
+            const updatedTrades = (currentSession.trades || []).concat(trade);
 
             const updatedSession = {
                 ...currentSession,
@@ -781,14 +790,14 @@ export default function SessionPage({
             try {
                 const updatedSession = {
                     ...currentSession,
-                    status: "paused",
+                    status: "paused" as const,
                     currentDay:
                         currentPriceIndex -
                         (currentSession.practiceStartIndex || 0),
                 };
 
                 updateSession(updatedSession);
-                await saveSession(updatedSession);
+                await saveSession(updatedSession as any);
                 router.push("/");
             } catch (error) {
                 console.error("保存エラー:", error);
@@ -796,6 +805,110 @@ export default function SessionPage({
             }
         }
     };
+
+    const currentPrice =
+        visiblePrices.length > 0
+            ? visiblePrices[visiblePrices.length - 1].close
+            : 0;
+
+    // 完了済みセッションのリプレイ時は、現在の日付までの取引のみを表示
+    const currentDate = useMemo(
+        () =>
+            visiblePrices.length > 0
+                ? visiblePrices[visiblePrices.length - 1].date
+                : "",
+        [visiblePrices],
+    );
+
+    const visibleTrades = useMemo(() => {
+        if (!currentSession) return [];
+        return currentSession.status === "completed"
+            ? (trades || []).filter((t) => t.tradeDate <= currentDate)
+            : trades || [];
+    }, [currentSession, trades, currentDate]);
+
+    // 完了済みセッションのリプレイ時は、現在の日付までに開始したポジションのみを表示
+    const visibleOpenPositions = useMemo(() => {
+        if (!currentSession) return [];
+        return currentSession.status === "completed"
+            ? openPositions.filter((p) => p.entryDate <= currentDate)
+            : openPositions;
+    }, [currentSession, openPositions, currentDate]);
+
+    // 完了済みセッションのリプレイ時は、現在の日付までに決済されたポジションで統計を計算
+    const visibleClosedPositions = useMemo(() => {
+        if (!currentSession) return [];
+        return currentSession.status === "completed"
+            ? closedPositions.filter(
+                  (p) => p.exitDate && p.exitDate <= currentDate,
+              )
+            : closedPositions;
+    }, [currentSession, closedPositions, currentDate]);
+
+    // リプレイ時の統計を動的に計算
+    const replayStats = useMemo(() => {
+        if (!currentSession || currentSession.status !== "completed")
+            return null;
+
+        const profits = visibleClosedPositions.filter(
+            (p) => (p.profit || 0) > 0,
+        );
+        const losses = visibleClosedPositions.filter(
+            (p) => (p.profit || 0) < 0,
+        );
+        const winCount = profits.length;
+        const tradeCount = visibleClosedPositions.length;
+        const winRate = tradeCount > 0 ? (winCount / tradeCount) * 100 : 0;
+
+        return {
+            tradeCount,
+            winCount,
+            winRate,
+            avgProfit:
+                profits.length > 0
+                    ? profits.reduce((sum, p) => sum + (p.profit || 0), 0) /
+                      profits.length
+                    : 0,
+            avgLoss:
+                losses.length > 0
+                    ? losses.reduce((sum, p) => sum + (p.profit || 0), 0) /
+                      losses.length
+                    : 0,
+        };
+    }, [currentSession, visibleClosedPositions]);
+
+    // 総資産額（現金 + 保有ポジションの評価額）を計算
+    const totalAssets = useMemo(() => {
+        const unrealizedPnL = visibleOpenPositions.reduce((sum, p) => {
+            const { pnL } = calculatePositionPnL({
+                type: p.type,
+                shares: p.shares,
+                entryPrice: p.entryPrice,
+                currentPrice: currentPrice,
+                unrealizedPnL: 0,
+                unrealizedPnLPercent: 0,
+            });
+            return sum + pnL;
+        }, 0);
+        return currentSession
+            ? currentSession.currentCapital + unrealizedPnL
+            : 0;
+    }, [currentSession, visibleOpenPositions, currentPrice]);
+
+    // 含み損益
+    const unrealizedPnL = useMemo(() => {
+        return visibleOpenPositions.reduce((sum, p) => {
+            const { pnL } = calculatePositionPnL({
+                type: p.type,
+                shares: p.shares,
+                entryPrice: p.entryPrice,
+                currentPrice: currentPrice,
+                unrealizedPnL: 0,
+                unrealizedPnLPercent: 0,
+            });
+            return sum + pnL;
+        }, 0);
+    }, [visibleOpenPositions, currentPrice]);
 
     if (isLoading || !currentSession) {
         return (
@@ -809,73 +922,6 @@ export default function SessionPage({
             </div>
         );
     }
-
-    const currentPrice =
-        visiblePrices.length > 0
-            ? visiblePrices[visiblePrices.length - 1].close
-            : 0;
-
-    // 完了済みセッションのリプレイ時は、現在の日付までの取引のみを表示
-    const currentDate =
-        visiblePrices.length > 0
-            ? visiblePrices[visiblePrices.length - 1].date
-            : "";
-
-    const visibleTrades =
-        currentSession.status === "completed"
-            ? (trades || []).filter((t) => t.tradeDate <= currentDate)
-            : trades || [];
-
-    // 完了済みセッションのリプレイ時は、現在の日付までに開始したポジションのみを表示
-    const visibleOpenPositions =
-        currentSession.status === "completed"
-            ? openPositions.filter((p) => p.entryDate <= currentDate)
-            : openPositions;
-
-    // 完了済みセッションのリプレイ時は、現在の日付までに決済されたポジションで統計を計算
-    const visibleClosedPositions =
-        currentSession.status === "completed"
-            ? closedPositions.filter(
-                  (p) => p.exitDate && p.exitDate <= currentDate,
-              )
-            : closedPositions;
-
-    // リプレイ時の統計を動的に計算
-    const replayStats =
-        currentSession.status === "completed"
-            ? (() => {
-                  const profits = visibleClosedPositions.filter(
-                      (p) => (p.profit || 0) > 0,
-                  );
-                  const losses = visibleClosedPositions.filter(
-                      (p) => (p.profit || 0) < 0,
-                  );
-                  const winCount = profits.length;
-                  const tradeCount = visibleClosedPositions.length;
-                  const winRate =
-                      tradeCount > 0 ? (winCount / tradeCount) * 100 : 0;
-
-                  return {
-                      tradeCount,
-                      winCount,
-                      winRate,
-                      avgProfit:
-                          profits.length > 0
-                              ? profits.reduce(
-                                    (sum, p) => sum + (p.profit || 0),
-                                    0,
-                                ) / profits.length
-                              : 0,
-                      avgLoss:
-                          losses.length > 0
-                              ? losses.reduce(
-                                    (sum, p) => sum + (p.profit || 0),
-                                    0,
-                                ) / losses.length
-                              : 0,
-                  };
-              })()
-            : null;
 
     const totalPositionValue = visibleOpenPositions.reduce(
         (sum, p) => sum + p.shares * currentPrice,
@@ -906,108 +952,16 @@ export default function SessionPage({
                                         {currentSession.stockName}
                                     </h1>
                                     <p className="text-xs text-muted-foreground">
-                                        資産: ¥
-                                        {(() => {
-                                            const unrealizedPnL =
-                                                visibleOpenPositions.reduce(
-                                                    (sum, p) => {
-                                                        const { pnL } =
-                                                            calculatePositionPnL(
-                                                                {
-                                                                    type: p.type,
-                                                                    shares: p.shares,
-                                                                    entryPrice:
-                                                                        p.entryPrice,
-                                                                    currentPrice:
-                                                                        currentPrice,
-                                                                    unrealizedPnL: 0,
-                                                                    unrealizedPnLPercent: 0,
-                                                                },
-                                                            );
-                                                        return sum + pnL;
-                                                    },
-                                                    0,
-                                                );
-                                            const totalAssets =
-                                                currentSession.currentCapital +
-                                                unrealizedPnL;
-                                            return totalAssets.toLocaleString();
-                                        })()}
+                                        資産: ¥{totalAssets.toLocaleString()}
                                         <span
-                                            className={`ml-1 ${(() => {
-                                                const unrealizedPnL =
-                                                    visibleOpenPositions.reduce(
-                                                        (sum, p) => {
-                                                            const { pnL } =
-                                                                calculatePositionPnL(
-                                                                    {
-                                                                        type: p.type,
-                                                                        shares: p.shares,
-                                                                        entryPrice:
-                                                                            p.entryPrice,
-                                                                        currentPrice:
-                                                                            currentPrice,
-                                                                        unrealizedPnL: 0,
-                                                                        unrealizedPnLPercent: 0,
-                                                                    },
-                                                                );
-                                                            return sum + pnL;
-                                                        },
-                                                        0,
-                                                    );
-                                                return unrealizedPnL >= 0
+                                            className={`ml-1 ${
+                                                unrealizedPnL >= 0
                                                     ? "text-green-500"
-                                                    : "text-red-500";
-                                            })()}`}
+                                                    : "text-red-500"
+                                            }`}
                                         >
-                                            {(() => {
-                                                const unrealizedPnL =
-                                                    visibleOpenPositions.reduce(
-                                                        (sum, p) => {
-                                                            const { pnL } =
-                                                                calculatePositionPnL(
-                                                                    {
-                                                                        type: p.type,
-                                                                        shares: p.shares,
-                                                                        entryPrice:
-                                                                            p.entryPrice,
-                                                                        currentPrice:
-                                                                            currentPrice,
-                                                                        unrealizedPnL: 0,
-                                                                        unrealizedPnLPercent: 0,
-                                                                    },
-                                                                );
-                                                            return sum + pnL;
-                                                        },
-                                                        0,
-                                                    );
-                                                return unrealizedPnL >= 0
-                                                    ? "+"
-                                                    : "";
-                                            })()}
-                                            {(() => {
-                                                const unrealizedPnL =
-                                                    visibleOpenPositions.reduce(
-                                                        (sum, p) => {
-                                                            const { pnL } =
-                                                                calculatePositionPnL(
-                                                                    {
-                                                                        type: p.type,
-                                                                        shares: p.shares,
-                                                                        entryPrice:
-                                                                            p.entryPrice,
-                                                                        currentPrice:
-                                                                            currentPrice,
-                                                                        unrealizedPnL: 0,
-                                                                        unrealizedPnLPercent: 0,
-                                                                    },
-                                                                );
-                                                            return sum + pnL;
-                                                        },
-                                                        0,
-                                                    );
-                                                return unrealizedPnL.toLocaleString();
-                                            })()}
+                                            {unrealizedPnL >= 0 ? "+" : ""}
+                                            {unrealizedPnL.toLocaleString()}
                                         </span>
                                     </p>
                                 </div>
@@ -1361,6 +1315,21 @@ export default function SessionPage({
 
                 <div className="px-4 py-3">
                     <div className="max-w-[1920px] mx-auto flex items-center justify-center gap-2">
+                        {/* 巻き戻しボタン（完了済みセッションのみ） */}
+                        {currentSession.status === "completed" && (
+                            <button
+                                onClick={() => {
+                                    pause();
+                                    rewindDay();
+                                }}
+                                disabled={currentSession.currentDay === 0}
+                                className="p-3 bg-secondary hover:bg-secondary/80 disabled:bg-muted disabled:text-muted-foreground text-secondary-foreground rounded-full transition-all hover:scale-105 disabled:hover:scale-100 shadow-lg"
+                                title="1日巻き戻し"
+                            >
+                                <SkipBack className="w-5 h-5" />
+                            </button>
+                        )}
+
                         {/* 再生/一時停止ボタン */}
                         <button
                             onClick={togglePlayPause}

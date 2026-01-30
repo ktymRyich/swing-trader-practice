@@ -16,6 +16,17 @@ export default function NewSessionPage() {
     const [playbackSpeed, setPlaybackSpeed] = useState(5);
     const [maSettings, setMaSettings] = useState([5, 10, 20, 50, 100]);
 
+    // コンディション情報
+    const [physicalCondition, setPhysicalCondition] = useState<number | null>(
+        null,
+    );
+    const [sleepCondition, setSleepCondition] = useState<number | null>(null);
+    const [concentrationLevel, setConcentrationLevel] = useState<number | null>(
+        null,
+    );
+    const [stressLevel, setStressLevel] = useState<number | null>(null);
+    const [preSessionNotes, setPreSessionNotes] = useState("");
+
     // ログインチェック
     useEffect(() => {
         const savedNickname = localStorage.getItem("userNickname");
@@ -81,6 +92,12 @@ export default function NewSessionPage() {
                 positions: [],
                 trades: [],
                 violations: [],
+                // コンディション情報
+                physicalCondition: physicalCondition ?? undefined,
+                sleepCondition: sleepCondition ?? undefined,
+                concentrationLevel: concentrationLevel ?? undefined,
+                stressLevel: stressLevel ?? undefined,
+                preSessionNotes: preSessionNotes || undefined,
                 // 株価データは保存しない（後で動的に読み込む）
             };
 
@@ -170,7 +187,7 @@ export default function NewSessionPage() {
                                 <input
                                     type="range"
                                     min="1"
-                                    max="30"
+                                    max="10"
                                     step="1"
                                     value={playbackSpeed}
                                     onChange={(e) =>
@@ -186,8 +203,8 @@ export default function NewSessionPage() {
                             </div>
                             <div className="flex justify-between text-xs text-muted-foreground mt-1">
                                 <span>1秒(最速)</span>
-                                <span>15秒(標準)</span>
-                                <span>30秒(じっくり)</span>
+                                <span>5秒(標準)</span>
+                                <span>10秒(じっくり)</span>
                             </div>
                         </div>
 
@@ -214,6 +231,153 @@ export default function NewSessionPage() {
                                         max="200"
                                     />
                                 ))}
+                            </div>
+                        </div>
+
+                        {/* コンディション入力 */}
+                        <div className="pt-4 border-t">
+                            <h3 className="text-sm font-medium mb-3">
+                                今日のコンディション
+                            </h3>
+
+                            {/* 体調 */}
+                            <div className="mb-3">
+                                <label className="block text-sm mb-2">
+                                    体調
+                                </label>
+                                <div className="grid grid-cols-5 gap-2">
+                                    {[1, 2, 3, 4, 5].map((level) => (
+                                        <button
+                                            key={level}
+                                            onClick={() =>
+                                                setPhysicalCondition(level)
+                                            }
+                                            className={`p-2 rounded-lg border-2 transition ${
+                                                physicalCondition === level
+                                                    ? "border-primary bg-primary/10"
+                                                    : "border-border hover:border-primary/50"
+                                            }`}
+                                        >
+                                            <div className="text-lg font-bold">
+                                                {level}
+                                            </div>
+                                            <div className="text-xs text-muted-foreground">
+                                                {level === 1 && "悪い"}
+                                                {level === 3 && "普通"}
+                                                {level === 5 && "良い"}
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* 睡眠 */}
+                            <div className="mb-3">
+                                <label className="block text-sm mb-2">
+                                    睡眠
+                                </label>
+                                <div className="grid grid-cols-5 gap-2">
+                                    {[1, 2, 3, 4, 5].map((level) => (
+                                        <button
+                                            key={level}
+                                            onClick={() =>
+                                                setSleepCondition(level)
+                                            }
+                                            className={`p-2 rounded-lg border-2 transition ${
+                                                sleepCondition === level
+                                                    ? "border-primary bg-primary/10"
+                                                    : "border-border hover:border-primary/50"
+                                            }`}
+                                        >
+                                            <div className="text-lg font-bold">
+                                                {level}
+                                            </div>
+                                            <div className="text-xs text-muted-foreground">
+                                                {level === 1 && "不足"}
+                                                {level === 3 && "普通"}
+                                                {level === 5 && "充分"}
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* 集中力 */}
+                            <div className="mb-3">
+                                <label className="block text-sm mb-2">
+                                    集中力
+                                </label>
+                                <div className="grid grid-cols-5 gap-2">
+                                    {[1, 2, 3, 4, 5].map((level) => (
+                                        <button
+                                            key={level}
+                                            onClick={() =>
+                                                setConcentrationLevel(level)
+                                            }
+                                            className={`p-2 rounded-lg border-2 transition ${
+                                                concentrationLevel === level
+                                                    ? "border-primary bg-primary/10"
+                                                    : "border-border hover:border-primary/50"
+                                            }`}
+                                        >
+                                            <div className="text-lg font-bold">
+                                                {level}
+                                            </div>
+                                            <div className="text-xs text-muted-foreground">
+                                                {level === 1 && "低い"}
+                                                {level === 3 && "普通"}
+                                                {level === 5 && "高い"}
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* ストレス */}
+                            <div className="mb-3">
+                                <label className="block text-sm mb-2">
+                                    ストレス
+                                </label>
+                                <div className="grid grid-cols-5 gap-2">
+                                    {[1, 2, 3, 4, 5].map((level) => (
+                                        <button
+                                            key={level}
+                                            onClick={() =>
+                                                setStressLevel(level)
+                                            }
+                                            className={`p-2 rounded-lg border-2 transition ${
+                                                stressLevel === level
+                                                    ? "border-primary bg-primary/10"
+                                                    : "border-border hover:border-primary/50"
+                                            }`}
+                                        >
+                                            <div className="text-lg font-bold">
+                                                {level}
+                                            </div>
+                                            <div className="text-xs text-muted-foreground">
+                                                {level === 1 && "低い"}
+                                                {level === 3 && "普通"}
+                                                {level === 5 && "高い"}
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* メモ */}
+                            <div>
+                                <label className="block text-sm mb-2">
+                                    メモ（任意）
+                                </label>
+                                <textarea
+                                    value={preSessionNotes}
+                                    onChange={(e) =>
+                                        setPreSessionNotes(e.target.value)
+                                    }
+                                    placeholder="今日の気分や特記事項など..."
+                                    className="w-full px-3 py-2 border rounded-lg text-sm bg-background resize-none"
+                                    rows={3}
+                                />
                             </div>
                         </div>
                     </div>

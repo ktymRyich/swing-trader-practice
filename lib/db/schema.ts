@@ -39,6 +39,13 @@ export interface Session {
     endDateOfData: string; // データの終了日（YYYY-MM-DD）
     reflection?: string; // セッションの感想・反省
 
+    // コンディション情報（1-5段階）
+    physicalCondition?: number; // 体調コンディション
+    sleepCondition?: number; // 睡眠コンディション
+    concentrationLevel?: number; // 集中力レベル
+    stressLevel?: number; // ストレスレベル
+    preSessionNotes?: string; // 開始前のメモ
+
     // 統計情報
     tradeCount: number;
     winCount: number;
@@ -48,6 +55,11 @@ export interface Session {
 
     // 設定
     maSettings: number[]; // 移動平均線の期間設定
+
+    // データ（クライアントサイドのみ）
+    positions?: Position[];
+    trades?: Trade[];
+    violations?: RuleViolation[];
 }
 
 export interface Trade {
@@ -91,6 +103,7 @@ export interface RuleViolation {
     type: "stop_loss" | "position_size" | "max_positions" | "leverage"; // 違反種類
     description: string; // 違反内容
     severity: "warning" | "critical"; // 深刻度
+    positionId?: string; // 関連するポジションID（オプショナル）
 }
 
 // ===== データベースクラス =====

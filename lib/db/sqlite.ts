@@ -72,6 +72,33 @@ function initializeDatabase(db: Database.Database) {
         // カラムが既に存在する場合は無視
     }
 
+    // 既存テーブルにコンディション関連カラムを追加
+    try {
+        db.exec(`ALTER TABLE sessions ADD COLUMN physical_condition INTEGER`);
+    } catch (e) {
+        // カラムが既に存在する場合は無視
+    }
+    try {
+        db.exec(`ALTER TABLE sessions ADD COLUMN sleep_condition INTEGER`);
+    } catch (e) {
+        // カラムが既に存在する場合は無視
+    }
+    try {
+        db.exec(`ALTER TABLE sessions ADD COLUMN concentration_level INTEGER`);
+    } catch (e) {
+        // カラムが既に存在する場合は無視
+    }
+    try {
+        db.exec(`ALTER TABLE sessions ADD COLUMN stress_level INTEGER`);
+    } catch (e) {
+        // カラムが既に存在する場合は無視
+    }
+    try {
+        db.exec(`ALTER TABLE sessions ADD COLUMN pre_session_notes TEXT`);
+    } catch (e) {
+        // カラムが既に存在する場合は無視
+    }
+
     // ポジションテーブル
     db.exec(`
     CREATE TABLE IF NOT EXISTS positions (

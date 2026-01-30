@@ -269,83 +269,78 @@ export default function TradingChart({
                 } else {
                     chartRef.current.timeScale().fitContent();
                 }
-
-                // 取引マーカーを追加
-                if (
-                    trades &&
-                    trades.length > 0 &&
-                    candlestickSeriesRef.current
-                ) {
-                    // 同じ日付の取引をグループ化
-                    const tradesByDate = trades.reduce(
-                        (acc, trade) => {
-                            const date = trade.tradeDate;
-                            if (!acc[date]) {
-                                acc[date] = [];
-                            }
-                            acc[date].push(trade);
-                            return acc;
-                        },
-                        {} as Record<string, typeof trades>,
-                    );
-
-                    const markers: SeriesMarker<Time>[] = [];
-
-                    Object.entries(tradesByDate).forEach(
-                        ([date, dayTrades]) => {
-                            // 買いと売りを分ける
-                            const buyTrades = dayTrades.filter(
-                                (t) => t.type === "buy",
-                            );
-                            const sellTrades = dayTrades.filter(
-                                (t) => t.type === "sell",
-                            );
-
-                            // 買いマーカー
-                            if (buyTrades.length > 0) {
-                                const totalShares = buyTrades.reduce(
-                                    (sum, t) => sum + t.shares,
-                                    0,
-                                );
-                                const shareText =
-                                    totalShares >= 1000
-                                        ? `${(totalShares / 1000).toFixed(1)}k`
-                                        : totalShares.toString();
-                                markers.push({
-                                    time: date as Time,
-                                    position: "belowBar",
-                                    color: CHART_COLORS.trade.buy,
-                                    shape: "circle",
-                                    text: `▲${shareText}`,
-                                    size: 0.5,
-                                });
-                            }
-
-                            // 売りマーカー
-                            if (sellTrades.length > 0) {
-                                const totalShares = sellTrades.reduce(
-                                    (sum, t) => sum + t.shares,
-                                    0,
-                                );
-                                const shareText =
-                                    totalShares >= 1000
-                                        ? `${(totalShares / 1000).toFixed(1)}k`
-                                        : totalShares.toString();
-                                markers.push({
-                                    time: date as Time,
-                                    position: "aboveBar",
-                                    color: CHART_COLORS.trade.sell,
-                                    shape: "circle",
-                                    text: `▼${shareText}`,
-                                    size: 0.5,
-                                });
-                            }
-                        },
-                    );
-
-                    candlestickSeriesRef.current.setMarkers(markers);
-                }
             }
+        }
+
+        // 取引マーカーを追加（毎回更新）
+        if (trades && trades.length > 0 && candlestickSeriesRef.current) {
+            // 同じ日付の取引をグループ化
+            const tradesByDate = trades.reduce(
+                (acc, trade) => {
+                    const date = trade.tradeDate;
+                    if (!acc[date]) {
+                        acc[date] = [];
+                    }
+                    acc[date].push(trade);
+                    return acc;
+                },
+                {} as Record<string, typeof trades>,
+            );
+
+            const markers: SeriesMarker<Time>[] = [];
+
+            Object.entries(tradesByDate).forEach(([date, dayTrades]) => {
+                // 買いと売りを分ける
+                // type="buy"は、現物買い/信用買い（ロング）または空売りの決済（ショートクローズ）
+                // type="sell"は、現物売り/信用売り（ロング決済）または空売り（ショート開始）
+                const buyTrades = dayTrades.filter((t) => t.type === "buy");
+                const sellTrades = dayTrades.filter((t) => t.type === "sell");
+
+                // 買いマーカー（ロング開始 or ショート決済）
+                if (buyTrades.length > 0) {
+                    const totalShares = buyTrades.reduce(
+                        (sum, t) => sum + t.shares,
+                        0,
+                    );
+                    const shareText =
+                        totalShares >= 1000
+                            ? `${(totalShares / 1000).toFixed(1)}k`
+                            : totalShares.toString();
+                    markers.push({
+                        time: date as Time,
+                        position: "belowBar",
+                        color: CHART_COLORS.trade.buy,
+                        shape: "circle",
+                        text: `▲${shareText}`,
+                        size: 0.5,
+                    });
+                }
+
+                // 売りマーカー（ロング決済 or ショート開始）
+                if (sellTrades.length > 0) {
+                    const totalShares = sellTrades.reduce(
+                        (sum, t) => sum + t.shares,
+                        0,
+                    );
+                    const shareText =
+                        totalShares >= 1000
+                            ? `${(totalShares / 1000).toFixed(1)}k`
+                            : totalShares.toString();
+                    markers.push({
+                        time: date as Time,
+                        position: "aboveBar",
+                        color: CHART_COLORS.trade.sell,
+                        shape: "circle",
+                        text: `▼${shareText}`,
+                        size: 0.5,
+                    });
+                }
+            });
+
+            candlestickSeriesRef.current.setMarkers(markers);
+        } else if (candlestickSeriesRef.current) {
+            // tradesが空の場合はマーカーをクリア
+            candlestickSeriesRef.current.setMarkers([]);
         }
     }, [stockPrices, maSettings, trades, timeframe]);
 
