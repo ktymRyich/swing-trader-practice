@@ -43,11 +43,15 @@ export default function OrderFormModal({
     // モーダルが開いたときに理由記述にフォーカス
     useEffect(() => {
         if (isOpen && memoInputRef.current) {
-            // 少し遅延させてフォーカスを確実に当てる
+            // モーダルのレンダリングが完全に終わってからフォーカス
             const timer = setTimeout(() => {
-                memoInputRef.current?.focus();
-                memoInputRef.current?.select();
-            }, 100);
+                const element = memoInputRef.current;
+                if (element) {
+                    element.focus();
+                    // PCではselect()を呼ばない（フォーカスが不安定になるため）
+                    // モバイルでは自動的にカーソルが末尾に移動する
+                }
+            }, 200);
             return () => clearTimeout(timer);
         }
     }, [isOpen]);
