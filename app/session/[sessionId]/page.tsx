@@ -22,7 +22,7 @@ import {
     SkipForward,
     SkipBack,
     BarChart3,
-    Settings,
+    Gauge,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -153,7 +153,13 @@ export default function SessionPage({
         }, speed * 1000);
 
         return () => clearInterval(timer);
-    }, [isPlaying, currentPriceIndex, stockPrices.length, currentSession]);
+    }, [
+        isPlaying,
+        currentPriceIndex,
+        stockPrices.length,
+        currentSession,
+        currentSession?.playbackSpeed,
+    ]);
 
     // 既に記録済みの違反を追跡（ポジションID + 違反タイプ）
     const [recordedViolations, setRecordedViolations] = useState<Set<string>>(
@@ -595,10 +601,12 @@ export default function SessionPage({
     const handleClosePosition = async (
         positionId: string,
         memo: string = "ポジション決済",
+        closeShares?: number,
     ) => {
         console.log("=== handleClosePosition START ===");
         console.log("positionId:", positionId);
         console.log("memo:", memo);
+        console.log("closeShares:", closeShares);
         console.log("currentSession:", currentSession);
         console.log("openPositions:", openPositions);
         console.log("visiblePrices length:", visiblePrices.length);
@@ -616,6 +624,14 @@ export default function SessionPage({
             return;
         }
 
+        // 決済株数のデフォルトは全株
+        const sharesToClose = closeShares || position.shares;
+
+        if (sharesToClose > position.shares) {
+            alert("保有株数を超えて決済することはできません");
+            return;
+        }
+
         if (visiblePrices.length === 0) {
             console.error("No visible prices");
             alert("価格データがありません");
@@ -630,10 +646,10 @@ export default function SessionPage({
             // 再生を一時停止
             pause();
 
-            // 決済取引を作成
+            // 決済取引を作成（決済株数分）
             const calculation = calculateSellOrder(
                 currentPrice,
-                position.shares,
+                sharesToClose,
                 position.tradingType,
             );
 
@@ -658,7 +674,7 @@ export default function SessionPage({
                         : ("buy" as const), // ロングの決済は売り、ショートの決済は買い
                 tradingType: position.tradingType,
                 isShort: false,
-                shares: position.shares,
+                shares: sharesToClose,
                 price: currentPrice,
                 fee: calculation.fee,
                 slippage: calculation.slippage,
@@ -676,19 +692,18 @@ export default function SessionPage({
             if (position.type === "long") {
                 // ロング：売却額 - 購入額
                 profit =
-                    calculation.totalCost -
-                    position.entryPrice * position.shares;
+                    calculation.totalCost - position.entryPrice * sharesToClose;
             } else {
                 // ショート：売却額（エントリー時） - 買戻額（現在）
                 const entryCalculation = calculateSellOrder(
                     position.entryPrice,
-                    position.shares,
+                    sharesToClose,
                     position.tradingType,
                 );
                 profit = entryCalculation.totalCost - calculation.totalCost;
             }
             const profitRate =
-                (profit / (position.entryPrice * position.shares)) * 100;
+                (profit / (position.entryPrice * sharesToClose)) * 100;
 
             // ポジションを更新
             let updatedPositions = (currentSession.positions || []).slice();
@@ -696,15 +711,40 @@ export default function SessionPage({
                 (p) => p.id === positionId,
             );
             if (posIndex >= 0) {
-                updatedPositions[posIndex] = {
-                    ...updatedPositions[posIndex],
-                    status: "closed",
-                    closeTradeId: trade.id,
-                    exitPrice: currentPrice,
-                    exitDate: trade.tradeDate,
-                    profit,
-                    profitRate,
-                };
+                const isPartialClose = sharesToClose < position.shares;
+
+                if (isPartialClose) {
+                    // 一部決済の場合：元のポジションの株数を減らす
+                    updatedPositions[posIndex] = {
+                        ...updatedPositions[posIndex],
+                        shares: position.shares - sharesToClose,
+                    };
+
+                    // 決済した分を新しいポジションとして追加（クローズ済み）
+                    const closedPosition = {
+                        ...position,
+                        id: generatePositionId(),
+                        shares: sharesToClose,
+                        status: "closed" as const,
+                        closeTradeId: trade.id,
+                        exitPrice: currentPrice,
+                        exitDate: trade.tradeDate,
+                        profit,
+                        profitRate,
+                    };
+                    updatedPositions.push(closedPosition);
+                } else {
+                    // 全決済の場合：ポジションを閉じる
+                    updatedPositions[posIndex] = {
+                        ...updatedPositions[posIndex],
+                        status: "closed",
+                        closeTradeId: trade.id,
+                        exitPrice: currentPrice,
+                        exitDate: trade.tradeDate,
+                        profit,
+                        profitRate,
+                    };
+                }
             }
 
             // 統計を更新
@@ -736,8 +776,8 @@ export default function SessionPage({
             await saveSession(updatedSession);
 
             // 状態を更新
-            const updatedOpenPositions = openPositions.filter(
-                (p) => p.id !== positionId,
+            const updatedOpenPositions = updatedPositions.filter(
+                (p) => p.status === "open",
             );
             setOpenPositions(updatedOpenPositions);
 
@@ -751,7 +791,12 @@ export default function SessionPage({
             setLocalTrades(updatedTrades);
 
             console.log("=== handleClosePosition SUCCESS ===");
-            alert("ポジションを決済しました");
+            const isPartialClose = sharesToClose < position.shares;
+            alert(
+                isPartialClose
+                    ? `${sharesToClose}株を一部決済しました`
+                    : "ポジションを決済しました",
+            );
         } catch (error) {
             console.error("=== handleClosePosition ERROR ===");
             console.error("決済エラー:", error);
@@ -879,20 +924,22 @@ export default function SessionPage({
 
     // 総資産額（現金 + 保有ポジションの評価額）を計算
     const totalAssets = useMemo(() => {
-        const unrealizedPnL = visibleOpenPositions.reduce((sum, p) => {
-            const { pnL } = calculatePositionPnL({
-                type: p.type,
-                shares: p.shares,
-                entryPrice: p.entryPrice,
-                currentPrice: currentPrice,
-                unrealizedPnL: 0,
-                unrealizedPnLPercent: 0,
-            });
-            return sum + pnL;
+        if (!currentSession) return 0;
+
+        // 保有ポジションの評価額を計算
+        const positionsValue = visibleOpenPositions.reduce((sum, p) => {
+            if (p.type === "long") {
+                // ロング: 現在の株価 × 株数
+                return sum + currentPrice * p.shares;
+            } else {
+                // ショート: 売却時の受取額 - 現在の買戻しコスト
+                // 注: 売却時の受取額は既にcurrentCapitalに含まれているため
+                // ここでは買戻しコストをマイナスする
+                return sum - currentPrice * p.shares;
+            }
         }, 0);
-        return currentSession
-            ? currentSession.currentCapital + unrealizedPnL
-            : 0;
+
+        return currentSession.currentCapital + positionsValue;
     }, [currentSession, visibleOpenPositions, currentPrice]);
 
     // 含み損益
@@ -1380,23 +1427,28 @@ export default function SessionPage({
                         <div className="relative group">
                             <button
                                 className="p-3 bg-background hover:bg-accent border rounded-full transition-all hover:scale-105 shadow-lg"
-                                title="速度設定"
+                                title="再生速度"
                             >
-                                <Settings className="w-5 h-5" />
+                                <Gauge className="w-5 h-5" />
                             </button>
                             <select
                                 value={currentSession.playbackSpeed}
-                                onChange={(e) => {
-                                    updateSession({
-                                        playbackSpeed: Number(e.target.value),
-                                    });
+                                onChange={async (e) => {
+                                    const newSpeed = Number(e.target.value);
+                                    const updatedSession = {
+                                        ...currentSession,
+                                        playbackSpeed: newSpeed,
+                                    };
+                                    updateSession(updatedSession);
+                                    await saveSession(updatedSession);
                                 }}
                                 className="absolute inset-0 opacity-0 cursor-pointer"
                             >
-                                <option value={0.5}>0.5秒/日</option>
                                 <option value={1}>1秒/日</option>
                                 <option value={2}>2秒/日</option>
                                 <option value={3}>3秒/日</option>
+                                <option value={5}>5秒/日</option>
+                                <option value={10}>10秒/日</option>
                             </select>
                         </div>
 
@@ -1726,14 +1778,6 @@ export default function SessionPage({
                                     onChange={(e) =>
                                         setReflection(e.target.value)
                                     }
-                                    onFocus={(e) => {
-                                        setTimeout(() => {
-                                            e.target.scrollIntoView({
-                                                behavior: "smooth",
-                                                block: "center",
-                                            });
-                                        }, 300);
-                                    }}
                                     rows={8}
                                     className="w-full px-3 py-2 border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary text-base"
                                     placeholder="例：&#10;・うまくいった点：移動平均線のクロスを見逃さず、早めにエントリーできた&#10;・反省点：損切りラインを守らず、含み損が大きくなってしまった&#10;・次回への改善：エントリー前に必ず損切りラインを設定する"

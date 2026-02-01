@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 interface PositionListProps {
     positions: Position[];
     currentPrice: number;
-    onClose: (positionId: string, memo: string) => void;
+    onClose: (positionId: string, memo: string, shares: number) => void;
 }
 
 export default function PositionList({
@@ -20,11 +20,13 @@ export default function PositionList({
     const [selectedPosition, setSelectedPosition] = useState<Position | null>(
         null,
     );
+    const [closeShares, setCloseShares] = useState<number>(100);
     const [closeMemo, setCloseMemo] = useState("");
     const [error, setError] = useState("");
 
     const handleCloseClick = (position: Position) => {
         setSelectedPosition(position);
+        setCloseShares(position.shares); // デフォルトは全決済
         setCloseMemo("");
         setError("");
         setIsClosingModalOpen(true);
@@ -35,27 +37,27 @@ export default function PositionList({
             setError("決済理由を入力してください");
             return;
         }
-        if (selectedPosition) {
-            onClose(selectedPosition.id!, closeMemo.trim());
-            setIsClosingModalOpen(false);
-            setSelectedPosition(null);
-            setCloseMemo("");
-            setError("");
+        if (!selectedPosition) return;
+
+        if (closeShares <= 0 || closeShares > selectedPosition.shares) {
+            setError(
+                `1株以上、${selectedPosition.shares}株以下で指定してください`,
+            );
+            return;
         }
+
+        if (closeShares % 100 !== 0) {
+            setError("100株単位で指定してください");
+            return;
+        }
+
+        onClose(selectedPosition.id!, closeMemo.trim(), closeShares);
+        setIsClosingModalOpen(false);
+        setSelectedPosition(null);
+        setCloseShares(100);
+        setCloseMemo("");
+        setError("");
     };
-
-    // モーダル表示中はbodyのスクロールを無効化
-    useEffect(() => {
-        if (isClosingModalOpen) {
-            document.body.classList.add("modal-open");
-        } else {
-            document.body.classList.remove("modal-open");
-        }
-
-        return () => {
-            document.body.classList.remove("modal-open");
-        };
-    }, [isClosingModalOpen]);
 
     if (positions.length === 0) {
         return (
@@ -250,6 +252,48 @@ export default function PositionList({
                                     </div>
                                 </div>
 
+                                {/* 決済株数選択 */}
+                                <div>
+                                    <label className="block text-sm font-medium mb-2">
+                                        決済株数（100株単位）
+                                    </label>
+                                    <div className="flex gap-2 items-center">
+                                        <input
+                                            type="number"
+                                            value={closeShares}
+                                            onChange={(e) => {
+                                                setCloseShares(
+                                                    Number(e.target.value),
+                                                );
+                                                setError("");
+                                            }}
+                                            step="100"
+                                            min="100"
+                                            max={selectedPosition.shares}
+                                            className="flex-1 px-3 py-2 border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary text-base text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                                            autoComplete="off"
+                                            style={{ fontSize: "16px" }}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setCloseShares(
+                                                    selectedPosition.shares,
+                                                );
+                                                setError("");
+                                            }}
+                                            className="px-3 py-2 border rounded-lg hover:bg-accent transition text-sm whitespace-nowrap"
+                                        >
+                                            全決済
+                                        </button>
+                                    </div>
+                                    <p className="mt-1 text-xs text-muted-foreground">
+                                        保有株数:{" "}
+                                        {selectedPosition.shares.toLocaleString()}
+                                        株
+                                    </p>
+                                </div>
+
                                 {/* 決済理由入力 */}
                                 <div>
                                     <label className="block text-sm font-medium mb-2">
@@ -262,14 +306,6 @@ export default function PositionList({
                                         onChange={(e) => {
                                             setCloseMemo(e.target.value);
                                             setError("");
-                                        }}
-                                        onFocus={(e) => {
-                                            setTimeout(() => {
-                                                e.target.scrollIntoView({
-                                                    behavior: "smooth",
-                                                    block: "center",
-                                                });
-                                            }, 300);
                                         }}
                                         placeholder="例: 目標価格到達、損切り実行など"
                                         className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-background text-base"
