@@ -92,7 +92,7 @@ export async function GET(
                 shares: p.shares,
                 exitDate: p.exit_date,
                 exitPrice: p.exit_price,
-                profitLoss: p.profit_loss,
+                profit: p.profit_loss,
                 status: p.status,
             })),
             trades: trades.map((t: any) => ({
@@ -204,7 +204,7 @@ export async function PUT(
                         position.shares,
                         position.exitDate || null,
                         position.exitPrice || null,
-                        position.profitLoss || null,
+                        position.profit || null,
                         position.status,
                     );
                 }
