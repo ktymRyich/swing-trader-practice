@@ -62,7 +62,9 @@ export default function StatsOverview({ stats }: StatsOverviewProps) {
                         {stats.totalProfitYen >= 0 ? "+" : ""}¥
                         {stats.totalProfitYen.toLocaleString()}
                     </div>
-                    <div className={`text-xs ${stats.totalReturnOnBase >= 0 ? "text-green-500" : "text-red-500"}`}>
+                    <div
+                        className={`text-xs ${stats.totalReturnOnBase >= 0 ? "text-green-500" : "text-red-500"}`}
+                    >
                         (150万円基準: {stats.totalReturnOnBase >= 0 ? "+" : ""}
                         {stats.totalReturnOnBase.toFixed(2)}%)
                     </div>
@@ -84,17 +86,23 @@ export default function StatsOverview({ stats }: StatsOverviewProps) {
                     <div className="text-xs text-muted-foreground">
                         平均損益
                     </div>
-                    <div className={`text-sm font-medium ${stats.avgProfitLoss >= 0 ? "text-green-500" : "text-red-500"}`}>
+                    <div
+                        className={`text-sm font-medium ${stats.avgProfitLoss >= 0 ? "text-green-500" : "text-red-500"}`}
+                    >
                         {stats.avgProfitLoss >= 0 ? "+" : ""}¥
                         {stats.avgProfitLoss.toLocaleString(undefined, {
                             maximumFractionDigits: 0,
                         })}
                     </div>
-                    <div className={`text-xs ${stats.avgProfitLossRate >= 0 ? "text-green-500" : "text-red-500"}`}>
+                    <div
+                        className={`text-xs ${stats.avgProfitLossRate >= 0 ? "text-green-500" : "text-red-500"}`}
+                    >
                         (ROI: {stats.avgProfitLossRate >= 0 ? "+" : ""}
                         {stats.avgProfitLossRate.toFixed(2)}%)
                     </div>
-                    <div className={`text-xs ${stats.avgSessionReturnOnBase >= 0 ? "text-green-500" : "text-red-500"}`}>
+                    <div
+                        className={`text-xs ${stats.avgSessionReturnOnBase >= 0 ? "text-green-500" : "text-red-500"}`}
+                    >
                         (150万: {stats.avgSessionReturnOnBase >= 0 ? "+" : ""}
                         {stats.avgSessionReturnOnBase.toFixed(2)}%)
                     </div>

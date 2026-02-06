@@ -290,7 +290,8 @@ export default function HistoryPage() {
 
                   // 150万円基準の総利益率
                   const baseCapital = 1500000;
-                  const totalReturnOnBase = (totalProfitYen / baseCapital) * 100;
+                  const totalReturnOnBase =
+                      (totalProfitYen / baseCapital) * 100;
 
                   // 150万円基準のセッション平均利益率
                   const avgSessionReturnOnBase =
@@ -298,7 +299,9 @@ export default function HistoryPage() {
                           ? sessions.reduce((sum, s) => {
                                 const sessionProfit =
                                     s.currentCapital - s.initialCapital;
-                                return sum + (sessionProfit / baseCapital) * 100;
+                                return (
+                                    sum + (sessionProfit / baseCapital) * 100
+                                );
                             }, 0) / sessions.length
                           : 0;
 
