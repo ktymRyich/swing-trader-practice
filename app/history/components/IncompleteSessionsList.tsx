@@ -59,7 +59,7 @@ export default function IncompleteSessionsList({
                         </button>
 
                         <Link
-                            href={`/session/${session.id}`}
+                            href={`/session?sessionId=${session.id}`}
                             className="block p-4 pr-14"
                         >
                             <div className="flex items-center justify-between gap-4">

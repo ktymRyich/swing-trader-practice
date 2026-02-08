@@ -30,13 +30,30 @@ import {
     calculateSellOrder,
     calculatePositionPnL,
 } from "@/lib/trading/calculator";
+import {
+    getCachedStockData,
+    getSessionById,
+    getStockPrices,
+    saveSession as saveLocalSession,
+} from "@/lib/localApi";
 
-export default function SessionPage({
+export const dynamic = "force-static";
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+    return [{ sessionId: "placeholder" }];
+}
+
+export default function SessionPageRoute({
     params,
 }: {
     params: Promise<{ sessionId: string }>;
 }) {
     const { sessionId } = use(params);
+    return <SessionPage sessionId={sessionId} />;
+}
+
+export function SessionPage({ sessionId }: { sessionId: string }) {
     const router = useRouter();
 
     const {
@@ -301,14 +318,9 @@ export default function SessionPage({
         try {
             // 株価データを除外してセッションを保存
             const { prices, ...sessionWithoutPrices } = session;
-
-            await fetch(`/api/sessions/${sessionId}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    nickname,
-                    session: sessionWithoutPrices,
-                }),
+            await saveLocalSession({
+                ...sessionWithoutPrices,
+                nickname,
             });
         } catch (error) {
             console.error("セッション保存エラー:", error);
@@ -317,30 +329,22 @@ export default function SessionPage({
 
     const loadSession = async (userNickname: string) => {
         try {
-            const response = await fetch(
-                `/api/sessions/${sessionId}?nickname=${userNickname}`,
-            );
-            const data = await response.json();
+            const session = await getSessionById(userNickname, sessionId);
 
-            if (!data.success) {
+            if (!session) {
                 alert("セッションが見つかりません");
                 router.push("/");
                 return;
             }
 
-            const session = data.session;
-
             // 株価データを動的に読み込む
-            const pricesResponse = await fetch(
-                `/api/stocks/prices/${session.symbol}?startDate=${session.startDateOfData}&endDate=${session.endDateOfData}`,
-            );
-            const pricesData = await pricesResponse.json();
+            const prices = await getStockPrices({
+                symbol: session.symbol,
+                startDate: session.startDateOfData,
+                endDate: session.endDateOfData,
+            });
 
-            if (
-                !pricesData.success ||
-                !pricesData.prices ||
-                pricesData.prices.length === 0
-            ) {
+            if (!prices || prices.length === 0) {
                 alert("株価データの読み込みに失敗しました");
                 router.push("/");
                 return;
@@ -352,19 +356,15 @@ export default function SessionPage({
 
             if (!stockDescription || !stockMarketCapEstimate) {
                 try {
-                    const stocksResponse = await fetch("/api/stocks/cached");
-                    const stocksData = await stocksResponse.json();
-                    if (stocksData.success) {
-                        const stock = stocksData.stocks.find(
-                            (s: any) => s.symbol === session.symbol,
-                        );
-                        if (stock) {
-                            stockDescription =
-                                stock.description || stockDescription;
-                            stockMarketCapEstimate =
-                                stock.marketCapEstimate ||
-                                stockMarketCapEstimate;
-                        }
+                    const cached = await getCachedStockData();
+                    const stock = cached.stocks.find(
+                        (s: any) => s.symbol === session.symbol,
+                    );
+                    if (stock) {
+                        stockDescription =
+                            stock.description || stockDescription;
+                        stockMarketCapEstimate =
+                            stock.marketCapEstimate || stockMarketCapEstimate;
                     }
                 } catch (error) {
                     console.error("株式情報の取得エラー:", error);
@@ -382,7 +382,7 @@ export default function SessionPage({
             // ストアに状態をセット（正しい順序で）
             setSession(session);
             // APIから取得した価格データをセット
-            setStockPrices(pricesData.prices);
+            setStockPrices(prices);
             // その後に過去データ分を考慮してインデックスを設定（これでvisiblePricesが正しく計算される）
             const practiceStartIndex = session.practiceStartIndex || 0;
             // 完了済みセッションはリプレイのため最初から表示

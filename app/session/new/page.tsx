@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { generateSessionId } from "@/lib/db/schema";
+import { saveSession, startSession } from "@/lib/localApi";
 import { ArrowLeft, Play } from "lucide-react";
 import Link from "next/link";
 
@@ -47,16 +48,10 @@ export default function NewSessionPage() {
 
         try {
             // サーバーからランダムな銘柄と期間のデータを取得
-            const response = await fetch("/api/session/start", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    periodDays,
-                    historicalDays: 120, // 100日線表示用に120日分の過去データ
-                }),
+            const data = await startSession({
+                periodDays,
+                historicalDays: 120, // 100日線表示用に120日分の過去データ
             });
-
-            const data = await response.json();
 
             if (!data.success) {
                 throw new Error(data.error || "セッションの開始に失敗しました");
@@ -102,20 +97,10 @@ export default function NewSessionPage() {
             };
 
             // サーバーに保存
-            const saveResponse = await fetch("/api/sessions", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(session),
-            });
-
-            const saveData = await saveResponse.json();
-
-            if (!saveData.success) {
-                throw new Error("セッションの保存に失敗しました");
-            }
+            await saveSession(session);
 
             // セッションページに移動
-            router.push(`/session/${sessionId}`);
+            router.push(`/session?sessionId=${sessionId}`);
         } catch (error) {
             console.error("セッション作成エラー:", error);
             alert(

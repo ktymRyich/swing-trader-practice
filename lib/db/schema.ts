@@ -24,10 +24,14 @@ export interface StockPrice {
 
 export interface Session {
     id?: string;
+    nickname?: string;
     startDate: string; // セッション開始日時
     endDate?: string; // セッション終了日時
     symbol: string; // 銘柄コード
     stockName: string; // 銘柄名
+    stockSector?: string; // セクター
+    stockDescription?: string; // 企業概要
+    stockMarketCapEstimate?: string; // 時価総額目安
     periodDays: number; // セッション期間（日数）
     initialCapital: number; // 初期資金
     currentCapital: number; // 現在の資金
@@ -35,9 +39,12 @@ export interface Session {
     status: "playing" | "paused" | "completed"; // セッション状態
     currentDay: number; // 現在の日数（練習期間内での進捗）
     practiceStartIndex?: number; // 練習開始位置（過去データの日数）
+    practiceStartDate?: string; // 練習開始日（リプレイ開始日）
     startDateOfData: string; // データの開始日（YYYY-MM-DD）
     endDateOfData: string; // データの終了日（YYYY-MM-DD）
     reflection?: string; // セッションの感想・反省
+    createdAt?: string; // 作成日時
+    updatedAt?: string; // 更新日時
 
     // コンディション情報（1-5段階）
     physicalCondition?: number; // 体調コンディション

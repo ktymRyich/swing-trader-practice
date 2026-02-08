@@ -159,7 +159,7 @@ export default function SessionsTable({
                                     >
                                         <td className="p-3">
                                             <Link
-                                                href={`/session/${session.id}`}
+                                                href={`/session?sessionId=${session.id}`}
                                                 className="hover:underline font-medium"
                                             >
                                                 {session.stockName}

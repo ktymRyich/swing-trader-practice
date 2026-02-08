@@ -12,6 +12,12 @@ import StatsOverview from "./components/StatsOverview";
 import SessionsTable from "./components/SessionsTable";
 import IncompleteSessionsList from "./components/IncompleteSessionsList";
 import SessionDetailModal from "./components/SessionDetailModal";
+import {
+    getSessionById,
+    getSessions,
+    replaceSessions,
+    saveSession,
+} from "@/lib/localApi";
 
 export default function HistoryPage() {
     const router = useRouter();
@@ -47,22 +53,15 @@ export default function HistoryPage() {
 
     const loadSessions = async (userNickname: string) => {
         try {
-            const response = await fetch(
-                `/api/sessions?nickname=${userNickname}`,
+            const allSessions = await getSessions(userNickname);
+            const completedSessions = allSessions.filter(
+                (s: any) => s.status === "completed",
             );
-            const data = await response.json();
-
-            if (data.success) {
-                const allSessions = data.sessions || [];
-                const completedSessions = allSessions.filter(
-                    (s: any) => s.status === "completed",
-                );
-                const incomplete = allSessions.filter(
-                    (s: any) => s.status !== "completed",
-                );
-                setSessions(completedSessions);
-                setIncompleteSessions(incomplete);
-            }
+            const incomplete = allSessions.filter(
+                (s: any) => s.status !== "completed",
+            );
+            setSessions(completedSessions);
+            setIncompleteSessions(incomplete);
         } catch (error) {
             console.error("セッション読み込みエラー:", error);
         } finally {
@@ -83,40 +82,24 @@ export default function HistoryPage() {
         if (!nickname || !selectedSession) return;
 
         try {
-            const getResponse = await fetch(
-                `/api/sessions/${selectedSession.id}?nickname=${nickname}`,
+            const existingSession = await getSessionById(
+                nickname,
+                selectedSession.id,
             );
-            const getData = await getResponse.json();
 
-            if (!getData.success) {
+            if (!existingSession) {
                 alert("セッション情報の取得に失敗しました");
                 return;
             }
 
             const updatedSession = {
-                ...getData.session,
+                ...existingSession,
                 reflection,
             };
 
-            const response = await fetch(
-                `/api/sessions/${selectedSession.id}`,
-                {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        nickname,
-                        session: updatedSession,
-                    }),
-                },
-            );
-
-            const data = await response.json();
-            if (data.success) {
-                loadSessions(nickname);
-                setSelectedSession(updatedSession);
-            } else {
-                alert("保存に失敗しました");
-            }
+            await saveSession(updatedSession);
+            loadSessions(nickname);
+            setSelectedSession(updatedSession);
         } catch (error) {
             console.error("感想保存エラー:", error);
             alert("保存中にエラーが発生しました");
@@ -142,41 +125,22 @@ export default function HistoryPage() {
         }
 
         try {
-            const response = await fetch(`/api/sessions?nickname=${nickname}`);
-            const data = await response.json();
+            const allSessions = await getSessions(nickname);
+            const updatedSessions = allSessions.filter(
+                (s: any) => s.id !== sessionId,
+            );
 
-            if (data.success) {
-                const allSessions = data.sessions || [];
-                const updatedSessions = allSessions.filter(
-                    (s: any) => s.id !== sessionId,
+            const deletedCount = allSessions.length - updatedSessions.length;
+            if (deletedCount !== 1) {
+                alert(
+                    `エラー: 削除対象は1件ですが、${deletedCount}件が削除されようとしています。削除を中止しました。`,
                 );
-
-                const deletedCount =
-                    allSessions.length - updatedSessions.length;
-                if (deletedCount !== 1) {
-                    alert(
-                        `エラー: 削除対象は1件ですが、${deletedCount}件が削除されようとしています。削除を中止しました。`,
-                    );
-                    return;
-                }
-
-                const saveResponse = await fetch("/api/sessions", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        nickname,
-                        sessions: updatedSessions,
-                    }),
-                });
-
-                const saveData = await saveResponse.json();
-                if (saveData.success) {
-                    alert("セッションを削除しました");
-                    loadSessions(nickname);
-                } else {
-                    throw new Error("削除に失敗しました");
-                }
+                return;
             }
+
+            await replaceSessions(nickname, updatedSessions);
+            alert("セッションを削除しました");
+            loadSessions(nickname);
         } catch (error) {
             console.error("削除エラー:", error);
             alert("削除に失敗しました");
