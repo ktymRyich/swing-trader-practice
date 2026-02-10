@@ -8,6 +8,7 @@ import {
     ConfirmDialog,
     AlertDialogSimple,
 } from "@/components/ui/confirm-dialog";
+import { generateSessionId } from "@/lib/db/schema";
 import StatsOverview from "./components/StatsOverview";
 import SessionsTable from "./components/SessionsTable";
 import IncompleteSessionsList from "./components/IncompleteSessionsList";
@@ -20,8 +21,12 @@ export default function HistoryPage() {
     const [incompleteSessions, setIncompleteSessions] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [sortBy, setSortBy] = useState<"date" | "winRate" | "profit">("date");
+    const [filterBy, setFilterBy] = useState<"all" | "bookmarked">("all");
     const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
     const [selectedSession, setSelectedSession] = useState<any>(null);
+    const [replayingSessionId, setReplayingSessionId] = useState<string | null>(
+        null,
+    );
 
     // ダイアログ用のstate
     const [deleteDialog, setDeleteDialog] = useState<{
@@ -123,6 +128,142 @@ export default function HistoryPage() {
         }
     };
 
+    const handleReplay = async (session: any, e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (!nickname) {
+            alert("ログインが必要です");
+            return;
+        }
+
+        setReplayingSessionId(session.id);
+
+        try {
+            const sessionId = generateSessionId();
+            const startDateOfData =
+                session.startDateOfData || session.startDate;
+            const endDateOfData =
+                session.endDateOfData || session.endDate || session.startDate;
+            const practiceStartDate =
+                session.practiceStartDate || startDateOfData;
+
+            if (!startDateOfData || !endDateOfData) {
+                alert("期間情報が不足しているため再プレイできません");
+                return;
+            }
+
+            const replaySession = {
+                id: sessionId,
+                nickname,
+                startDate: new Date().toISOString(),
+                symbol: session.symbol,
+                stockName: session.stockName,
+                stockSector: session.stockSector,
+                stockDescription: session.stockDescription,
+                stockMarketCapEstimate: session.stockMarketCapEstimate,
+                periodDays: session.periodDays,
+                initialCapital: session.initialCapital ?? 1500000,
+                currentCapital: session.initialCapital ?? 1500000,
+                playbackSpeed: session.playbackSpeed ?? 5,
+                status: "paused" as const,
+                currentDay: 0,
+                practiceStartIndex: session.practiceStartIndex ?? 0,
+                practiceStartDate,
+                startDateOfData,
+                endDateOfData,
+                tradeCount: 0,
+                winCount: 0,
+                winRate: 0,
+                maxDrawdown: 0,
+                ruleViolations: 0,
+                isBookmarked: false,
+                maSettings: session.maSettings || [5, 10, 20, 50, 100],
+                positions: [],
+                trades: [],
+                violations: [],
+            };
+
+            const saveResponse = await fetch("/api/sessions", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(replaySession),
+            });
+
+            const saveData = await saveResponse.json();
+
+            if (!saveData.success) {
+                throw new Error("再プレイセッションの作成に失敗しました");
+            }
+
+            router.push(`/session/${sessionId}`);
+        } catch (error) {
+            console.error("再プレイ作成エラー:", error);
+            alert(
+                error instanceof Error
+                    ? error.message
+                    : "再プレイの作成に失敗しました",
+            );
+        } finally {
+            setReplayingSessionId(null);
+        }
+    };
+
+    const handleToggleBookmark = async (session: any, e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (!nickname) {
+            alert("ログインが必要です");
+            return;
+        }
+
+        const nextValue = !session.isBookmarked;
+        const updatedSession = { ...session, isBookmarked: nextValue };
+
+        setSessions((prev) =>
+            prev.map((s) => (s.id === session.id ? updatedSession : s)),
+        );
+        if (selectedSession?.id === session.id) {
+            setSelectedSession(updatedSession);
+        }
+
+        try {
+            const response = await fetch(`/api/sessions/${session.id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    nickname,
+                    session: updatedSession,
+                }),
+            });
+
+            const data = await response.json();
+            if (!data.success) {
+                throw new Error("ブックマークの更新に失敗しました");
+            }
+        } catch (error) {
+            console.error("ブックマーク更新エラー:", error);
+            setSessions((prev) =>
+                prev.map((s) =>
+                    s.id === session.id
+                        ? { ...s, isBookmarked: !nextValue }
+                        : s,
+                ),
+            );
+            if (selectedSession?.id === session.id) {
+                setSelectedSession((prev: any) =>
+                    prev ? { ...prev, isBookmarked: !nextValue } : prev,
+                );
+            }
+            alert(
+                error instanceof Error
+                    ? error.message
+                    : "ブックマークの更新に失敗しました",
+            );
+        }
+    };
+
     const handleDelete = async (
         sessionId: string,
         sessionName: string,
@@ -203,6 +344,13 @@ export default function HistoryPage() {
             default:
                 return 0;
         }
+    });
+
+    const filteredSessions = (sortedSessions || []).filter((session) => {
+        if (filterBy === "bookmarked") {
+            return session.isBookmarked;
+        }
+        return true;
     });
 
     // 統計計算
@@ -366,12 +514,43 @@ export default function HistoryPage() {
             <main className="max-w-7xl mx-auto px-4 py-6">
                 <StatsOverview stats={stats} />
 
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={() => setFilterBy("all")}
+                            className={`px-3 py-1.5 rounded text-xs transition ${
+                                filterBy === "all"
+                                    ? "bg-primary text-primary-foreground"
+                                    : "bg-secondary hover:bg-secondary/80"
+                            }`}
+                        >
+                            すべて
+                        </button>
+                        <button
+                            onClick={() => setFilterBy("bookmarked")}
+                            className={`px-3 py-1.5 rounded text-xs transition ${
+                                filterBy === "bookmarked"
+                                    ? "bg-primary text-primary-foreground"
+                                    : "bg-secondary hover:bg-secondary/80"
+                            }`}
+                        >
+                            ブックマーク
+                        </button>
+                    </div>
+                    <div className="text-xs text-muted-foreground">
+                        表示: {filteredSessions.length}件
+                    </div>
+                </div>
+
                 <SessionsTable
-                    sessions={sortedSessions || []}
+                    sessions={filteredSessions}
                     sortBy={sortBy}
                     onSortChange={setSortBy}
                     onReflectionOpen={handleOpenDetail}
+                    onReplay={handleReplay}
+                    onToggleBookmark={handleToggleBookmark}
                     onDelete={handleDelete}
+                    replayingSessionId={replayingSessionId}
                 />
 
                 <IncompleteSessionsList

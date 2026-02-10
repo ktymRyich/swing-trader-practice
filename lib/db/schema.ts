@@ -52,6 +52,7 @@ export interface Session {
     winRate: number;
     maxDrawdown: number;
     ruleViolations: number;
+    isBookmarked?: boolean; // ブックマーク
 
     // 設定
     maSettings: number[]; // 移動平均線の期間設定

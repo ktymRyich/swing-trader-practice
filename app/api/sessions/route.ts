@@ -73,6 +73,7 @@ export async function GET(request: Request) {
                 winRate: session.win_rate || 0,
                 maxDrawdown: session.max_drawdown || 0,
                 ruleViolations: session.rule_violations || 0,
+                isBookmarked: Boolean(session.is_bookmarked),
                 maSettings: session.ma_settings
                     ? JSON.parse(session.ma_settings)
                     : [5, 10, 20, 50, 100], // 移動平均線設定
@@ -203,9 +204,10 @@ export async function POST(request: Request) {
           id, nickname, symbol, stock_name, initial_capital, current_capital,
           practice_start_date, practice_start_index, practice_end_date, practice_replay_date, status,
           current_day, period_days, trade_count, win_count, win_rate, max_drawdown, rule_violations,
-          ma_settings, physical_condition, sleep_condition, concentration_level, stress_level, pre_session_notes,
-          created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE((SELECT created_at FROM sessions WHERE id = ?), ?), ?)
+                    ma_settings, physical_condition, sleep_condition, concentration_level, stress_level, pre_session_notes,
+                    is_bookmarked,
+                    created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE((SELECT created_at FROM sessions WHERE id = ?), ?), ?)
       `,
             ).run(
                 session.id,
@@ -232,6 +234,7 @@ export async function POST(request: Request) {
                 session.concentrationLevel || null, // 集中力
                 session.stressLevel || null, // ストレス
                 session.preSessionNotes || null, // メモ
+                session.isBookmarked ? 1 : 0,
                 session.id, // created_atの既存値チェック用
                 now, // 新規作成時のcreated_at
                 now, // updated_at

@@ -77,6 +77,7 @@ export async function GET(
             winRate: sessionData.win_rate || 0,
             maxDrawdown: sessionData.max_drawdown || 0,
             ruleViolations: sessionData.rule_violations || 0,
+            isBookmarked: Boolean(sessionData.is_bookmarked),
             maSettings: sessionData.ma_settings
                 ? JSON.parse(sessionData.ma_settings)
                 : [5, 25, 75], // 移動平均線設定
@@ -148,8 +149,8 @@ export async function PUT(
           id, nickname, symbol, stock_name, initial_capital, current_capital,
           practice_start_date, practice_start_index, practice_end_date, practice_replay_date, status,
           current_day, period_days, trade_count, win_count, win_rate, max_drawdown, rule_violations,
-          ma_settings, reflection, created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE((SELECT created_at FROM sessions WHERE id = ?), ?), ?)
+                    ma_settings, reflection, is_bookmarked, created_at, updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, COALESCE((SELECT created_at FROM sessions WHERE id = ?), ?), ?)
       `,
             ).run(
                 session.id,
@@ -172,6 +173,7 @@ export async function PUT(
                 session.ruleViolations || 0,
                 session.maSettings ? JSON.stringify(session.maSettings) : null, // 移動平均線設定
                 session.reflection || null, // 感想・反省
+                session.isBookmarked ? 1 : 0,
                 session.id,
                 now,
                 now,

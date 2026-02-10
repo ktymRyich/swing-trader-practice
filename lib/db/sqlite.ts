@@ -18,8 +18,8 @@ export function getDatabase(): Database.Database {
         db = new Database(DB_PATH);
         db.pragma("journal_mode = WAL"); // Write-Ahead Logging（パフォーマンス向上）
         db.pragma("foreign_keys = ON"); // 外部キー制約を有効化
-        initializeDatabase(db);
     }
+    initializeDatabase(db);
     return db;
 }
 
@@ -46,6 +46,7 @@ function initializeDatabase(db: Database.Database) {
       win_rate REAL DEFAULT 0,
       max_drawdown REAL DEFAULT 0,
       rule_violations INTEGER DEFAULT 0,
+            is_bookmarked INTEGER DEFAULT 0,
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL
     )
@@ -95,6 +96,13 @@ function initializeDatabase(db: Database.Database) {
     }
     try {
         db.exec(`ALTER TABLE sessions ADD COLUMN pre_session_notes TEXT`);
+    } catch (e) {
+        // カラムが既に存在する場合は無視
+    }
+
+    // 既存テーブルにブックマークカラムを追加
+    try {
+        db.exec(`ALTER TABLE sessions ADD COLUMN is_bookmarked INTEGER`);
     } catch (e) {
         // カラムが既に存在する場合は無視
     }

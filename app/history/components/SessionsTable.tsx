@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Eye, Trash2 } from "lucide-react";
+import { Bookmark, Eye, RotateCcw, Trash2 } from "lucide-react";
 
 interface Session {
     id: string;
@@ -7,12 +7,22 @@ interface Session {
     symbol: string;
     createdAt: string;
     startDate: string;
+    startDateOfData?: string;
+    endDateOfData?: string;
+    practiceStartIndex?: number;
+    practiceStartDate?: string;
+    periodDays: number;
+    initialCapital: number;
+    playbackSpeed?: number;
+    maSettings?: number[];
+    stockSector?: string;
+    stockDescription?: string;
+    stockMarketCapEstimate?: string;
     tradeCount: number;
     winRate: number;
     currentCapital: number;
-    initialCapital: number;
-    periodDays: number;
     ruleViolations: number;
+    isBookmarked?: boolean;
     reflection?: string;
 }
 
@@ -21,11 +31,14 @@ interface SessionsTableProps {
     sortBy: "date" | "winRate" | "profit";
     onSortChange: (sortBy: "date" | "winRate" | "profit") => void;
     onReflectionOpen: (session: Session) => void;
+    onReplay: (session: Session, e: React.MouseEvent) => void;
+    onToggleBookmark: (session: Session, e: React.MouseEvent) => void;
     onDelete: (
         sessionId: string,
         sessionName: string,
         e: React.MouseEvent,
     ) => void;
+    replayingSessionId: string | null;
 }
 
 export default function SessionsTable({
@@ -33,7 +46,10 @@ export default function SessionsTable({
     sortBy,
     onSortChange,
     onReflectionOpen,
+    onReplay,
+    onToggleBookmark,
     onDelete,
+    replayingSessionId,
 }: SessionsTableProps) {
     if (sessions.length === 0) {
         return (
@@ -132,6 +148,12 @@ export default function SessionsTable({
                                 <th className="text-center p-3 font-medium">
                                     詳細
                                 </th>
+                                <th className="text-center p-3 font-medium">
+                                    再プレイ
+                                </th>
+                                <th className="text-center p-3 font-medium">
+                                    ブックマーク
+                                </th>
                                 <th className="text-center p-3 font-medium w-20">
                                     削除
                                 </th>
@@ -225,6 +247,52 @@ export default function SessionsTable({
                                                 title="詳細を見る"
                                             >
                                                 <Eye className="w-4 h-4 text-primary" />
+                                            </button>
+                                        </td>
+                                        <td className="p-3 text-center">
+                                            <button
+                                                onClick={(e) =>
+                                                    onReplay(session, e)
+                                                }
+                                                disabled={
+                                                    replayingSessionId ===
+                                                    session.id
+                                                }
+                                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border border-primary/30 text-primary hover:bg-primary/10 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                                                title="同じ銘柄・同じ期間でもう一度"
+                                            >
+                                                {replayingSessionId ===
+                                                session.id ? (
+                                                    <span className="w-3.5 h-3.5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                                                ) : (
+                                                    <RotateCcw className="w-3.5 h-3.5" />
+                                                )}
+                                                もう一度
+                                            </button>
+                                        </td>
+                                        <td className="p-3 text-center">
+                                            <button
+                                                onClick={(e) =>
+                                                    onToggleBookmark(session, e)
+                                                }
+                                                className={`inline-flex items-center justify-center w-9 h-9 rounded-full border transition ${
+                                                    session.isBookmarked
+                                                        ? "border-amber-400/70 bg-amber-100 text-amber-700"
+                                                        : "border-muted-foreground/20 text-muted-foreground hover:bg-muted"
+                                                }`}
+                                                title={
+                                                    session.isBookmarked
+                                                        ? "ブックマーク解除"
+                                                        : "ブックマーク"
+                                                }
+                                            >
+                                                <Bookmark
+                                                    className={`w-4 h-4 ${
+                                                        session.isBookmarked
+                                                            ? "fill-current"
+                                                            : ""
+                                                    }`}
+                                                />
                                             </button>
                                         </td>
                                         <td className="p-3 text-center">
