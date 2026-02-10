@@ -39,6 +39,13 @@ interface SessionsTableProps {
         e: React.MouseEvent,
     ) => void;
     replayingSessionId: string | null;
+    clusterMap?: Record<
+        string,
+        {
+            label: string;
+            color: string;
+        }
+    >;
 }
 
 export default function SessionsTable({
@@ -50,6 +57,7 @@ export default function SessionsTable({
     onToggleBookmark,
     onDelete,
     replayingSessionId,
+    clusterMap,
 }: SessionsTableProps) {
     if (sessions.length === 0) {
         return (
@@ -146,6 +154,9 @@ export default function SessionsTable({
                                     違反
                                 </th>
                                 <th className="text-center p-3 font-medium">
+                                    クラスタ
+                                </th>
+                                <th className="text-center p-3 font-medium">
                                     詳細
                                 </th>
                                 <th className="text-center p-3 font-medium">
@@ -236,6 +247,32 @@ export default function SessionsTable({
                                             >
                                                 {session.ruleViolations}
                                             </span>
+                                        </td>
+                                        <td className="p-3 text-center">
+                                            {clusterMap?.[session.id] ? (
+                                                <span
+                                                    className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border"
+                                                    style={{
+                                                        borderColor:
+                                                            clusterMap[
+                                                                session.id
+                                                            ].color,
+                                                        color: clusterMap[
+                                                            session.id
+                                                        ].color,
+                                                        backgroundColor: `${clusterMap[session.id].color}1A`,
+                                                    }}
+                                                >
+                                                    {
+                                                        clusterMap[session.id]
+                                                            .label
+                                                    }
+                                                </span>
+                                            ) : (
+                                                <span className="text-xs text-muted-foreground">
+                                                    -
+                                                </span>
+                                            )}
                                         </td>
                                         <td className="p-3 text-center">
                                             <button

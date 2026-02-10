@@ -14,6 +14,21 @@ import SessionsTable from "./components/SessionsTable";
 import IncompleteSessionsList from "./components/IncompleteSessionsList";
 import SessionDetailModal from "./components/SessionDetailModal";
 
+type ClusterSummary = {
+    id: string;
+    label: string;
+    color: string;
+    sessionIds: string[];
+};
+
+type ClusterMapEntry = {
+    label: string;
+    color: string;
+    clusterId: string;
+};
+
+const CLUSTER_COUNT = 4;
+
 export default function HistoryPage() {
     const router = useRouter();
     const [nickname, setNickname] = useState<string | null>(null);
@@ -22,6 +37,12 @@ export default function HistoryPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [sortBy, setSortBy] = useState<"date" | "winRate" | "profit">("date");
     const [filterBy, setFilterBy] = useState<"all" | "bookmarked">("all");
+    const [clusters, setClusters] = useState<ClusterSummary[]>([]);
+    const [clusterMap, setClusterMap] = useState<
+        Record<string, ClusterMapEntry>
+    >({});
+    const [clusterFilter, setClusterFilter] = useState<string | "all">("all");
+    const [isClusterLoading, setIsClusterLoading] = useState(false);
     const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
     const [selectedSession, setSelectedSession] = useState<any>(null);
     const [replayingSessionId, setReplayingSessionId] = useState<string | null>(
@@ -49,6 +70,41 @@ export default function HistoryPage() {
         setNickname(savedNickname);
         loadSessions(savedNickname);
     }, [router]);
+
+    useEffect(() => {
+        const loadClusters = async () => {
+            if (!nickname || sessions.length === 0) {
+                setClusters([]);
+                setClusterMap({});
+                return;
+            }
+
+            setIsClusterLoading(true);
+
+            try {
+                const response = await fetch(
+                    `/api/sessions/ma-clusters?nickname=${nickname}&k=${CLUSTER_COUNT}`,
+                );
+                const data = await response.json();
+
+                if (!data.success) {
+                    throw new Error(data.error || "クラスタ取得に失敗しました");
+                }
+
+                setClusters(data.clusters || []);
+                setClusterMap(data.clusterMap || {});
+                setClusterFilter("all");
+            } catch (error) {
+                console.error("クラスタ取得エラー:", error);
+                setClusters([]);
+                setClusterMap({});
+            } finally {
+                setIsClusterLoading(false);
+            }
+        };
+
+        loadClusters();
+    }, [nickname, sessions.length]);
 
     const loadSessions = async (userNickname: string) => {
         try {
@@ -347,10 +403,13 @@ export default function HistoryPage() {
     });
 
     const filteredSessions = (sortedSessions || []).filter((session) => {
-        if (filterBy === "bookmarked") {
-            return session.isBookmarked;
-        }
-        return true;
+        const bookmarkMatch =
+            filterBy === "bookmarked" ? session.isBookmarked : true;
+        const clusterMatch =
+            clusterFilter === "all"
+                ? true
+                : clusterMap[session.id]?.clusterId === clusterFilter;
+        return bookmarkMatch && clusterMatch;
     });
 
     // 統計計算
@@ -515,7 +574,7 @@ export default function HistoryPage() {
                 <StatsOverview stats={stats} />
 
                 <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                         <button
                             onClick={() => setFilterBy("all")}
                             className={`px-3 py-1.5 rounded text-xs transition ${
@@ -536,11 +595,51 @@ export default function HistoryPage() {
                         >
                             ブックマーク
                         </button>
+                        <span className="px-3 py-1.5 rounded-full text-xs border border-muted-foreground/30 text-muted-foreground">
+                            4分類
+                        </span>
                     </div>
                     <div className="text-xs text-muted-foreground">
                         表示: {filteredSessions.length}件
                     </div>
                 </div>
+
+                {clusters.length > 0 && (
+                    <div className="flex flex-wrap items-center gap-2 mb-4">
+                        <button
+                            onClick={() => setClusterFilter("all")}
+                            className={`px-3 py-1.5 rounded-full text-xs border transition ${
+                                clusterFilter === "all"
+                                    ? "border-primary text-primary"
+                                    : "border-muted-foreground/30 text-muted-foreground hover:border-muted-foreground"
+                            }`}
+                        >
+                            全クラスタ
+                        </button>
+                        {clusters.map((cluster) => (
+                            <button
+                                key={cluster.id}
+                                onClick={() => setClusterFilter(cluster.id)}
+                                className="px-3 py-1.5 rounded-full text-xs border transition"
+                                style={{
+                                    borderColor: cluster.color,
+                                    color: cluster.color,
+                                    backgroundColor:
+                                        clusterFilter === cluster.id
+                                            ? `${cluster.color}1A`
+                                            : "transparent",
+                                }}
+                            >
+                                {cluster.label} ({cluster.sessionIds.length})
+                            </button>
+                        ))}
+                        {isClusterLoading && (
+                            <span className="text-xs text-muted-foreground">
+                                分類中...
+                            </span>
+                        )}
+                    </div>
+                )}
 
                 <SessionsTable
                     sessions={filteredSessions}
@@ -551,6 +650,7 @@ export default function HistoryPage() {
                     onToggleBookmark={handleToggleBookmark}
                     onDelete={handleDelete}
                     replayingSessionId={replayingSessionId}
+                    clusterMap={clusterMap}
                 />
 
                 <IncompleteSessionsList

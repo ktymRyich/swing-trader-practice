@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import { Info, X } from "lucide-react";
 import DailyPerformanceChart from "./DailyPerformanceChart";
 import DailyStatsTable from "./DailyStatsTable";
 import { calculateDailyStats, DailyStats } from "./utils/dailyStats";
 import { Trade, Position, RuleViolation } from "@/lib/db/schema";
+import RegimeRadar, { RegimeDatum } from "./RegimeRadar";
 
 interface SessionDetailModalProps {
     isOpen: boolean;
@@ -15,7 +16,22 @@ interface SessionDetailModalProps {
     onReflectionSave: (reflection: string) => void;
 }
 
-type TabType = "overview" | "daily" | "trades" | "violations" | "reflection";
+type TabType =
+    | "overview"
+    | "daily"
+    | "trades"
+    | "violations"
+    | "regimes"
+    | "reflection";
+
+const regimeDescriptions: Record<string, string> = {
+    オレンジ際: "100日線付近で価格が上下し、方向感が定まりにくい局面",
+    ボックス: "価格の上下幅が狭く、レンジ内で往復しやすい局面",
+    PPP: "短期>中期>長期が整列し、上向きに揃っている局面",
+    逆PPP: "短期<中期<長期が整列し、下向きに揃っている局面",
+    上昇トレンド: "価格と長期線が上向きに推移する局面",
+    下降トレンド: "価格と長期線が下向きに推移する局面",
+};
 
 export default function SessionDetailModal({
     isOpen,
@@ -28,6 +44,9 @@ export default function SessionDetailModal({
     const [dailyStats, setDailyStats] = useState<DailyStats[]>([]);
     const [reflection, setReflection] = useState("");
     const [isEditingReflection, setIsEditingReflection] = useState(false);
+    const [regimeData, setRegimeData] = useState<RegimeDatum[]>([]);
+    const [isRegimeLoading, setIsRegimeLoading] = useState(false);
+    const [regimeError, setRegimeError] = useState<string | null>(null);
 
     useEffect(() => {
         if (session && isOpen) {
@@ -46,6 +65,75 @@ export default function SessionDetailModal({
         }
     }, [session, isOpen]);
 
+    useEffect(() => {
+        const loadRegimes = async () => {
+            if (!session?.id || !nickname || !isOpen) return;
+
+            setIsRegimeLoading(true);
+            setRegimeError(null);
+
+            try {
+                const response = await fetch(
+                    `/api/sessions/${session.id}/regimes?nickname=${nickname}`,
+                );
+                const data = await response.json();
+
+                if (!data.success) {
+                    throw new Error(
+                        data.error || "局面スコアの取得に失敗しました",
+                    );
+                }
+
+                const scores = data.scores;
+                const chartData: RegimeDatum[] = [
+                    {
+                        name: "オレンジ際",
+                        score: scores.orange,
+                        description: regimeDescriptions["オレンジ際"],
+                    },
+                    {
+                        name: "ボックス",
+                        score: scores.box,
+                        description: regimeDescriptions["ボックス"],
+                    },
+                    {
+                        name: "PPP",
+                        score: scores.ppp,
+                        description: regimeDescriptions["PPP"],
+                    },
+                    {
+                        name: "逆PPP",
+                        score: scores.reversePpp,
+                        description: regimeDescriptions["逆PPP"],
+                    },
+                    {
+                        name: "上昇トレンド",
+                        score: scores.upTrend,
+                        description: regimeDescriptions["上昇トレンド"],
+                    },
+                    {
+                        name: "下降トレンド",
+                        score: scores.downTrend,
+                        description: regimeDescriptions["下降トレンド"],
+                    },
+                ];
+
+                setRegimeData(chartData);
+            } catch (error) {
+                console.error("局面スコア取得エラー:", error);
+                setRegimeError(
+                    error instanceof Error
+                        ? error.message
+                        : "局面スコアの取得に失敗しました",
+                );
+            } finally {
+                setIsRegimeLoading(false);
+            }
+        };
+
+        loadRegimes();
+    }, [session?.id, nickname, isOpen]);
+
     if (!isOpen || !session) return null;
 
     const profitYen = session.currentCapital - session.initialCapital;
@@ -61,6 +149,7 @@ export default function SessionDetailModal({
         { id: "daily" as TabType, label: "日次分析" },
         { id: "trades" as TabType, label: "全取引" },
         { id: "violations" as TabType, label: "ルール違反" },
+        { id: "regimes" as TabType, label: "局面" },
         { id: "reflection" as TabType, label: "反省" },
     ];
 
@@ -333,6 +422,51 @@ export default function SessionDetailModal({
                                     ルール違反はありません
                                 </div>
                             )}
+                        </div>
+                    )}
+
+                    {activeTab === "regimes" && (
+                        <div className="space-y-6">
+                            <div className="bg-card rounded-lg border p-4">
+                                {isRegimeLoading ? (
+                                    <div className="text-sm text-muted-foreground">
+                                        局面スコアを計算中...
+                                    </div>
+                                ) : regimeError ? (
+                                    <div className="text-sm text-red-600">
+                                        {regimeError}
+                                    </div>
+                                ) : regimeData.length > 0 ? (
+                                    <RegimeRadar data={regimeData} />
+                                ) : (
+                                    <div className="text-sm text-muted-foreground">
+                                        局面スコアがありません
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="grid gap-2 md:grid-cols-2">
+                                {regimeData.map((item) => (
+                                    <div
+                                        key={item.name}
+                                        className="flex items-start gap-3 rounded-lg border bg-card px-3 py-2"
+                                    >
+                                        <div className="text-sm font-medium">
+                                            {item.name}
+                                        </div>
+                                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                            <Info
+                                                className="w-3.5 h-3.5"
+                                                title={item.description}
+                                            />
+                                            <span>{item.description}</span>
+                                        </div>
+                                        <div className="ml-auto text-sm font-semibold">
+                                            {item.score}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     )}
 
