@@ -1,155 +1,97 @@
 interface StatsOverviewProps {
+    title?: string;
     stats: {
-        total: number;
+        totalSessions: number;
         totalTrades: number;
-        avgWinRate: number;
-        profitableSessions: number;
-        totalProfitYen: number;
-        monthlyReturn: number;
-        avgProfitLoss: number;
-        avgProfitLossRate: number;
-        totalReturnOnBase: number;
-        avgSessionReturnOnBase: number;
-        avgProfit: number;
-        avgLoss: number;
-        maxProfit: number;
+        totalClosed: number;
+        winRate: number;
+        profitFactor: number;
+        profitLossRatio: number;
+        avgProfitRate: number;
     } | null;
 }
 
-export default function StatsOverview({ stats }: StatsOverviewProps) {
-    if (!stats || stats.total === 0) {
+export default function StatsOverview({ stats, title }: StatsOverviewProps) {
+    if (!stats || stats.totalSessions === 0) {
         return null;
     }
 
+    const formatRatio = (value: number) =>
+        Number.isFinite(value) ? value.toFixed(2) : "∞";
+
+    const formatPercent = (value: number) => {
+        const sign = value > 0 ? "+" : "";
+        return `${sign}${value.toFixed(2)}%`;
+    };
+
     return (
         <div className="bg-card rounded-lg border p-4 mb-6">
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+            {title && <div className="text-sm font-semibold mb-3">{title}</div>}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                 <div className="text-center">
-                    <div className="text-xs text-muted-foreground">
+                    <div className="text-xs text-muted-foreground mb-1">
                         セッション数
                     </div>
-                    <div className="text-lg font-bold">{stats.total}</div>
-                </div>
-                <div className="text-center">
-                    <div className="text-xs text-muted-foreground">
-                        総取引数
+                    <div className="text-xl font-bold">
+                        {stats.totalSessions}
                     </div>
-                    <div className="text-lg font-bold">{stats.totalTrades}</div>
-                </div>
-                <div className="text-center">
-                    <div className="text-xs text-muted-foreground">
-                        平均勝率
-                    </div>
-                    <div className="text-lg font-bold">
-                        {stats.avgWinRate.toFixed(1)}%
+                    <div className="text-xs text-muted-foreground mt-0.5">
+                        練習量
                     </div>
                 </div>
                 <div className="text-center">
-                    <div className="text-xs text-muted-foreground">利益率</div>
-                    <div className="text-lg font-bold text-green-500">
-                        {(
-                            (stats.profitableSessions / stats.total) *
-                            100
-                        ).toFixed(0)}
-                        %
+                    <div className="text-xs text-muted-foreground mb-1">
+                        決済数
+                    </div>
+                    <div className="text-xl font-bold">{stats.totalClosed}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">
+                        取引完了
                     </div>
                 </div>
                 <div className="text-center">
-                    <div className="text-xs text-muted-foreground">総損益</div>
-                    <div
-                        className={`text-lg font-bold ${stats.totalProfitYen >= 0 ? "text-green-500" : "text-red-500"}`}
-                    >
-                        {stats.totalProfitYen >= 0 ? "+" : ""}¥
-                        {stats.totalProfitYen.toLocaleString()}
+                    <div className="text-xs text-muted-foreground mb-1">
+                        勝率
+                    </div>
+                    <div className="text-xl font-bold">
+                        {stats.winRate.toFixed(1)}%
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-0.5">
+                        勝ちトレード率
+                    </div>
+                </div>
+                <div className="text-center">
+                    <div className="text-xs text-muted-foreground mb-1">
+                        平均損益率
                     </div>
                     <div
-                        className={`text-xs ${stats.totalReturnOnBase >= 0 ? "text-green-500" : "text-red-500"}`}
+                        className={`text-xl font-bold ${stats.avgProfitRate >= 0 ? "text-green-500" : "text-red-500"}`}
                     >
-                        (150万円基準: {stats.totalReturnOnBase >= 0 ? "+" : ""}
-                        {stats.totalReturnOnBase.toFixed(2)}%)
+                        {formatPercent(stats.avgProfitRate)}
+                    </div>
+                    <div className="text-xs text-muted-foreground mt-0.5">
+                        セッション平均
                     </div>
                 </div>
                 <div className="text-center">
-                    <div className="text-xs text-muted-foreground">
-                        月利回り
+                    <div className="text-xs text-muted-foreground mb-1">
+                        プロフィットファクター
                     </div>
-                    <div
-                        className={`text-lg font-bold ${stats.monthlyReturn >= 0 ? "text-green-500" : "text-red-500"}`}
-                    >
-                        {stats.monthlyReturn >= 0 ? "+" : ""}
-                        {stats.monthlyReturn.toFixed(1)}%
+                    <div className="text-xl font-bold">
+                        {formatRatio(stats.profitFactor)}
                     </div>
-                </div>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mt-3 pt-3 border-t">
-                <div className="text-center">
-                    <div className="text-xs text-muted-foreground">
-                        平均損益
-                    </div>
-                    <div
-                        className={`text-sm font-medium ${stats.avgProfitLoss >= 0 ? "text-green-500" : "text-red-500"}`}
-                    >
-                        {stats.avgProfitLoss >= 0 ? "+" : ""}¥
-                        {stats.avgProfitLoss.toLocaleString(undefined, {
-                            maximumFractionDigits: 0,
-                        })}
-                    </div>
-                    <div
-                        className={`text-xs ${stats.avgProfitLossRate >= 0 ? "text-green-500" : "text-red-500"}`}
-                    >
-                        (ROI: {stats.avgProfitLossRate >= 0 ? "+" : ""}
-                        {stats.avgProfitLossRate.toFixed(2)}%)
-                    </div>
-                    <div
-                        className={`text-xs ${stats.avgSessionReturnOnBase >= 0 ? "text-green-500" : "text-red-500"}`}
-                    >
-                        (150万: {stats.avgSessionReturnOnBase >= 0 ? "+" : ""}
-                        {stats.avgSessionReturnOnBase.toFixed(2)}%)
+                    <div className="text-xs text-muted-foreground mt-0.5">
+                        リスク管理
                     </div>
                 </div>
                 <div className="text-center">
-                    <div className="text-xs text-muted-foreground">
-                        平均利益
+                    <div className="text-xs text-muted-foreground mb-1">
+                        損益レシオ
                     </div>
-                    <div className="text-sm font-medium text-green-500">
-                        +¥
-                        {stats.avgProfit.toLocaleString(undefined, {
-                            maximumFractionDigits: 0,
-                        })}
+                    <div className="text-xl font-bold">
+                        {formatRatio(stats.profitLossRatio)}
                     </div>
-                </div>
-                <div className="text-center">
-                    <div className="text-xs text-muted-foreground">
-                        平均損失
-                    </div>
-                    <div className="text-sm font-medium text-red-500">
-                        ¥
-                        {stats.avgLoss.toLocaleString(undefined, {
-                            maximumFractionDigits: 0,
-                        })}
-                    </div>
-                </div>
-                <div className="text-center">
-                    <div className="text-xs text-muted-foreground">
-                        最大利益
-                    </div>
-                    <div className="text-sm font-medium text-green-500">
-                        +¥
-                        {stats.maxProfit.toLocaleString(undefined, {
-                            maximumFractionDigits: 0,
-                        })}
-                    </div>
-                </div>
-                <div className="text-center">
-                    <div className="text-xs text-muted-foreground">
-                        損益比率
-                    </div>
-                    <div className="text-sm font-medium">
-                        {stats.avgLoss !== 0
-                            ? Math.abs(stats.avgProfit / stats.avgLoss).toFixed(
-                                  2,
-                              )
-                            : "∞"}
+                    <div className="text-xs text-muted-foreground mt-0.5">
+                        利益/損失比
                     </div>
                 </div>
             </div>

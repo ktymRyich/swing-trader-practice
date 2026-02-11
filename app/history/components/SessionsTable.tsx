@@ -136,6 +136,12 @@ export default function SessionsTable({
                                     銘柄
                                 </th>
                                 <th className="text-left p-3 font-medium">
+                                    練習期間
+                                </th>
+                                <th className="text-right p-3 font-medium">
+                                    元手
+                                </th>
+                                <th className="text-left p-3 font-medium">
                                     日付
                                 </th>
                                 <th className="text-right p-3 font-medium">
@@ -147,12 +153,6 @@ export default function SessionsTable({
                                 <th className="text-right p-3 font-medium">
                                     損益
                                 </th>
-                                <th className="text-right p-3 font-medium">
-                                    月利回り
-                                </th>
-                                <th className="text-right p-3 font-medium">
-                                    違反
-                                </th>
                                 <th className="text-center p-3 font-medium">
                                     クラスタ
                                 </th>
@@ -163,7 +163,7 @@ export default function SessionsTable({
                                     再プレイ
                                 </th>
                                 <th className="text-center p-3 font-medium">
-                                    ブックマーク
+                                    BM
                                 </th>
                                 <th className="text-center p-3 font-medium w-20">
                                     削除
@@ -180,10 +180,26 @@ export default function SessionsTable({
                                 const profitYen =
                                     session.currentCapital -
                                     session.initialCapital;
-                                const monthlyReturn =
-                                    session.periodDays > 0
-                                        ? (profit / session.periodDays) * 20
-                                        : 0;
+                                const practiceStart =
+                                    session.practiceStartDate ||
+                                    session.startDateOfData;
+                                const practiceEnd = session.endDateOfData;
+                                const practiceLabel =
+                                    practiceStart && practiceEnd
+                                        ? `${new Date(
+                                              practiceStart,
+                                          ).toLocaleDateString("ja-JP", {
+                                              year: "numeric",
+                                              month: "short",
+                                              day: "numeric",
+                                          })} 〜 ${new Date(
+                                              practiceEnd,
+                                          ).toLocaleDateString("ja-JP", {
+                                              year: "numeric",
+                                              month: "short",
+                                              day: "numeric",
+                                          })}`
+                                        : "-";
 
                                 return (
                                     <tr
@@ -200,6 +216,13 @@ export default function SessionsTable({
                                                     ({session.symbol})
                                                 </span>
                                             </Link>
+                                        </td>
+                                        <td className="p-3 text-sm text-muted-foreground">
+                                            {practiceLabel}
+                                        </td>
+                                        <td className="p-3 text-right">
+                                            ¥
+                                            {session.initialCapital.toLocaleString()}
                                         </td>
                                         <td className="p-3 text-muted-foreground">
                                             {new Date(
@@ -228,25 +251,6 @@ export default function SessionsTable({
                                                 {profitYen >= 0 ? "+" : ""}¥
                                                 {profitYen.toLocaleString()}
                                             </div>
-                                        </td>
-                                        <td className="p-3 text-right">
-                                            <span
-                                                className={`font-medium ${monthlyReturn >= 0 ? "text-green-500" : "text-red-500"}`}
-                                            >
-                                                {monthlyReturn >= 0 ? "+" : ""}
-                                                {monthlyReturn.toFixed(1)}%
-                                            </span>
-                                        </td>
-                                        <td className="p-3 text-right">
-                                            <span
-                                                className={
-                                                    session.ruleViolations > 0
-                                                        ? "text-red-500 font-medium"
-                                                        : "text-muted-foreground"
-                                                }
-                                            >
-                                                {session.ruleViolations}
-                                            </span>
                                         </td>
                                         <td className="p-3 text-center">
                                             {clusterMap?.[session.id] ? (
@@ -295,8 +299,9 @@ export default function SessionsTable({
                                                     replayingSessionId ===
                                                     session.id
                                                 }
-                                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border border-primary/30 text-primary hover:bg-primary/10 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                                                className="inline-flex items-center justify-center w-9 h-9 rounded-md border border-primary/30 text-primary hover:bg-primary/10 transition disabled:opacity-60 disabled:cursor-not-allowed"
                                                 title="同じ銘柄・同じ期間でもう一度"
+                                                aria-label="同じ銘柄・同じ期間でもう一度"
                                             >
                                                 {replayingSessionId ===
                                                 session.id ? (
@@ -304,7 +309,6 @@ export default function SessionsTable({
                                                 ) : (
                                                     <RotateCcw className="w-3.5 h-3.5" />
                                                 )}
-                                                もう一度
                                             </button>
                                         </td>
                                         <td className="p-3 text-center">

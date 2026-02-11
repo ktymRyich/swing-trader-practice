@@ -1,14 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ImageDown, CalendarIcon } from "lucide-react";
+import { toPng } from "html-to-image";
+import { format } from "date-fns";
+import { ja } from "date-fns/locale";
 import {
     ConfirmDialog,
     AlertDialogSimple,
 } from "@/components/ui/confirm-dialog";
 import { generateSessionId } from "@/lib/db/schema";
+import { Calendar } from "@/components/ui/calendar";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
 import StatsOverview from "./components/StatsOverview";
 import SessionsTable from "./components/SessionsTable";
 import IncompleteSessionsList from "./components/IncompleteSessionsList";
@@ -48,6 +58,73 @@ export default function HistoryPage() {
     const [replayingSessionId, setReplayingSessionId] = useState<string | null>(
         null,
     );
+    const [isCopyingImage, setIsCopyingImage] = useState(false);
+    const todaySummaryRef = useRef<HTMLDivElement | null>(null);
+    const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+
+    const isSameLocalDay = (date: Date, target: Date) =>
+        date.getFullYear() === target.getFullYear() &&
+        date.getMonth() === target.getMonth() &&
+        date.getDate() === target.getDate();
+
+    const buildStats = (sourceSessions: any[]) => {
+        if (!sourceSessions.length) return null;
+
+        const totalSessions = sourceSessions.length;
+        const totalTrades = sourceSessions.reduce(
+            (sum, s) => sum + (s.tradeCount || 0),
+            0,
+        );
+
+        const allClosedPositions = sourceSessions.flatMap((s) =>
+            (s.positions || []).filter((p: any) => p.status === "closed"),
+        );
+        const totalClosed = allClosedPositions.length;
+        const wins = allClosedPositions.filter((p: any) => (p.profit || 0) > 0);
+        const losses = allClosedPositions.filter(
+            (p: any) => (p.profit || 0) < 0,
+        );
+
+        const winCount = wins.length;
+        const lossCount = losses.length;
+        const winRate = totalClosed > 0 ? (winCount / totalClosed) * 100 : 0;
+
+        const sumWin = wins.reduce((sum, p: any) => sum + (p.profit || 0), 0);
+        const sumLoss = losses.reduce(
+            (sum, p: any) => sum + (p.profit || 0),
+            0,
+        );
+
+        const avgWin = winCount > 0 ? sumWin / winCount : 0;
+        const avgLoss = lossCount > 0 ? sumLoss / lossCount : 0;
+
+        const profitFactor =
+            Math.abs(sumLoss) > 0
+                ? sumWin / Math.abs(sumLoss)
+                : sumWin > 0
+                  ? Infinity
+                  : 0;
+        const profitLossRatio =
+            avgLoss !== 0 ? Math.abs(avgWin / avgLoss) : Infinity;
+
+        // セッションごとの損益率を計算して平均を取る
+        const profitRates = sourceSessions.map((s) => {
+            const profit = s.currentCapital - s.initialCapital;
+            return (profit / s.initialCapital) * 100;
+        });
+        const avgProfitRate =
+            profitRates.reduce((sum, rate) => sum + rate, 0) / totalSessions;
+
+        return {
+            totalSessions,
+            totalTrades,
+            totalClosed,
+            winRate,
+            profitFactor,
+            profitLossRatio,
+            avgProfitRate,
+        };
+    };
 
     // ダイアログ用のstate
     const [deleteDialog, setDeleteDialog] = useState<{
@@ -413,135 +490,89 @@ export default function HistoryPage() {
     });
 
     // 統計計算
-    const stats =
-        sessions.length > 0
-            ? (() => {
-                  const totalSessions = sessions.length;
-                  const totalTrades = sessions.reduce(
-                      (sum, s) => sum + (s.tradeCount || 0),
-                      0,
-                  );
-                  const avgWinRate =
-                      sessions.reduce((sum, s) => sum + s.winRate, 0) /
-                      totalSessions;
-                  const profitableSessions = sessions.filter(
-                      (s) => s.currentCapital > s.initialCapital,
-                  ).length;
-                  const totalProfitPercent = sessions.reduce(
-                      (sum, s) =>
-                          sum +
-                          ((s.currentCapital - s.initialCapital) /
-                              s.initialCapital) *
-                              100,
-                      0,
-                  );
+    const stats = buildStats(sessions);
 
-                  const totalProfitYen = sessions.reduce(
-                      (sum, s) => sum + (s.currentCapital - s.initialCapital),
-                      0,
-                  );
+    const today = new Date();
+    const todaysSessions = sessions.filter((session) => {
+        const rawDate = session.createdAt || session.startDate;
+        if (!rawDate) return false;
+        const date = new Date(rawDate);
+        return !Number.isNaN(date.getTime()) && isSameLocalDay(date, today);
+    });
+    const todayStats = buildStats(todaysSessions);
+    const todayLabel = today.toLocaleDateString("ja-JP", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+    });
 
-                  const allClosedPositions = sessions.flatMap((s) =>
-                      (s.positions || []).filter(
-                          (p: any) => p.status === "closed",
-                      ),
-                  );
-                  const profits = allClosedPositions.filter(
-                      (p: any) => (p.profit || 0) > 0,
-                  );
-                  const losses = allClosedPositions.filter(
-                      (p: any) => (p.profit || 0) < 0,
-                  );
-                  const avgProfit =
-                      profits.length > 0
-                          ? profits.reduce(
-                                (sum, p: any) => sum + (p.profit || 0),
-                                0,
-                            ) / profits.length
-                          : 0;
-                  const avgLoss =
-                      losses.length > 0
-                          ? losses.reduce(
-                                (sum, p: any) => sum + (p.profit || 0),
-                                0,
-                            ) / losses.length
-                          : 0;
+    // 選択した日付のセッション
+    const selectedDateSessions = sessions.filter((session) => {
+        const rawDate = session.createdAt || session.startDate;
+        if (!rawDate) return false;
+        const date = new Date(rawDate);
+        return (
+            !Number.isNaN(date.getTime()) && isSameLocalDay(date, selectedDate)
+        );
+    });
+    const selectedDateStats = buildStats(selectedDateSessions);
+    const selectedDateLabel = selectedDate.toLocaleDateString("ja-JP", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+    });
 
-                  const allProfits = allClosedPositions.map(
-                      (p: any) => p.profit || 0,
-                  );
-                  const maxProfit =
-                      allProfits.length > 0 ? Math.max(...allProfits) : 0;
+    const handleCopyTodayImage = async () => {
+        if (!todaySummaryRef.current) return;
+        if (isCopyingImage) return;
 
-                  const avgProfitLoss =
-                      allClosedPositions.length > 0
-                          ? allClosedPositions.reduce(
-                                (sum, p: any) => sum + (p.profit || 0),
-                                0,
-                            ) / allClosedPositions.length
-                          : 0;
+        if (
+            typeof window === "undefined" ||
+            !navigator.clipboard ||
+            typeof (window as any).ClipboardItem === "undefined"
+        ) {
+            setAlertDialog({
+                open: true,
+                title: "コピーできません",
+                description:
+                    "このブラウザでは画像コピーがサポートされていません。",
+            });
+            return;
+        }
 
-                  // 平均損益率（建玉金額に対する割合）
-                  const avgProfitLossRate =
-                      allClosedPositions.length > 0
-                          ? allClosedPositions.reduce((sum, p: any) => {
-                                const entryAmount =
-                                    (p.entryPrice || 0) * (p.shares || 0);
-                                const rate =
-                                    entryAmount > 0
-                                        ? ((p.profit || 0) / entryAmount) * 100
-                                        : 0;
-                                return sum + rate;
-                            }, 0) / allClosedPositions.length
-                          : 0;
+        try {
+            setIsCopyingImage(true);
+            const dataUrl = await toPng(todaySummaryRef.current, {
+                cacheBust: true,
+                pixelRatio: 2,
+                backgroundColor: "hsl(0 0% 3.9%)",
+            });
+            const response = await fetch(dataUrl);
+            const blob = await response.blob();
 
-                  // 150万円基準の総利益率
-                  const baseCapital = 1500000;
-                  const totalReturnOnBase =
-                      (totalProfitYen / baseCapital) * 100;
+            await navigator.clipboard.write([
+                new (window as any).ClipboardItem({
+                    "image/png": blob,
+                }),
+            ]);
 
-                  // 150万円基準のセッション平均利益率
-                  const avgSessionReturnOnBase =
-                      sessions.length > 0
-                          ? sessions.reduce((sum, s) => {
-                                const sessionProfit =
-                                    s.currentCapital - s.initialCapital;
-                                return (
-                                    sum + (sessionProfit / baseCapital) * 100
-                                );
-                            }, 0) / sessions.length
-                          : 0;
-
-                  const totalDays = sessions.reduce(
-                      (sum, s) => sum + (s.periodDays || 0),
-                      0,
-                  );
-                  const avgDaysPerSession = totalDays / totalSessions;
-                  const avgProfitPerSession =
-                      totalProfitPercent / totalSessions;
-                  const monthlyReturn =
-                      avgDaysPerSession > 0
-                          ? (avgProfitPerSession / avgDaysPerSession) * 20
-                          : 0;
-
-                  return {
-                      total: totalSessions,
-                      totalTrades,
-                      avgWinRate,
-                      profitableSessions,
-                      totalProfit: totalProfitPercent,
-                      totalProfitYen,
-                      avgProfitLoss,
-                      avgProfitLossRate,
-                      totalReturnOnBase,
-                      avgSessionReturnOnBase,
-                      avgProfit,
-                      avgLoss,
-                      maxProfit,
-                      monthlyReturn,
-                  };
-              })()
-            : null;
+            setAlertDialog({
+                open: true,
+                title: "コピーしました",
+                description: `${selectedDateLabel}のまとめを画像としてクリップボードにコピーしました。`,
+            });
+        } catch (error) {
+            console.error("画像コピーに失敗しました:", error);
+            setAlertDialog({
+                open: true,
+                title: "コピーに失敗しました",
+                description:
+                    "画像の生成に失敗しました。もう一度お試しください。",
+            });
+        } finally {
+            setIsCopyingImage(false);
+        }
+    };
 
     if (isLoading) {
         return (
@@ -571,7 +602,204 @@ export default function HistoryPage() {
             </header>
 
             <main className="max-w-7xl mx-auto px-4 py-6">
-                <StatsOverview stats={stats} />
+                <section className="mb-8">
+                    <div className="flex items-center justify-between mb-3">
+                        <h2 className="text-xl font-bold">日別まとめ</h2>
+                        <div className="flex items-center gap-2">
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        className="justify-start text-left font-normal"
+                                    >
+                                        <CalendarIcon className="mr-2 h-4 w-4" />
+                                        {format(
+                                            selectedDate,
+                                            "yyyy年M月d日 (E)",
+                                            { locale: ja },
+                                        )}
+                                    </Button>
+                                </PopoverTrigger>
+                                <PopoverContent
+                                    className="w-auto p-0"
+                                    align="end"
+                                >
+                                    <Calendar
+                                        mode="single"
+                                        selected={selectedDate}
+                                        onSelect={(date) =>
+                                            date && setSelectedDate(date)
+                                        }
+                                        defaultMonth={selectedDate}
+                                        disabled={(date) => date > new Date()}
+                                    />
+                                </PopoverContent>
+                            </Popover>
+                            <button
+                                onClick={handleCopyTodayImage}
+                                disabled={isCopyingImage}
+                                className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-medium text-muted-foreground hover:text-foreground hover:border-muted-foreground/50 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                                title="選択した日のまとめを画像コピー"
+                            >
+                                {isCopyingImage ? (
+                                    <span className="w-3.5 h-3.5 border-2 border-muted-foreground border-t-transparent rounded-full animate-spin" />
+                                ) : (
+                                    <ImageDown className="w-3.5 h-3.5" />
+                                )}
+                                画像コピー
+                            </button>
+                        </div>
+                    </div>
+                    {selectedDateStats ? (
+                        <div ref={todaySummaryRef} className="space-y-3">
+                            <StatsOverview
+                                stats={selectedDateStats}
+                                title={`${selectedDateLabel}のサマリー`}
+                            />
+                            <div className="bg-card rounded-lg border overflow-hidden">
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-sm">
+                                        <thead className="bg-muted/50 border-b">
+                                            <tr>
+                                                <th className="text-left p-3 font-medium">
+                                                    銘柄
+                                                </th>
+                                                <th className="text-left p-3 font-medium">
+                                                    練習期間
+                                                </th>
+                                                <th className="text-right p-3 font-medium">
+                                                    元手
+                                                </th>
+                                                <th className="text-right p-3 font-medium">
+                                                    取引数
+                                                </th>
+                                                <th className="text-right p-3 font-medium">
+                                                    勝率
+                                                </th>
+                                                <th className="text-right p-3 font-medium">
+                                                    損益
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {selectedDateSessions.map(
+                                                (session) => {
+                                                    const profitYen =
+                                                        session.currentCapital -
+                                                        session.initialCapital;
+                                                    const profitPercent =
+                                                        (profitYen /
+                                                            session.initialCapital) *
+                                                        100;
+                                                    const practiceStart =
+                                                        session.practiceStartDate ||
+                                                        session.startDateOfData;
+                                                    const practiceEnd =
+                                                        session.endDateOfData;
+                                                    const practiceLabel =
+                                                        practiceStart &&
+                                                        practiceEnd
+                                                            ? `${new Date(
+                                                                  practiceStart,
+                                                              ).toLocaleDateString(
+                                                                  "ja-JP",
+                                                                  {
+                                                                      year: "numeric",
+                                                                      month: "short",
+                                                                      day: "numeric",
+                                                                  },
+                                                              )} 〜 ${new Date(
+                                                                  practiceEnd,
+                                                              ).toLocaleDateString(
+                                                                  "ja-JP",
+                                                                  {
+                                                                      year: "numeric",
+                                                                      month: "short",
+                                                                      day: "numeric",
+                                                                  },
+                                                              )}`
+                                                            : "-";
+
+                                                    return (
+                                                        <tr
+                                                            key={session.id}
+                                                            className="border-b hover:bg-accent/50 transition"
+                                                        >
+                                                            <td className="p-3">
+                                                                <Link
+                                                                    href={`/session/${session.id}`}
+                                                                    className="hover:underline font-medium"
+                                                                >
+                                                                    {
+                                                                        session.stockName
+                                                                    }
+                                                                    <span className="text-xs text-muted-foreground ml-2">
+                                                                        (
+                                                                        {
+                                                                            session.symbol
+                                                                        }
+                                                                        )
+                                                                    </span>
+                                                                </Link>
+                                                            </td>
+                                                            <td className="p-3 text-sm text-muted-foreground">
+                                                                {practiceLabel}
+                                                            </td>
+                                                            <td className="p-3 text-right">
+                                                                ¥
+                                                                {session.initialCapital.toLocaleString()}
+                                                            </td>
+                                                            <td className="p-3 text-right">
+                                                                {
+                                                                    session.tradeCount
+                                                                }
+                                                            </td>
+                                                            <td className="p-3 text-right font-medium">
+                                                                {session.winRate.toFixed(
+                                                                    1,
+                                                                )}
+                                                                %
+                                                            </td>
+                                                            <td className="p-3 text-right">
+                                                                <div
+                                                                    className={`font-medium ${profitYen >= 0 ? "text-green-500" : "text-red-500"}`}
+                                                                >
+                                                                    {profitYen >=
+                                                                    0
+                                                                        ? "+"
+                                                                        : ""}
+                                                                    {profitPercent.toFixed(
+                                                                        1,
+                                                                    )}
+                                                                    %
+                                                                </div>
+                                                                <div className="text-xs text-muted-foreground">
+                                                                    {profitYen >=
+                                                                    0
+                                                                        ? "+"
+                                                                        : ""}
+                                                                    ¥
+                                                                    {profitYen.toLocaleString()}
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                },
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="bg-card rounded-lg border p-6 text-sm text-muted-foreground">
+                            {selectedDateLabel}の完了セッションはありません
+                        </div>
+                    )}
+                </section>
+
+                <StatsOverview stats={stats} title="全期間サマリー" />
 
                 <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                     <div className="flex flex-wrap items-center gap-2">
@@ -593,7 +821,7 @@ export default function HistoryPage() {
                                     : "bg-secondary hover:bg-secondary/80"
                             }`}
                         >
-                            ブックマーク
+                            BM
                         </button>
                         <span className="px-3 py-1.5 rounded-full text-xs border border-muted-foreground/30 text-muted-foreground">
                             4分類
