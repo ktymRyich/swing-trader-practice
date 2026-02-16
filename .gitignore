@@ -24,6 +24,10 @@ yarn-debug.log*
 yarn-error.log*
 *.log
 
+# PM2
+logs/
+.pm2/
+
 # Local env files
 # 重要: 本番環境の認証情報（JWT_SECRET, BASIC_AUTH_PASSWORD等）が含まれるため絶対にコミットしない
 .env*.local

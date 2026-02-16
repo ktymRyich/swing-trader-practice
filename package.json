@@ -7,7 +7,14 @@
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
-        "update-stocks": "tsx scripts/update-stock-data.ts"
+        "update-stocks": "tsx scripts/update-stock-data.ts",
+        "pm2:start": "pm2 start ecosystem.config.js",
+        "pm2:stop": "pm2 stop swing-trader-practice",
+        "pm2:restart": "pm2 restart swing-trader-practice",
+        "pm2:delete": "pm2 delete swing-trader-practice",
+        "pm2:logs": "pm2 logs swing-trader-practice",
+        "pm2:status": "pm2 list",
+        "deploy": "npm run build && npm run pm2:restart"
     },
     "dependencies": {
         "@radix-ui/react-alert-dialog": "^1.1.15",
