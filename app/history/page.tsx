@@ -19,6 +19,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+import { authFetch, authPost, authPut } from "@/lib/utils/authFetch";
 import StatsOverview from "./components/StatsOverview";
 import SessionsTable from "./components/SessionsTable";
 import IncompleteSessionsList from "./components/IncompleteSessionsList";
@@ -159,8 +160,8 @@ export default function HistoryPage() {
             setIsClusterLoading(true);
 
             try {
-                const response = await fetch(
-                    `/api/sessions/ma-clusters?nickname=${nickname}&k=${CLUSTER_COUNT}`,
+                const response = await authFetch(
+                    `/api/sessions/ma-clusters?k=${CLUSTER_COUNT}`,
                 );
                 const data = await response.json();
 
@@ -185,9 +186,7 @@ export default function HistoryPage() {
 
     const loadSessions = async (userNickname: string) => {
         try {
-            const response = await fetch(
-                `/api/sessions?nickname=${userNickname}`,
-            );
+            const response = await authFetch("/api/sessions");
             const data = await response.json();
 
             if (data.success) {
@@ -221,8 +220,8 @@ export default function HistoryPage() {
         if (!nickname || !selectedSession) return;
 
         try {
-            const getResponse = await fetch(
-                `/api/sessions/${selectedSession.id}?nickname=${nickname}`,
+            const getResponse = await authFetch(
+                `/api/sessions/${selectedSession.id}`,
             );
             const getData = await getResponse.json();
 
@@ -236,15 +235,10 @@ export default function HistoryPage() {
                 reflection,
             };
 
-            const response = await fetch(
+            const response = await authPut(
                 `/api/sessions/${selectedSession.id}`,
                 {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        nickname,
-                        session: updatedSession,
-                    }),
+                    session: updatedSession,
                 },
             );
 
@@ -317,11 +311,7 @@ export default function HistoryPage() {
                 violations: [],
             };
 
-            const saveResponse = await fetch("/api/sessions", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(replaySession),
-            });
+            const saveResponse = await authPost("/api/sessions", replaySession);
 
             const saveData = await saveResponse.json();
 
@@ -362,13 +352,8 @@ export default function HistoryPage() {
         }
 
         try {
-            const response = await fetch(`/api/sessions/${session.id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    nickname,
-                    session: updatedSession,
-                }),
+            const response = await authPut(`/api/sessions/${session.id}`, {
+                session: updatedSession,
             });
 
             const data = await response.json();
@@ -416,7 +401,7 @@ export default function HistoryPage() {
         }
 
         try {
-            const response = await fetch(`/api/sessions?nickname=${nickname}`);
+            const response = await authFetch("/api/sessions");
             const data = await response.json();
 
             if (data.success) {
@@ -434,13 +419,9 @@ export default function HistoryPage() {
                     return;
                 }
 
-                const saveResponse = await fetch("/api/sessions", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        nickname,
-                        sessions: updatedSessions,
-                    }),
+                const saveResponse = await authPost("/api/sessions", {
+                    nickname,
+                    sessions: updatedSessions,
                 });
 
                 const saveData = await saveResponse.json();
@@ -602,204 +583,210 @@ export default function HistoryPage() {
             </header>
 
             <main className="max-w-7xl mx-auto px-4 py-6">
-                <section className="mb-8">
-                    <div className="flex items-center justify-between mb-3">
-                        <h2 className="text-xl font-bold">日別まとめ</h2>
-                        <div className="flex items-center gap-2">
-                            <Popover>
-                                <PopoverTrigger asChild>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        className="justify-start text-left font-normal"
+                <div ref={todaySummaryRef}>
+                    <section className="mb-8">
+                        <div className="flex items-center justify-between mb-3">
+                            <h2 className="text-xl font-bold">日別まとめ</h2>
+                            <div className="flex items-center gap-2">
+                                <Popover>
+                                    <PopoverTrigger asChild>
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            className="justify-start text-left font-normal"
+                                        >
+                                            <CalendarIcon className="mr-2 h-4 w-4" />
+                                            {format(
+                                                selectedDate,
+                                                "yyyy年M月d日 (E)",
+                                                { locale: ja },
+                                            )}
+                                        </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent
+                                        className="w-auto p-0"
+                                        align="end"
                                     >
-                                        <CalendarIcon className="mr-2 h-4 w-4" />
-                                        {format(
-                                            selectedDate,
-                                            "yyyy年M月d日 (E)",
-                                            { locale: ja },
-                                        )}
-                                    </Button>
-                                </PopoverTrigger>
-                                <PopoverContent
-                                    className="w-auto p-0"
-                                    align="end"
+                                        <Calendar
+                                            mode="single"
+                                            selected={selectedDate}
+                                            onSelect={(date) =>
+                                                date && setSelectedDate(date)
+                                            }
+                                            defaultMonth={selectedDate}
+                                            disabled={(date) =>
+                                                date > new Date()
+                                            }
+                                        />
+                                    </PopoverContent>
+                                </Popover>
+                                <button
+                                    onClick={handleCopyTodayImage}
+                                    disabled={isCopyingImage}
+                                    className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-medium text-muted-foreground hover:text-foreground hover:border-muted-foreground/50 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                                    title="選択した日のまとめを画像コピー"
                                 >
-                                    <Calendar
-                                        mode="single"
-                                        selected={selectedDate}
-                                        onSelect={(date) =>
-                                            date && setSelectedDate(date)
-                                        }
-                                        defaultMonth={selectedDate}
-                                        disabled={(date) => date > new Date()}
-                                    />
-                                </PopoverContent>
-                            </Popover>
-                            <button
-                                onClick={handleCopyTodayImage}
-                                disabled={isCopyingImage}
-                                className="inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-medium text-muted-foreground hover:text-foreground hover:border-muted-foreground/50 transition disabled:opacity-60 disabled:cursor-not-allowed"
-                                title="選択した日のまとめを画像コピー"
-                            >
-                                {isCopyingImage ? (
-                                    <span className="w-3.5 h-3.5 border-2 border-muted-foreground border-t-transparent rounded-full animate-spin" />
-                                ) : (
-                                    <ImageDown className="w-3.5 h-3.5" />
-                                )}
-                                画像コピー
-                            </button>
+                                    {isCopyingImage ? (
+                                        <span className="w-3.5 h-3.5 border-2 border-muted-foreground border-t-transparent rounded-full animate-spin" />
+                                    ) : (
+                                        <ImageDown className="w-3.5 h-3.5" />
+                                    )}
+                                    画像コピー
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    {selectedDateStats ? (
-                        <div ref={todaySummaryRef} className="space-y-3">
-                            <StatsOverview
-                                stats={selectedDateStats}
-                                title={`${selectedDateLabel}のサマリー`}
-                            />
-                            <div className="bg-card rounded-lg border overflow-hidden">
-                                <div className="overflow-x-auto">
-                                    <table className="w-full text-sm">
-                                        <thead className="bg-muted/50 border-b">
-                                            <tr>
-                                                <th className="text-left p-3 font-medium">
-                                                    銘柄
-                                                </th>
-                                                <th className="text-left p-3 font-medium">
-                                                    練習期間
-                                                </th>
-                                                <th className="text-right p-3 font-medium">
-                                                    元手
-                                                </th>
-                                                <th className="text-right p-3 font-medium">
-                                                    取引数
-                                                </th>
-                                                <th className="text-right p-3 font-medium">
-                                                    勝率
-                                                </th>
-                                                <th className="text-right p-3 font-medium">
-                                                    損益
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {selectedDateSessions.map(
-                                                (session) => {
-                                                    const profitYen =
-                                                        session.currentCapital -
-                                                        session.initialCapital;
-                                                    const profitPercent =
-                                                        (profitYen /
-                                                            session.initialCapital) *
-                                                        100;
-                                                    const practiceStart =
-                                                        session.practiceStartDate ||
-                                                        session.startDateOfData;
-                                                    const practiceEnd =
-                                                        session.endDateOfData;
-                                                    const practiceLabel =
-                                                        practiceStart &&
-                                                        practiceEnd
-                                                            ? `${new Date(
-                                                                  practiceStart,
-                                                              ).toLocaleDateString(
-                                                                  "ja-JP",
-                                                                  {
-                                                                      year: "numeric",
-                                                                      month: "short",
-                                                                      day: "numeric",
-                                                                  },
-                                                              )} 〜 ${new Date(
-                                                                  practiceEnd,
-                                                              ).toLocaleDateString(
-                                                                  "ja-JP",
-                                                                  {
-                                                                      year: "numeric",
-                                                                      month: "short",
-                                                                      day: "numeric",
-                                                                  },
-                                                              )}`
-                                                            : "-";
+                        {selectedDateStats ? (
+                            <div className="space-y-3">
+                                <StatsOverview
+                                    stats={selectedDateStats}
+                                    title={`${selectedDateLabel}のサマリー`}
+                                />
+                                <div className="bg-card rounded-lg border overflow-hidden">
+                                    <div className="overflow-x-auto">
+                                        <table className="w-full text-sm">
+                                            <thead className="bg-muted/50 border-b">
+                                                <tr>
+                                                    <th className="text-left p-3 font-medium">
+                                                        銘柄
+                                                    </th>
+                                                    <th className="text-left p-3 font-medium">
+                                                        練習期間
+                                                    </th>
+                                                    <th className="text-right p-3 font-medium">
+                                                        元手
+                                                    </th>
+                                                    <th className="text-right p-3 font-medium">
+                                                        取引数
+                                                    </th>
+                                                    <th className="text-right p-3 font-medium">
+                                                        勝率
+                                                    </th>
+                                                    <th className="text-right p-3 font-medium">
+                                                        損益
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {selectedDateSessions.map(
+                                                    (session) => {
+                                                        const profitYen =
+                                                            session.currentCapital -
+                                                            session.initialCapital;
+                                                        const profitPercent =
+                                                            (profitYen /
+                                                                session.initialCapital) *
+                                                            100;
+                                                        const practiceStart =
+                                                            session.practiceStartDate ||
+                                                            session.startDateOfData;
+                                                        const practiceEnd =
+                                                            session.endDateOfData;
+                                                        const practiceLabel =
+                                                            practiceStart &&
+                                                            practiceEnd
+                                                                ? `${new Date(
+                                                                      practiceStart,
+                                                                  ).toLocaleDateString(
+                                                                      "ja-JP",
+                                                                      {
+                                                                          year: "numeric",
+                                                                          month: "short",
+                                                                          day: "numeric",
+                                                                      },
+                                                                  )} 〜 ${new Date(
+                                                                      practiceEnd,
+                                                                  ).toLocaleDateString(
+                                                                      "ja-JP",
+                                                                      {
+                                                                          year: "numeric",
+                                                                          month: "short",
+                                                                          day: "numeric",
+                                                                      },
+                                                                  )}`
+                                                                : "-";
 
-                                                    return (
-                                                        <tr
-                                                            key={session.id}
-                                                            className="border-b hover:bg-accent/50 transition"
-                                                        >
-                                                            <td className="p-3">
-                                                                <Link
-                                                                    href={`/session/${session.id}`}
-                                                                    className="hover:underline font-medium"
-                                                                >
-                                                                    {
-                                                                        session.stockName
-                                                                    }
-                                                                    <span className="text-xs text-muted-foreground ml-2">
-                                                                        (
+                                                        return (
+                                                            <tr
+                                                                key={session.id}
+                                                                className="border-b hover:bg-accent/50 transition"
+                                                            >
+                                                                <td className="p-3">
+                                                                    <Link
+                                                                        href={`/session/${session.id}`}
+                                                                        className="hover:underline font-medium"
+                                                                    >
                                                                         {
-                                                                            session.symbol
+                                                                            session.stockName
                                                                         }
-                                                                        )
-                                                                    </span>
-                                                                </Link>
-                                                            </td>
-                                                            <td className="p-3 text-sm text-muted-foreground">
-                                                                {practiceLabel}
-                                                            </td>
-                                                            <td className="p-3 text-right">
-                                                                ¥
-                                                                {session.initialCapital.toLocaleString()}
-                                                            </td>
-                                                            <td className="p-3 text-right">
-                                                                {
-                                                                    session.tradeCount
-                                                                }
-                                                            </td>
-                                                            <td className="p-3 text-right font-medium">
-                                                                {session.winRate.toFixed(
-                                                                    1,
-                                                                )}
-                                                                %
-                                                            </td>
-                                                            <td className="p-3 text-right">
-                                                                <div
-                                                                    className={`font-medium ${profitYen >= 0 ? "text-green-500" : "text-red-500"}`}
-                                                                >
-                                                                    {profitYen >=
-                                                                    0
-                                                                        ? "+"
-                                                                        : ""}
-                                                                    {profitPercent.toFixed(
+                                                                        <span className="text-xs text-muted-foreground ml-2">
+                                                                            (
+                                                                            {
+                                                                                session.symbol
+                                                                            }
+                                                                            )
+                                                                        </span>
+                                                                    </Link>
+                                                                </td>
+                                                                <td className="p-3 text-sm text-muted-foreground">
+                                                                    {
+                                                                        practiceLabel
+                                                                    }
+                                                                </td>
+                                                                <td className="p-3 text-right">
+                                                                    ¥
+                                                                    {session.initialCapital.toLocaleString()}
+                                                                </td>
+                                                                <td className="p-3 text-right">
+                                                                    {
+                                                                        session.tradeCount
+                                                                    }
+                                                                </td>
+                                                                <td className="p-3 text-right font-medium">
+                                                                    {session.winRate.toFixed(
                                                                         1,
                                                                     )}
                                                                     %
-                                                                </div>
-                                                                <div className="text-xs text-muted-foreground">
-                                                                    {profitYen >=
-                                                                    0
-                                                                        ? "+"
-                                                                        : ""}
-                                                                    ¥
-                                                                    {profitYen.toLocaleString()}
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    );
-                                                },
-                                            )}
-                                        </tbody>
-                                    </table>
+                                                                </td>
+                                                                <td className="p-3 text-right">
+                                                                    <div
+                                                                        className={`font-medium ${profitYen >= 0 ? "text-green-500" : "text-red-500"}`}
+                                                                    >
+                                                                        {profitYen >=
+                                                                        0
+                                                                            ? "+"
+                                                                            : ""}
+                                                                        {profitPercent.toFixed(
+                                                                            1,
+                                                                        )}
+                                                                        %
+                                                                    </div>
+                                                                    <div className="text-xs text-muted-foreground">
+                                                                        {profitYen >=
+                                                                        0
+                                                                            ? "+"
+                                                                            : ""}
+                                                                        ¥
+                                                                        {profitYen.toLocaleString()}
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        );
+                                                    },
+                                                )}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ) : (
-                        <div className="bg-card rounded-lg border p-6 text-sm text-muted-foreground">
-                            {selectedDateLabel}の完了セッションはありません
-                        </div>
-                    )}
-                </section>
+                        ) : (
+                            <div className="bg-card rounded-lg border p-6 text-sm text-muted-foreground">
+                                {selectedDateLabel}の完了セッションはありません
+                            </div>
+                        )}
+                    </section>
 
-                <StatsOverview stats={stats} title="全期間サマリー" />
+                    <StatsOverview stats={stats} title="全期間サマリー" />
+                </div>
 
                 <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
                     <div className="flex flex-wrap items-center gap-2">

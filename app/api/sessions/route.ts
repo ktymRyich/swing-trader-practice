@@ -1,22 +1,24 @@
 import { NextResponse } from "next/server";
 import { getDatabase } from "@/lib/db/sqlite";
+import { authenticateRequest } from "@/lib/auth/jwt";
 
 /**
- * セッション保存・取得API（SQLite版）
+ * セッション保存・取得API（SQLite版・JWT認証付き）
  */
 
 // セッション取得
 export async function GET(request: Request) {
     try {
-        const { searchParams } = new URL(request.url);
-        const nickname = searchParams.get("nickname");
-
-        if (!nickname) {
+        // JWT認証
+        const authResult = authenticateRequest(request);
+        if (!authResult.success) {
             return NextResponse.json(
-                { success: false, error: "ユーザー情報がありません" },
-                { status: 400 },
+                { success: false, error: authResult.error },
+                { status: authResult.status },
             );
         }
+
+        const nickname = authResult.nickname;
 
         const db = getDatabase();
 
@@ -131,12 +133,29 @@ export async function GET(request: Request) {
 // セッション保存
 export async function POST(request: Request) {
     try {
+        // JWT認証
+        const authResult = authenticateRequest(request);
+        if (!authResult.success) {
+            return NextResponse.json(
+                { success: false, error: authResult.error },
+                { status: authResult.status },
+            );
+        }
+
+        const nickname = authResult.nickname;
         const body = await request.json();
 
         // sessionsが直接渡された場合（削除処理用）
         if (body.sessions !== undefined && body.nickname) {
+            // セッション削除は認証されたユーザーのみ可能
+            if (body.nickname !== nickname) {
+                return NextResponse.json(
+                    { success: false, error: "権限がありません" },
+                    { status: 403 },
+                );
+            }
+
             const db = getDatabase();
-            const nickname = body.nickname;
             const newSessions = body.sessions;
 
             console.log(`[DELETE] 削除処理: ${nickname}`);
@@ -182,14 +201,17 @@ export async function POST(request: Request) {
 
         // 単一セッションの保存
         const session = body;
-        const { nickname } = session;
 
-        if (!nickname) {
+        // 認証されたユーザーのセッションのみ保存可能
+        if (session.nickname && session.nickname !== nickname) {
             return NextResponse.json(
-                { success: false, error: "ユーザー情報がありません" },
-                { status: 400 },
+                { success: false, error: "権限がありません" },
+                { status: 403 },
             );
         }
+
+        // nicknameが指定されていない場合は認証されたnicknameを使用
+        session.nickname = nickname;
 
         const db = getDatabase();
 

@@ -1,5 +1,7 @@
 {
   "nickname": "りゅち",
   "createdAt": "2026-01-27T08:08:15.978Z",
-  "sessions": []
+  "sessions": [],
+  "passwordHash": "$2b$10$j6giLt5m4GeOM.AdDMnvg.DEAvgZjfD2Q2wMTbwrb1R4XOmAGFBsm",
+  "passwordSetAt": "2026-02-16T00:13:29.743Z"
 }

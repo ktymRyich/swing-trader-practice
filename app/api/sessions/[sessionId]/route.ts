@@ -1,20 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDatabase } from "@/lib/db/sqlite";
+import { authenticateRequest } from "@/lib/auth/jwt";
 
 export async function GET(
     request: NextRequest,
     { params }: { params: Promise<{ sessionId: string }> },
 ) {
     try {
-        const { sessionId } = await params;
-        const nickname = request.nextUrl.searchParams.get("nickname");
-
-        if (!nickname) {
+        // JWT認証
+        const authResult = authenticateRequest(request);
+        if (!authResult.success) {
             return NextResponse.json(
-                { success: false, error: "Nickname required" },
-                { status: 400 },
+                { success: false, error: authResult.error },
+                { status: authResult.status },
             );
         }
+
+        const nickname = authResult.nickname;
+        const { sessionId } = await params;
 
         const db = getDatabase();
 
@@ -123,14 +126,25 @@ export async function PUT(
     { params }: { params: Promise<{ sessionId: string }> },
 ) {
     try {
+        // JWT認証
+        const authResult = authenticateRequest(request);
+        if (!authResult.success) {
+            return NextResponse.json(
+                { success: false, error: authResult.error },
+                { status: authResult.status },
+            );
+        }
+
+        const nickname = authResult.nickname;
         const { sessionId } = await params;
         const body = await request.json();
-        const { nickname, session } = body;
+        const { session } = body;
 
-        if (!nickname) {
+        // セッションの所有者確認
+        if (session.nickname && session.nickname !== nickname) {
             return NextResponse.json(
-                { success: false, error: "Nickname required" },
-                { status: 400 },
+                { success: false, error: "権限がありません" },
+                { status: 403 },
             );
         }
 

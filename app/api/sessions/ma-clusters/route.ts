@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 import { getDatabase } from "@/lib/db/sqlite";
+import { authenticateRequest } from "@/lib/auth/jwt";
 
 type SessionRow = {
     id: string;
@@ -430,16 +431,18 @@ function describeCluster(
 
 export async function GET(request: NextRequest) {
     try {
-        const { searchParams } = new URL(request.url);
-        const nickname = searchParams.get("nickname");
-        const kParam = searchParams.get("k");
-
-        if (!nickname) {
+        // JWT認証
+        const authResult = authenticateRequest(request);
+        if (!authResult.success) {
             return NextResponse.json(
-                { success: false, error: "ユーザー情報がありません" },
-                { status: 400 },
+                { success: false, error: authResult.error },
+                { status: authResult.status },
             );
         }
+
+        const nickname = authResult.nickname;
+        const { searchParams } = new URL(request.url);
+        const kParam = searchParams.get("k");
 
         const k = Math.max(2, Math.min(6, Number(kParam) || 4));
         const db = getDatabase();

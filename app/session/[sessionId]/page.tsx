@@ -25,6 +25,7 @@ import {
     Gauge,
 } from "lucide-react";
 import Link from "next/link";
+import { authFetch, authPut } from "@/lib/utils/authFetch";
 import {
     calculateBuyOrder,
     calculateSellOrder,
@@ -302,13 +303,8 @@ export default function SessionPage({
             // 株価データを除外してセッションを保存
             const { prices, ...sessionWithoutPrices } = session;
 
-            await fetch(`/api/sessions/${sessionId}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    nickname,
-                    session: sessionWithoutPrices,
-                }),
+            await authPut(`/api/sessions/${sessionId}`, {
+                session: sessionWithoutPrices,
             });
         } catch (error) {
             console.error("セッション保存エラー:", error);
@@ -317,9 +313,7 @@ export default function SessionPage({
 
     const loadSession = async (userNickname: string) => {
         try {
-            const response = await fetch(
-                `/api/sessions/${sessionId}?nickname=${userNickname}`,
-            );
+            const response = await authFetch(`/api/sessions/${sessionId}`);
             const data = await response.json();
 
             if (!data.success) {
@@ -352,7 +346,8 @@ export default function SessionPage({
 
             if (!stockDescription || !stockMarketCapEstimate) {
                 try {
-                    const stocksResponse = await fetch("/api/stocks/cached");
+                    const stocksResponse =
+                        await authFetch("/api/stocks/cached");
                     const stocksData = await stocksResponse.json();
                     if (stocksData.success) {
                         const stock = stocksData.stocks.find(

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { generateSessionId } from "@/lib/db/schema";
 import { ArrowLeft, Play } from "lucide-react";
 import Link from "next/link";
+import { authPost } from "@/lib/utils/authFetch";
 
 export default function NewSessionPage() {
     const router = useRouter();
@@ -102,11 +103,7 @@ export default function NewSessionPage() {
             };
 
             // サーバーに保存
-            const saveResponse = await fetch("/api/sessions", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(session),
-            });
+            const saveResponse = await authPost("/api/sessions", session);
 
             const saveData = await saveResponse.json();
 
