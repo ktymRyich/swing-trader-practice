@@ -25,8 +25,11 @@ yarn-error.log*
 *.log
 
 # Local env files
+# 重要: 本番環境の認証情報（JWT_SECRET, BASIC_AUTH_PASSWORD等）が含まれるため絶対にコミットしない
 .env*.local
 .env
+# .env.example はテンプレートなのでコミットOK
+!.env.example
 
 # Vercel
 .vercel
@@ -43,15 +46,22 @@ next-env.d.ts
 *~
 
 # User data (personal information)
-data/users/*.json
+# 重要: ユーザーのパスワードハッシュが含まれる
+data/users/*
+!data/users/.gitkeep
 
 # Session data (practice sessions)
-data/sessions/*.json
+# 重要: 個人のトレード履歴が含まれる
+data/sessions/*
+!data/sessions/.gitkeep
 
 # Stock data cache
+# 株価データは動的に取得するためキャッシュのみ除外
 lib/data/cache/*.json
+!lib/data/cache/.gitkeep
 
 # SQLite database
+# 重要: ユーザーの全セッションデータが含まれる
 data/sessions.db
 data/sessions.db-shm
 data/sessions.db-wal
