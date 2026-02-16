@@ -62,6 +62,6 @@ export const config = {
          * - favicon.ico (ファビコン)
          * - manifest.json (PWAマニフェスト)
          */
-        "/((?!_next/static|_next/image|favicon.ico|manifest.json).*)",
+        "/((?!api/|_next/static|_next/image|favicon.ico|manifest.json).*)",
     ],
 };
