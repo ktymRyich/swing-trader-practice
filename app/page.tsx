@@ -230,8 +230,6 @@ export default function HomePage() {
                       maxWinStreak,
                       maxLossStreak,
                       riskRewardRatio,
-                      averageProfitRate: expectancy,
-                      maxDrawdown,
                       chartData: completed.map((s, i) => ({
                           session: i + 1,
                           profitRate: profitRates[i],

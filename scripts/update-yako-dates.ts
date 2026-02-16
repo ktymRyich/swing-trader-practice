@@ -14,7 +14,7 @@ function updateYakoDates() {
         // ヤコさんのセッションを取得
         const sessions = db
             .prepare("SELECT id FROM sessions WHERE nickname = ?")
-            .all("ヤコ");
+            .all("ヤコ") as Array<{ id: string }>;
 
         if (sessions.length === 0) {
             console.log("ヤコさんのセッションが見つかりませんでした。");
@@ -49,7 +49,7 @@ function updateYakoDates() {
         console.log(`✓ ${sessions.length}件のセッションの日付を更新しました。`);
 
         // ポジションの日付を更新（ヤコさんのセッションに紐づくもの）
-        const sessionIds = sessions.map((s: any) => s.id);
+        const sessionIds = sessions.map((s) => s.id);
         const placeholders = sessionIds.map(() => "?").join(",");
 
         const updatePositionsStmt = db.prepare(`

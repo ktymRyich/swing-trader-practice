@@ -78,6 +78,15 @@ npm run update-stock-data
 
 Next.js 15 / React / TypeScript / TailwindCSS / SQLite / Lightweight Charts / JWT / bcrypt
 
+## デプロイ
+
+AWS EC2へのデプロイ方法は [DEPLOY.md](./DEPLOY.md) を参照してください。
+
+GitHub Actionsで自動的にビルドとデプロイが行われます：
+
+- mainブランチにpush → 自動デプロイ実行
+- GitHub Actionsでビルド → EC2に転送 → PM2で再起動
+
 ## ライセンス
 
 MIT

@@ -455,10 +455,7 @@ export default function SessionDetailModal({
                                             {item.name}
                                         </div>
                                         <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                                            <Info
-                                                className="w-3.5 h-3.5"
-                                                title={item.description}
-                                            />
+                                            <Info className="w-3.5 h-3.5" />
                                             <span>{item.description}</span>
                                         </div>
                                         <div className="ml-auto text-sm font-semibold">
